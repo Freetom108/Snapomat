@@ -198,7 +198,7 @@ function createStyles(colors) {
     brand: {
       fontFamily: 'DMSans_700Bold',
       fontSize: 11,
-      color: colors.muted,
+      color: colors.accent,
       letterSpacing: 1.5,
       textTransform: 'uppercase',
     },
@@ -449,7 +449,6 @@ export default function HomeScreen() {
       <ExpenseDetailSheet
         visible={!!selectedExpense}
         expense={selectedExpense}
-        colors={colors}
         onClose={() => setSelectedExpense(null)}
         onChanged={loadData}
       />

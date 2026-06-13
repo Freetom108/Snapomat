@@ -13,11 +13,15 @@ const RECEIPT_SYSTEM_PROMPT =
   "Category is always 'food' unless the merchant is clearly not a food store.";
 
 const STATEMENT_SYSTEM_PROMPT =
-  'You analyze receipt and bank statement photos. Extract every expense line you can read. ' +
-  'Return ONLY valid JSON: an array of objects. Each object must have: ' +
-  'merchant (string), amount (number, use dot as decimal separator), ' +
-  'date (string ISO 8601 YYYY-MM-DD), category (one of: food, going-out (Restaurant, Café, Bar, Kino, Theater, Sport, Freizeit), mobility, home, fixed, shopping, health). ' +
-  'If unsure about category pick the closest match. No markdown, no explanation.';
+  'You analyze a bank statement photo. Extract ONLY individual transaction lines with merchant/description, amount and date. ' +
+  'IGNORE completely: ' +
+  'Account balance (Kontostand, alter Kontostand, neuer Kontostand), ' +
+  'Sum rows (Summe der Belastungen, Summe der Gutschriften), ' +
+  'Credits, refunds and incoming transfers (Gutschrift, Eingang), ' +
+  'Any totals or summary rows, ' +
+  'Bank name and account information. ' +
+  'Only extract actual individual expense transactions. ' +
+  'Return ONLY valid JSON array: [{merchant, amount, date, category}]';
 
 function jsonResponse(body, status = 200) {
   return new Response(JSON.stringify(body), {

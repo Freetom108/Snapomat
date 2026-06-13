@@ -12,6 +12,7 @@ import {
   Animated,
 } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import * as ImageManipulator from 'expo-image-manipulator';
 import { useRouter } from 'expo-router';
 import {
   useFonts,
@@ -30,6 +31,40 @@ function withAlpha(hex, alpha) {
     .toString(16)
     .padStart(2, '0');
   return `${hex}${a}`;
+}
+
+const MANIPULATE_JPEG = { base64: true, format: ImageManipulator.SaveFormat.JPEG };
+
+async function imageToBase64(uri, actions = []) {
+  const result = await ImageManipulator.manipulateAsync(uri, actions, MANIPULATE_JPEG);
+  return result.base64;
+}
+
+async function analyzeWithBestOrientation(uri, width, height, scanType) {
+  if (width <= height) {
+    const base64 = await imageToBase64(uri);
+    const result = await analyzeImage(base64, scanType);
+    return { base64, result };
+  }
+
+  const [base6490, base64270] = await Promise.all([
+    imageToBase64(uri, [{ rotate: 90 }]),
+    imageToBase64(uri, [{ rotate: 270 }]),
+  ]);
+
+  const [result90, result270] = await Promise.all([
+    analyzeImage(base6490, scanType),
+    analyzeImage(base64270, scanType),
+  ]);
+
+  const count90 = result90?.length ?? 0;
+  const count270 = result270?.length ?? 0;
+
+  if (count270 > count90) {
+    return { base64: base64270, result: result270 };
+  }
+
+  return { base64: base6490, result: result90 };
 }
 
 const EMPTY_MANUAL = {
@@ -53,7 +88,13 @@ function formatDate(isoDate) {
 }
 
 function normalizeCategoryId(category) {
-  return CATEGORIES[category] ? category : 'food';
+  if (!category) return 'food';
+  const value = String(category).trim();
+  if (CATEGORIES[value]) return value;
+  const lower = value.toLowerCase();
+  if (CATEGORIES[lower]) return lower;
+  if (lower.startsWith('going-out') || lower === 'going_out') return 'going-out';
+  return 'food';
 }
 
 function formDateToIso(dateStr) {
@@ -68,11 +109,12 @@ function formDateToIso(dateStr) {
 }
 
 function formToExpense(form) {
+  const categoryId = normalizeCategoryId(form.categoryId ?? form.category);
   return {
     merchant: form.merchant,
-    amount: parseFloat(form.amount.replace(',', '.')) || 0,
+    amount: parseFloat(String(form.amount).replace(',', '.')) || 0,
     date: formDateToIso(form.date),
-    category: form.categoryId,
+    category: categoryId,
   };
 }
 
@@ -81,7 +123,7 @@ function apiItemToForm(item) {
     merchant: item.merchant ?? '',
     amount: formatAmount(item.amount),
     date: formatDate(item.date),
-    categoryId: normalizeCategoryId(item.category),
+    categoryId: normalizeCategoryId(item.category ?? item.categoryId),
   };
 }
 
@@ -154,11 +196,10 @@ function CameraModal({ visible, colors, styles, onCancel, onCapture }) {
 
   async function handleCapture() {
     const photo = await cameraRef.current?.takePictureAsync({
-      base64: true,
       quality: 0.8,
     });
-    if (photo?.base64) {
-      onCapture(photo.base64);
+    if (photo?.uri) {
+      onCapture(photo);
     }
   }
 
@@ -208,12 +249,12 @@ function ReviewField({ label, value, onChangeText, colors, styles, keyboardType 
   );
 }
 
-function ReviewCategoryChip({ category, selected, colors, styles, onPress }) {
-  const isSelected = selected === category.id;
+function ReviewCategoryChip({ category, selectedCategory, colors, styles, onSelectCategory }) {
+  const isSelected = selectedCategory === category.id;
 
   return (
     <Pressable
-      onPress={() => onPress(category.id)}
+      onPress={() => onSelectCategory(category.id)}
       style={[
         styles.chip,
         {
@@ -284,7 +325,7 @@ function ScanOverlay({ visible, colors, styles }) {
   );
 }
 
-function MultiReviewStep({ colors, styles, items, onSaveAll, onCancel, saving }) {
+function MultiReviewStep({ colors, styles, items, onSaveAll, onRemoveItem, onCancel, saving }) {
   return (
     <View style={styles.reviewContent}>
       <View
@@ -307,18 +348,34 @@ function MultiReviewStep({ colors, styles, items, onSaveAll, onCancel, saving })
         const category = getCategory(item.categoryId);
         return (
           <View
-            key={`${item.merchant}-${index}`}
+            key={`${item.merchant}-${item.date}-${index}`}
             style={[styles.multiCard, index < items.length - 1 && styles.multiCardSpacing]}
           >
-            <View style={styles.multiRow}>
-              <Text style={styles.multiMerchant}>{item.merchant || 'Unbekannt'}</Text>
-              <Text style={styles.multiAmount}>{item.amount} €</Text>
-            </View>
-            <View style={styles.multiRow}>
-              <Text style={styles.multiMeta}>
-                {category ? `${category.emoji} ${category.label}` : item.categoryId}
-              </Text>
-              <Text style={styles.multiMeta}>{item.date}</Text>
+            <View style={styles.multiCardInner}>
+              <View style={styles.multiCardBody}>
+                <View style={styles.multiRow}>
+                  <Text style={styles.multiMerchant}>{item.merchant || 'Unbekannt'}</Text>
+                  <Text style={styles.multiAmount}>{item.amount} €</Text>
+                </View>
+                <View style={styles.multiRow}>
+                  <Text style={styles.multiMeta}>
+                    {category ? `${category.emoji} ${category.label}` : item.categoryId}
+                  </Text>
+                  <Text style={styles.multiMeta}>{item.date}</Text>
+                </View>
+              </View>
+              <Pressable
+                onPress={() => onRemoveItem(index)}
+                hitSlop={8}
+                style={({ pressed }) => [
+                  styles.multiRemoveButton,
+                  pressed && { opacity: 0.6 },
+                ]}
+                accessibilityRole="button"
+                accessibilityLabel="Eintrag entfernen"
+              >
+                <Text style={[styles.multiRemoveText, { color: colors.muted }]}>×</Text>
+              </Pressable>
             </View>
           </View>
         );
@@ -326,11 +383,14 @@ function MultiReviewStep({ colors, styles, items, onSaveAll, onCancel, saving })
 
       <Pressable
         onPress={onSaveAll}
-        disabled={saving}
+        disabled={saving || items.length === 0}
         style={({ pressed }) => [
           styles.saveButton,
-          { backgroundColor: colors.accent, opacity: saving ? 0.5 : 1 },
-          pressed && !saving && styles.pressed,
+          {
+            backgroundColor: colors.accent,
+            opacity: saving || items.length === 0 ? 0.5 : 1,
+          },
+          pressed && !saving && items.length > 0 && styles.pressed,
         ]}
       >
         <Text style={styles.saveButtonText}>{saving ? 'Speichern…' : 'Alle speichern'}</Text>
@@ -348,10 +408,21 @@ function ReviewStep({
   styles,
   form,
   setForm,
+  selectedCategory,
+  onSelectCategory,
   onSave,
   onCancel,
   saving,
 }) {
+  function handleSavePress() {
+    onSave({
+      ...form,
+      categoryId: selectedCategory,
+    });
+  }
+
+  const activeCategory = getCategory(selectedCategory);
+
   return (
     <View style={styles.reviewContent}>
       <View
@@ -397,21 +468,29 @@ function ReviewStep({
         />
       </View>
 
+      <Text style={styles.sectionLabel}>KATEGORIE</Text>
+
+      {activeCategory ? (
+        <Text style={[styles.selectedCategoryHint, { color: colors.muted }]}>
+          {activeCategory.emoji} {activeCategory.label}
+        </Text>
+      ) : null}
+
       <View style={styles.chipRow}>
         {CATEGORY_LIST.map((cat) => (
           <ReviewCategoryChip
             key={cat.id}
             category={cat}
-            selected={form.categoryId}
+            selectedCategory={selectedCategory}
             colors={colors}
             styles={styles}
-            onPress={(categoryId) => setForm((prev) => ({ ...prev, categoryId }))}
+            onSelectCategory={onSelectCategory}
           />
         ))}
       </View>
 
       <Pressable
-        onPress={onSave}
+        onPress={handleSavePress}
         disabled={saving}
         style={({ pressed }) => [
           styles.saveButton,
@@ -450,7 +529,7 @@ function createStyles(colors) {
     brand: {
       fontFamily: 'DMSans_700Bold',
       fontSize: 11,
-      color: colors.muted,
+      color: colors.accent,
       letterSpacing: 1.5,
       textTransform: 'uppercase',
     },
@@ -642,6 +721,11 @@ function createStyles(colors) {
       height: 1,
       backgroundColor: colors.border,
     },
+    selectedCategoryHint: {
+      fontFamily: 'DMSans_400Regular',
+      fontSize: 13,
+      marginBottom: 10,
+    },
     chipRow: {
       flexDirection: 'row',
       flexWrap: 'wrap',
@@ -738,6 +822,26 @@ function createStyles(colors) {
     multiCardSpacing: {
       marginBottom: 12,
     },
+    multiCardInner: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      gap: 8,
+    },
+    multiCardBody: {
+      flex: 1,
+    },
+    multiRemoveButton: {
+      width: 28,
+      height: 28,
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginTop: -2,
+    },
+    multiRemoveText: {
+      fontFamily: 'DMSans_400Regular',
+      fontSize: 22,
+      lineHeight: 24,
+    },
     multiRow: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -774,6 +878,7 @@ export default function AddScreen() {
   const [importType, setImportType] = useState(null);
   const [photoBase64, setPhotoBase64] = useState(null);
   const [form, setForm] = useState(EMPTY_MANUAL);
+  const [selectedCategory, setSelectedCategory] = useState(EMPTY_MANUAL.categoryId);
   const [multiItems, setMultiItems] = useState([]);
   const [saving, setSaving] = useState(false);
 
@@ -789,34 +894,49 @@ export default function AddScreen() {
     setShowCamera(true);
   }
 
-  async function handleCapture(base64) {
-    setPhotoBase64(base64);
+  async function handleCapture(photo) {
     setShowCamera(false);
     setIsScanning(true);
 
-    const result = await analyzeImage(base64, importType ?? 'statement');
-    setIsScanning(false);
+    try {
+      const scanType = importType ?? 'statement';
+      const { base64, result } = await analyzeWithBestOrientation(
+        photo.uri,
+        photo.width,
+        photo.height,
+        scanType,
+      );
 
-    if (!result || result.length === 0) {
+      if (!base64 || !result || result.length === 0) {
+        Alert.alert('Analyse fehlgeschlagen – bitte erneut versuchen');
+        return;
+      }
+
+      setPhotoBase64(base64);
+
+      if (result.length === 1) {
+        const nextForm = apiItemToForm(result[0]);
+        setForm(nextForm);
+        setSelectedCategory(nextForm.categoryId);
+        setStep('review');
+        return;
+      }
+
+      setMultiItems(result.map(apiItemToForm));
+      setStep('multi-review');
+    } catch {
       Alert.alert('Analyse fehlgeschlagen – bitte erneut versuchen');
       setPhotoBase64(null);
-      return;
+    } finally {
+      setIsScanning(false);
     }
-
-    if (result.length === 1) {
-      setForm(apiItemToForm(result[0]));
-      setStep('review');
-      return;
-    }
-
-    setMultiItems(result.map(apiItemToForm));
-    setStep('multi-review');
   }
 
   function handleManual() {
     setImportType('manual');
     setPhotoBase64(null);
     setForm({ ...EMPTY_MANUAL });
+    setSelectedCategory(EMPTY_MANUAL.categoryId);
     setStep('review');
   }
 
@@ -825,7 +945,12 @@ export default function AddScreen() {
     setPhotoBase64(null);
     setImportType(null);
     setForm({ ...EMPTY_MANUAL });
+    setSelectedCategory(EMPTY_MANUAL.categoryId);
     setMultiItems([]);
+  }
+
+  function handleRemoveMultiItem(index) {
+    setMultiItems((prev) => prev.filter((_, i) => i !== index));
   }
 
   async function handleSaveAll() {
@@ -842,11 +967,21 @@ export default function AddScreen() {
     }
   }
 
-  async function handleSave() {
+  function handleSelectCategory(categoryId) {
+    const normalized = normalizeCategoryId(categoryId);
+    setSelectedCategory(normalized);
+    setForm((prev) => ({ ...prev, categoryId: normalized }));
+  }
+
+  async function handleSave(formData) {
     if (saving) return;
     setSaving(true);
     try {
-      await saveExpense(formToExpense(form));
+      const payload = {
+        ...formData,
+        categoryId: normalizeCategoryId(formData.categoryId ?? selectedCategory),
+      };
+      await saveExpense(formToExpense(payload));
       handleBack();
       router.replace('/(tabs)');
     } finally {
@@ -881,6 +1016,7 @@ export default function AddScreen() {
             styles={styles}
             items={multiItems}
             onSaveAll={handleSaveAll}
+            onRemoveItem={handleRemoveMultiItem}
             onCancel={handleBack}
             saving={saving}
           />
@@ -890,6 +1026,8 @@ export default function AddScreen() {
             styles={styles}
             form={form}
             setForm={setForm}
+            selectedCategory={selectedCategory}
+            onSelectCategory={handleSelectCategory}
             onSave={handleSave}
             onCancel={handleBack}
             saving={saving}

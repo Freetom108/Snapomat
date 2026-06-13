@@ -9,8 +9,8 @@ const SHARED = {
 };
 
 export const THEMES = {
-  midnightGold: {
-    id: 'midnightGold',
+  gold: {
+    id: 'gold',
     name: 'Midnight Gold',
     bg: '#000000',
     card: '#181818',
@@ -18,8 +18,8 @@ export const THEMES = {
     border: '#2a2a2a',
     ...SHARED,
   },
-  forestGreen: {
-    id: 'forestGreen',
+  forest: {
+    id: 'forest',
     name: 'Forest Green',
     bg: '#08120A',
     card: '#102114',
@@ -36,8 +36,8 @@ export const THEMES = {
     border: '#2a2a2a',
     ...SHARED,
   },
-  midnightBlue: {
-    id: 'midnightBlue',
+  blue: {
+    id: 'blue',
     name: 'Midnight Blue',
     bg: '#070A12',
     card: '#0D1420',
@@ -56,4 +56,16 @@ export const THEMES = {
   },
 };
 
-export const DEFAULT_THEME_ID = 'midnightGold';
+export const DEFAULT_THEME_ID = 'gold';
+
+export const THEME_ALIASES = {
+  midnightGold: 'gold',
+  forestGreen: 'forest',
+  midnightBlue: 'blue',
+};
+
+export function resolveThemeId(stored) {
+  if (stored && THEMES[stored]) return stored;
+  if (stored && THEME_ALIASES[stored]) return THEME_ALIASES[stored];
+  return DEFAULT_THEME_ID;
+}

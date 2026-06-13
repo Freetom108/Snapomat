@@ -3,12 +3,12 @@ import { useEffect, useState } from 'react';
 import { Stack, useRouter, useSegments } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { View, ActivityIndicator } from 'react-native';
-import { useTheme } from '../hooks/useTheme';
+import { ThemeProvider, useTheme } from '../hooks/useTheme';
 import { initI18n } from '../i18n';
 import { getOnboardingDone } from '../store/storage';
 import { DEFAULT_THEME_ID, THEMES } from '../constants/colors';
 
-export default function RootLayout() {
+function RootLayoutInner() {
   const { theme, ready: themeReady } = useTheme();
   const [ready, setReady] = useState(false);
   const router = useRouter();
@@ -54,5 +54,13 @@ export default function RootLayout() {
       <StatusBar style={theme.id === 'light' ? 'dark' : 'light'} />
       <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: theme.bg } }} />
     </>
+  );
+}
+
+export default function RootLayout() {
+  return (
+    <ThemeProvider>
+      <RootLayoutInner />
+    </ThemeProvider>
   );
 }

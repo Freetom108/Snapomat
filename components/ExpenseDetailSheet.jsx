@@ -9,6 +9,7 @@ import {
   TextInput,
 } from 'react-native';
 import { CATEGORY_LIST, getCategory } from '../constants/categories';
+import { useTheme } from '../hooks/useTheme';
 import { deleteExpense, updateExpense } from '../store/storage';
 import { parseExpenseDate } from '../utils/expenseHelpers';
 
@@ -74,10 +75,10 @@ function CategoryChip({ category, selected, colors, onPress }) {
 export default function ExpenseDetailSheet({
   visible,
   expense,
-  colors,
   onClose,
   onChanged,
 }) {
+  const { colors } = useTheme();
   const [amount, setAmount] = useState('');
   const [date, setDate] = useState('');
   const [categoryId, setCategoryId] = useState('food');

@@ -1,28 +1,38 @@
+import { ActivityIndicator, View } from 'react-native';
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-
-const GOLD = '#E8B84B';
-const GRAY = '#666666';
-const BG = '#000000';
-const BORDER = '#2A2A2A';
+import { useTheme } from '../../hooks/useTheme';
 
 export default function TabsLayout() {
+  const { colors, ready } = useTheme();
+
+  if (!ready) {
+    return (
+      <View style={{ flex: 1, backgroundColor: colors.background, alignItems: 'center', justifyContent: 'center' }}>
+        <ActivityIndicator color={colors.accent} />
+      </View>
+    );
+  }
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: BG,
+          backgroundColor: colors.background,
           borderTopWidth: 1,
-          borderTopColor: BORDER,
+          borderTopColor: colors.border,
         },
-        tabBarActiveTintColor: GOLD,
-        tabBarInactiveTintColor: GRAY,
+        tabBarActiveTintColor: colors.accent,
+        tabBarInactiveTintColor: colors.muted,
         tabBarLabelStyle: {
           fontSize: 10,
         },
         tabBarItemStyle: {
           paddingHorizontal: 8,
+        },
+        sceneStyle: {
+          backgroundColor: colors.background,
         },
       }}
     >

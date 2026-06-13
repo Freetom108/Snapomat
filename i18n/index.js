@@ -24,11 +24,22 @@ function resolveDeviceLocale() {
 
 export async function initI18n() {
   const stored = await getStoredLocale();
-  currentLocale = stored && translations[stored] ? stored : resolveDeviceLocale();
+  if (stored === 'auto') {
+    currentLocale = resolveDeviceLocale();
+  } else if (stored && translations[stored]) {
+    currentLocale = stored;
+  } else {
+    currentLocale = resolveDeviceLocale();
+  }
   return currentLocale;
 }
 
 export async function setLocale(locale) {
+  if (locale === 'auto') {
+    currentLocale = resolveDeviceLocale();
+    await persistLocale('auto');
+    return;
+  }
   if (!translations[locale]) return;
   currentLocale = locale;
   await persistLocale(locale);
