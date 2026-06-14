@@ -1,3 +1,5 @@
+import { formatRelativeDate as formatRelativeDateI18n } from './expenseHelpers';
+
 export function formatCurrency(amount, locale = 'de-DE', currency = 'EUR') {
   return new Intl.NumberFormat(locale, {
     style: 'currency',
@@ -14,14 +16,15 @@ export function formatDate(date, locale = 'de-DE') {
   }).format(value);
 }
 
-export function formatRelativeDate(date, locale = 'de-DE') {
-  const value = date instanceof Date ? date : new Date(date);
-  const now = new Date();
-  const diffMs = now - value;
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
-  if (diffDays === 0) return 'Heute';
-  if (diffDays === 1) return 'Gestern';
-
-  return formatDate(value, locale);
+export function formatRelativeDate(date) {
+  if (date instanceof Date) {
+    if (Number.isNaN(date.getTime())) {
+      return formatRelativeDateI18n(new Date().toISOString().slice(0, 10));
+    }
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return formatRelativeDateI18n(`${year}-${month}-${day}`);
+  }
+  return formatRelativeDateI18n(date);
 }

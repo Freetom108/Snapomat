@@ -21,8 +21,9 @@ import {
   DMSans_800ExtraBold,
   DMSans_900Black,
 } from '@expo-google-fonts/dm-sans';
-import { CATEGORY_LIST, CATEGORIES, getCategory } from '../../constants/categories';
+import { CATEGORY_LIST, CATEGORIES, getCategory, getCategoryList } from '../../constants/categories';
 import { useTheme } from '../../hooks/useTheme';
+import { useTranslation } from '../../hooks/useTranslation';
 import { analyzeImage } from '../../services/apiGatekeeper';
 import { saveExpense } from '../../store/storage';
 
@@ -137,6 +138,8 @@ function ScreenHeader({ styles }) {
 }
 
 function SelectionStep({ colors, styles, onReceipt, onStatement, onManual }) {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.stepContent}>
       <Pressable
@@ -147,8 +150,8 @@ function SelectionStep({ colors, styles, onReceipt, onStatement, onManual }) {
           <Text style={styles.iconEmoji}>🧾</Text>
         </View>
         <View style={styles.optionText}>
-          <Text style={styles.optionTitle}>Kassenzettel</Text>
-          <Text style={styles.optionSubtitle}>Foto aufnehmen</Text>
+          <Text style={styles.optionTitle}>{t('import.receiptTitle')}</Text>
+          <Text style={styles.optionSubtitle}>{t('import.receiptSubtitle')}</Text>
         </View>
       </Pressable>
 
@@ -165,14 +168,14 @@ function SelectionStep({ colors, styles, onReceipt, onStatement, onManual }) {
           <Text style={styles.iconEmoji}>🏦</Text>
         </View>
         <View style={styles.optionText}>
-          <Text style={styles.optionTitle}>Kontoauszug</Text>
-          <Text style={styles.optionSubtitle}>Foto aufnehmen</Text>
+          <Text style={styles.optionTitle}>{t('import.statementTitle')}</Text>
+          <Text style={styles.optionSubtitle}>{t('import.statementSubtitle')}</Text>
         </View>
       </Pressable>
 
       <View style={styles.dividerRow}>
         <View style={styles.dividerLine} />
-        <Text style={styles.dividerText}>oder</Text>
+        <Text style={styles.dividerText}>{t('import.or')}</Text>
         <View style={styles.dividerLine} />
       </View>
 
@@ -184,13 +187,14 @@ function SelectionStep({ colors, styles, onReceipt, onStatement, onManual }) {
           pressed && styles.pressed,
         ]}
       >
-        <Text style={[styles.manualButtonText, { color: colors.accent }]}>Manuell eingeben</Text>
+        <Text style={[styles.manualButtonText, { color: colors.accent }]}>{t('import.manualEntry')}</Text>
       </Pressable>
     </View>
   );
 }
 
 function CameraModal({ visible, colors, styles, onCancel, onCapture }) {
+  const { t } = useTranslation();
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef(null);
 
@@ -208,19 +212,19 @@ function CameraModal({ visible, colors, styles, onCancel, onCapture }) {
       <View style={styles.cameraContainer}>
         {!permission?.granted ? (
           <View style={styles.cameraFallback}>
-            <Text style={styles.permissionText}>Kamerazugriff erforderlich</Text>
+            <Text style={styles.permissionText}>{t('import.cameraPermission')}</Text>
             <Pressable onPress={requestPermission} style={styles.permissionButton}>
-              <Text style={styles.permissionButtonText}>Berechtigung erteilen</Text>
+              <Text style={styles.permissionButtonText}>{t('import.cameraGrant')}</Text>
             </Pressable>
             <Pressable onPress={onCancel} style={styles.cameraCancel}>
-              <Text style={styles.cameraCancelText}>Abbrechen</Text>
+              <Text style={styles.cameraCancelText}>{t('common.cancel')}</Text>
             </Pressable>
           </View>
         ) : (
           <>
             <CameraView ref={cameraRef} style={styles.camera} facing="back" />
             <Pressable onPress={onCancel} style={styles.cameraCancel}>
-              <Text style={styles.cameraCancelText}>Abbrechen</Text>
+              <Text style={styles.cameraCancelText}>{t('common.cancel')}</Text>
             </Pressable>
             <View style={styles.shutterRow}>
               <Pressable onPress={handleCapture} style={styles.shutterOuter}>
@@ -277,6 +281,7 @@ function ReviewCategoryChip({ category, selectedCategory, colors, styles, onSele
 }
 
 function ScanOverlay({ visible, colors, styles }) {
+  const { t } = useTranslation();
   const scanAnim = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
@@ -317,8 +322,8 @@ function ScanOverlay({ visible, colors, styles }) {
             />
           </View>
           <ActivityIndicator color={colors.accent} size="large" style={styles.scanSpinner} />
-          <Text style={styles.scanTitle}>Analyse läuft...</Text>
-          <Text style={styles.scanSubtitle}>Beleg wird ausgewertet</Text>
+          <Text style={styles.scanTitle}>{t('import.scanTitle')}</Text>
+          <Text style={styles.scanSubtitle}>{t('import.scanSubtitle')}</Text>
         </View>
       </View>
     </Modal>
@@ -326,6 +331,8 @@ function ScanOverlay({ visible, colors, styles }) {
 }
 
 function MultiReviewStep({ colors, styles, items, onSaveAll, onRemoveItem, onCancel, saving }) {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.reviewContent}>
       <View
@@ -338,11 +345,11 @@ function MultiReviewStep({ colors, styles, items, onSaveAll, onRemoveItem, onCan
         ]}
       >
         <Text style={[styles.successBadgeText, { color: colors.green }]}>
-          {items.length} Einträge erkannt – bitte prüfen
+          {t('import.multiDetected', { count: items.length })}
         </Text>
       </View>
 
-      <Text style={styles.sectionLabel}>ALLE EINTRÄGE</Text>
+      <Text style={styles.sectionLabel}>{t('import.multiSection')}</Text>
 
       {items.map((item, index) => {
         const category = getCategory(item.categoryId);
@@ -354,7 +361,7 @@ function MultiReviewStep({ colors, styles, items, onSaveAll, onRemoveItem, onCan
             <View style={styles.multiCardInner}>
               <View style={styles.multiCardBody}>
                 <View style={styles.multiRow}>
-                  <Text style={styles.multiMerchant}>{item.merchant || 'Unbekannt'}</Text>
+                  <Text style={styles.multiMerchant}>{item.merchant || t('import.unknownMerchant')}</Text>
                   <Text style={styles.multiAmount}>{item.amount} €</Text>
                 </View>
                 <View style={styles.multiRow}>
@@ -372,7 +379,7 @@ function MultiReviewStep({ colors, styles, items, onSaveAll, onRemoveItem, onCan
                   pressed && { opacity: 0.6 },
                 ]}
                 accessibilityRole="button"
-                accessibilityLabel="Eintrag entfernen"
+                accessibilityLabel={t('import.removeEntry')}
               >
                 <Text style={[styles.multiRemoveText, { color: colors.muted }]}>×</Text>
               </Pressable>
@@ -393,11 +400,11 @@ function MultiReviewStep({ colors, styles, items, onSaveAll, onRemoveItem, onCan
           pressed && !saving && items.length > 0 && styles.pressed,
         ]}
       >
-        <Text style={styles.saveButtonText}>{saving ? 'Speichern…' : 'Alle speichern'}</Text>
+        <Text style={styles.saveButtonText}>{saving ? t('common.saving') : t('import.saveAll')}</Text>
       </Pressable>
 
       <Pressable onPress={onCancel} style={styles.cancelButton}>
-        <Text style={styles.cancelButtonText}>Abbrechen</Text>
+        <Text style={styles.cancelButtonText}>{t('common.cancel')}</Text>
       </Pressable>
     </View>
   );
@@ -414,6 +421,8 @@ function ReviewStep({
   onCancel,
   saving,
 }) {
+  const { t } = useTranslation();
+
   function handleSavePress() {
     onSave({
       ...form,
@@ -435,15 +444,15 @@ function ReviewStep({
         ]}
       >
         <Text style={[styles.successBadgeText, { color: colors.green }]}>
-          ✅ Erkannt – bitte überprüfen
+          {t('import.reviewDetected')}
         </Text>
       </View>
 
-      <Text style={styles.sectionLabel}>DATEN PRÜFEN</Text>
+      <Text style={styles.sectionLabel}>{t('import.reviewSection')}</Text>
 
       <View style={styles.fieldsCard}>
         <ReviewField
-          label="Händler"
+          label={t('import.fieldMerchant')}
           value={form.merchant}
           onChangeText={(merchant) => setForm((prev) => ({ ...prev, merchant }))}
           colors={colors}
@@ -451,7 +460,7 @@ function ReviewStep({
         />
         <View style={styles.fieldDivider} />
         <ReviewField
-          label="Betrag"
+          label={t('import.fieldAmount')}
           value={form.amount}
           onChangeText={(amount) => setForm((prev) => ({ ...prev, amount }))}
           colors={colors}
@@ -460,7 +469,7 @@ function ReviewStep({
         />
         <View style={styles.fieldDivider} />
         <ReviewField
-          label="Datum"
+          label={t('import.fieldDate')}
           value={form.date}
           onChangeText={(date) => setForm((prev) => ({ ...prev, date }))}
           colors={colors}
@@ -468,7 +477,7 @@ function ReviewStep({
         />
       </View>
 
-      <Text style={styles.sectionLabel}>KATEGORIE</Text>
+      <Text style={styles.sectionLabel}>{t('import.sectionCategory')}</Text>
 
       {activeCategory ? (
         <Text style={[styles.selectedCategoryHint, { color: colors.muted }]}>
@@ -477,7 +486,7 @@ function ReviewStep({
       ) : null}
 
       <View style={styles.chipRow}>
-        {CATEGORY_LIST.map((cat) => (
+        {getCategoryList().map((cat) => (
           <ReviewCategoryChip
             key={cat.id}
             category={cat}
@@ -498,11 +507,11 @@ function ReviewStep({
           pressed && !saving && styles.pressed,
         ]}
       >
-        <Text style={styles.saveButtonText}>{saving ? 'Speichern…' : 'Speichern'}</Text>
+        <Text style={styles.saveButtonText}>{saving ? t('common.saving') : t('common.save')}</Text>
       </Pressable>
 
       <Pressable onPress={onCancel} style={styles.cancelButton}>
-        <Text style={styles.cancelButtonText}>Abbrechen</Text>
+        <Text style={styles.cancelButtonText}>{t('common.cancel')}</Text>
       </Pressable>
     </View>
   );
@@ -869,6 +878,7 @@ function createStyles(colors) {
 
 export default function AddScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { colors, ready: themeReady } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
@@ -908,7 +918,7 @@ export default function AddScreen() {
       );
 
       if (!base64 || !result || result.length === 0) {
-        Alert.alert('Analyse fehlgeschlagen – bitte erneut versuchen');
+        Alert.alert(t('import.analysisFailed'));
         return;
       }
 
@@ -925,7 +935,7 @@ export default function AddScreen() {
       setMultiItems(result.map(apiItemToForm));
       setStep('multi-review');
     } catch {
-      Alert.alert('Analyse fehlgeschlagen – bitte erneut versuchen');
+      Alert.alert(t('import.analysisFailed'));
       setPhotoBase64(null);
     } finally {
       setIsScanning(false);

@@ -17,8 +17,9 @@ import {
   DMSans_800ExtraBold,
   DMSans_900Black,
 } from '@expo-google-fonts/dm-sans';
-import { CATEGORY_LIST } from '../../constants/categories';
+import { CATEGORY_LIST, getCategory, getCategoryLabel } from '../../constants/categories';
 import { useTheme } from '../../hooks/useTheme';
+import { useTranslation } from '../../hooks/useTranslation';
 import { getExpenses } from '../../store/storage';
 import ExpenseRow from '../../components/ExpenseRow';
 import ExpenseDetailSheet from '../../components/ExpenseDetailSheet';
@@ -197,6 +198,7 @@ function createStyles(colors) {
 }
 
 export default function HistoryScreen() {
+  const { t, locale } = useTranslation();
   const { colors, theme, ready: themeReady } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
@@ -287,7 +289,7 @@ export default function HistoryScreen() {
             <TextInput
               value={search}
               onChangeText={handleSearchChange}
-              placeholder="Händler suchen..."
+              placeholder={t('history.searchPlaceholder')}
               placeholderTextColor={colors.muted}
               style={styles.searchInput}
             />
@@ -315,7 +317,7 @@ export default function HistoryScreen() {
                   { color: !selectedCategory ? colors.accent : colors.muted },
                 ]}
               >
-                Alle
+                {t('common.all')}
               </Text>
             </Pressable>
             {CATEGORY_LIST.map((cat) => {
@@ -336,7 +338,7 @@ export default function HistoryScreen() {
                   <Text
                     style={[styles.chipLabel, { color: isSelected ? cat.color : colors.muted }]}
                   >
-                    {cat.label}
+                    {getCategoryLabel(cat.id)}
                   </Text>
                 </Pressable>
               );
@@ -352,7 +354,7 @@ export default function HistoryScreen() {
               <Text style={styles.monthChevron}>‹</Text>
             </Pressable>
             <Text style={styles.monthLabel}>
-              {isSearching ? 'Alle Ergebnisse' : formatMonthLabel(year, month)}
+              {isSearching ? t('history.allResults') : formatMonthLabel(year, month)}
             </Text>
             <Pressable
               onPress={() => shiftMonth(1)}
@@ -366,7 +368,7 @@ export default function HistoryScreen() {
 
         {isSearching ? (
           searchGroups.length === 0 ? (
-            <EmptyState emoji="🔍" title="Keine Ergebnisse gefunden" theme={theme} />
+            <EmptyState emoji="🔍" title={t('history.noSearchResults')} theme={theme} />
           ) : (
             searchGroups.map((group) => (
               <View key={group.id} style={styles.monthGroup}>
@@ -374,7 +376,7 @@ export default function HistoryScreen() {
                 <View style={styles.list}>
                   {group.items.map((item) => (
                     <ExpenseRow
-                      key={item.id}
+                      key={`${item.id}-${locale}`}
                       expense={toRowExpense(item)}
                       theme={theme}
                       onPress={() => setSelectedExpense(item)}
@@ -385,12 +387,12 @@ export default function HistoryScreen() {
             ))
           )
         ) : monthExpenses.length === 0 ? (
-          <EmptyState emoji="📋" title="Keine Buchungen in diesem Monat" theme={theme} />
+          <EmptyState emoji="📋" title={t('history.noMonthExpenses')} theme={theme} />
         ) : (
           <View style={styles.list}>
             {monthExpenses.map((item) => (
               <ExpenseRow
-                key={item.id}
+                key={`${item.id}-${locale}`}
                 expense={toRowExpense(item)}
                 theme={theme}
                 onPress={() => setSelectedExpense(item)}

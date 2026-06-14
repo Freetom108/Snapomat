@@ -1,9 +1,11 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { getCategory } from '../constants/categories';
-import { formatCurrency, formatRelativeDate } from '../utils/formatters';
+import { useTranslation } from '../hooks/useTranslation';
+import { formatCurrency, formatRelativeDate } from '../utils/expenseHelpers';
 import { typography } from '../constants/typography';
 
 export default function ExpenseRow({ expense, theme, onPress }) {
+  useTranslation();
   const category = getCategory(expense.categoryId);
 
   return (

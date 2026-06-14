@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import {
   View,
   Text,
@@ -11,6 +11,8 @@ import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Svg, { Circle, Path, Rect, G } from 'react-native-svg';
 import { useFonts, DMSans_400Regular, DMSans_500Medium, DMSans_700Bold, DMSans_900Black } from '@expo-google-fonts/dm-sans';
+import { getCategoryLabel } from '../constants/categories';
+import { useTranslation } from '../hooks/useTranslation';
 import { setOnboardingDone } from '../store/storage';
 
 const GOLD = '#E8B84B';
@@ -88,10 +90,10 @@ function Slide2Illustration() {
 }
 
 const CATEGORY_ROWS = [
-  { label: 'Wohnen', emoji: '🏠', amount: '89€', percent: '24%' },
-  { label: 'Mobilität', emoji: '🚗', amount: '82€', percent: '22%' },
-  { label: 'Lebensmittel', emoji: '🛒', amount: '62€', percent: '16%' },
-  { label: 'Shopping', emoji: '🛍️', amount: '50€', percent: '13%' },
+  { id: 'home', emoji: '🏠', amount: '89€', percent: '24%' },
+  { id: 'mobility', emoji: '🚗', amount: '82€', percent: '22%' },
+  { id: 'food', emoji: '🛒', amount: '62€', percent: '16%' },
+  { id: 'shopping', emoji: '🛍️', amount: '50€', percent: '13%' },
 ];
 
 function Slide3Illustration() {
@@ -99,11 +101,11 @@ function Slide3Illustration() {
     <View style={styles.categoryCard}>
       {CATEGORY_ROWS.map((row, index) => (
         <View
-          key={row.label}
+          key={row.id}
           style={[styles.categoryRow, index < CATEGORY_ROWS.length - 1 && styles.categoryRowBorder]}
         >
           <Text style={styles.categoryLabel}>
-            {row.label} {row.emoji}
+            {getCategoryLabel(row.id)} {row.emoji}
           </Text>
           <View style={styles.categoryRight}>
             <Text style={styles.categoryAmount}>{row.amount}</Text>
@@ -115,36 +117,37 @@ function Slide3Illustration() {
   );
 }
 
-const SLIDES = [
-  {
-    Illustration: Slide1Illustration,
-    titleWhite: 'Beleg fotografieren –',
-    titleGold: 'die KI erledigt den Rest',
-    subtext:
-      'Ob Kassenzettel oder Kontoauszug – Snapomat erkennt Betrag und Händler, schlägt eine passende Kategorie vor und du bestätigst den Eintrag.',
-    smallText: 'Die Belegerfassung kann auch jederzeit manuell erfolgen.',
-  },
-  {
-    Illustration: Slide2Illustration,
-    titleWhite: 'Behalte den Überblick',
-    titleGold: 'über dein Budget',
-    subtext:
-      'Lege dein Monatsbudget fest. Der Ausgabenring zeigt dir jederzeit wo du stehst – und wie viel Geld du noch zur Verfügung hast.',
-    smallText: null,
-  },
-  {
-    Illustration: Slide3Illustration,
-    titleWhite: 'Deine Ausgaben',
-    titleGold: 'auf einen Blick',
-    subtext:
-      'Erkenne sofort, wo dein Geld wirklich hingeht – nach Kategorie, Händler oder Monat.',
-    smallText: null,
-  },
-];
+function getSlides(t) {
+  return [
+    {
+      Illustration: Slide1Illustration,
+      titleWhite: t('onboarding.title1'),
+      titleGold: t('onboarding.title1gold'),
+      subtext: t('onboarding.sub1'),
+      smallText: t('onboarding.sub1small'),
+    },
+    {
+      Illustration: Slide2Illustration,
+      titleWhite: t('onboarding.title2'),
+      titleGold: t('onboarding.title2gold'),
+      subtext: t('onboarding.sub2'),
+      smallText: null,
+    },
+    {
+      Illustration: Slide3Illustration,
+      titleWhite: t('onboarding.title3'),
+      titleGold: t('onboarding.title3gold'),
+      subtext: t('onboarding.sub3'),
+      smallText: null,
+    },
+  ];
+}
 
 export default function OnboardingScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const [slide, setSlide] = useState(0);
+  const slides = useMemo(() => getSlides(t), [t]);
 
   const slideRef = useRef(slide);
   slideRef.current = slide;
@@ -162,7 +165,7 @@ export default function OnboardingScreen() {
       onMoveShouldSetPanResponderCapture: (_, gesture) => Math.abs(gesture.dx) > 12,
       onPanResponderRelease: (_, gesture) => {
         const current = slideRef.current;
-        if (gesture.dx < -SWIPE_THRESHOLD && current < SLIDES.length - 1) {
+        if (gesture.dx < -SWIPE_THRESHOLD && current < slides.length - 1) {
           setSlide(current + 1);
         } else if (gesture.dx > SWIPE_THRESHOLD && current > 0) {
           setSlide(current - 1);
@@ -184,13 +187,13 @@ export default function OnboardingScreen() {
     );
   }
 
-  const current = SLIDES[slide];
+  const current = slides[slide];
   const { Illustration } = current;
 
   return (
     <SafeAreaView style={styles.container}>
       <Pressable onPress={finishOnboarding} style={styles.skipButton} hitSlop={12}>
-        <Text style={styles.skipText}>Überspringen</Text>
+        <Text style={styles.skipText}>{t('onboarding.skip')}</Text>
       </Pressable>
 
       <View style={styles.content} {...panResponder.panHandlers}>
@@ -206,7 +209,7 @@ export default function OnboardingScreen() {
 
       <View style={styles.footer}>
         <View style={styles.dots}>
-          {SLIDES.map((_, index) => (
+          {slides.map((_, index) => (
             <View
               key={index}
               style={[styles.dot, index === slide ? styles.dotActive : styles.dotInactive]}
@@ -214,12 +217,12 @@ export default function OnboardingScreen() {
           ))}
         </View>
 
-        {slide === SLIDES.length - 1 ? (
+        {slide === slides.length - 1 ? (
           <Pressable
             onPress={finishOnboarding}
             style={({ pressed }) => [styles.startButton, pressed && styles.startButtonPressed]}
           >
-            <Text style={styles.startButtonText}>App starten</Text>
+            <Text style={styles.startButtonText}>{t('onboarding.getStarted')}</Text>
           </Pressable>
         ) : (
           <View style={styles.startButtonPlaceholder} />

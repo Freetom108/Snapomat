@@ -1,43 +1,48 @@
+import { getT } from '../i18n';
+
+const CATEGORY_I18N_KEYS = {
+  food: 'food',
+  'going-out': 'goingOut',
+  mobility: 'mobility',
+  home: 'home',
+  fixed: 'fixed',
+  shopping: 'shopping',
+  health: 'health',
+};
+
 export const CATEGORIES = {
   food: {
     id: 'food',
-    label: 'Lebensmittel',
     emoji: '🛒',
     color: '#4CD964',
   },
   'going-out': {
     id: 'going-out',
-    label: 'Freizeit',
     emoji: '🍽️',
     color: '#FF9500',
   },
   mobility: {
     id: 'mobility',
-    label: 'Mobilität',
     emoji: '🚗',
     color: '#0A84FF',
   },
   home: {
     id: 'home',
-    label: 'Wohnen',
     emoji: '🏠',
     color: '#BF5AF2',
   },
   fixed: {
     id: 'fixed',
-    label: 'Fixkosten',
     emoji: '📱',
     color: '#FF6B6B',
   },
   shopping: {
     id: 'shopping',
-    label: 'Shopping',
     emoji: '🛍️',
     color: '#E8B84B',
   },
   health: {
     id: 'health',
-    label: 'Gesundheit',
     emoji: '💊',
     color: '#FF6B6B',
   },
@@ -45,6 +50,20 @@ export const CATEGORIES = {
 
 export const CATEGORY_LIST = Object.values(CATEGORIES);
 
+export function getCategoryLabel(id) {
+  const key = CATEGORY_I18N_KEYS[id] ?? id;
+  return getT(`categories.${key}`);
+}
+
 export function getCategory(id) {
-  return CATEGORIES[id] ?? null;
+  const category = CATEGORIES[id];
+  if (!category) return null;
+  return {
+    ...category,
+    label: getCategoryLabel(id),
+  };
+}
+
+export function getCategoryList() {
+  return CATEGORY_LIST.map((category) => getCategory(category.id));
 }

@@ -12,6 +12,7 @@ import {
 import { getCategory } from '../../constants/categories';
 import ExpenseDetailSheet from '../../components/ExpenseDetailSheet';
 import { useTheme } from '../../hooks/useTheme';
+import { useTranslation } from '../../hooks/useTranslation';
 import { getExpenses, getBudget } from '../../store/storage';
 import {
   formatCurrency,
@@ -33,6 +34,7 @@ function withOpacity(hex, opacity) {
 }
 
 function ExpenseRing({ stats, colors, styles }) {
+  const { t } = useTranslation();
   const cx = RING_SIZE / 2;
   const cy = RING_SIZE / 2;
   const circumference = 2 * Math.PI * RING_RADIUS;
@@ -66,10 +68,10 @@ function ExpenseRing({ stats, colors, styles }) {
           />
         </Svg>
         <View style={styles.ringCenter}>
-          <Text style={styles.ringLabel}>Ausgaben</Text>
+          <Text style={styles.ringLabel}>{t('home.ringExpenses')}</Text>
           <Text style={styles.ringAmount}>{formatAmountNumber(stats.spent)}</Text>
           <Text style={styles.ringPercent}>{stats.percent}%</Text>
-          <Text style={styles.ringBudget}>von {stats.budgetFormatted} €</Text>
+          <Text style={styles.ringBudget}>{t('home.ringBudgetOf', { amount: stats.budgetFormatted })}</Text>
         </View>
       </View>
     </View>
@@ -77,6 +79,7 @@ function ExpenseRing({ stats, colors, styles }) {
 }
 
 function StatsRow({ stats, budget, colors, styles }) {
+  const { t } = useTranslation();
   const remainingDisplay = formatAmountNumber(Math.max(stats.remaining, 0));
 
   return (
@@ -90,8 +93,8 @@ function StatsRow({ stats, budget, colors, styles }) {
         >
           {stats.avgPerDay}
         </Text>
-        <Text style={styles.statLabel}>Ø ausgegeben</Text>
-        <Text style={styles.statLabel}>pro Tag</Text>
+        <Text style={styles.statLabel}>{t('home.statsAvgSpent')}</Text>
+        <Text style={styles.statLabel}>{t('common.perDay')}</Text>
       </View>
       <View style={styles.statDivider} />
       <View style={styles.statCell}>
@@ -103,8 +106,8 @@ function StatsRow({ stats, budget, colors, styles }) {
         >
           {remainingDisplay} / {formatAmountNumber(budget)}
         </Text>
-        <Text style={styles.statLabel}>Verfügbar /</Text>
-        <Text style={styles.statLabel}>Budget</Text>
+        <Text style={styles.statLabel}>{t('home.statsAvailable')}</Text>
+        <Text style={styles.statLabel}>{t('home.statsBudget')}</Text>
       </View>
       <View style={styles.statDivider} />
       <View style={styles.statCell}>
@@ -116,8 +119,8 @@ function StatsRow({ stats, budget, colors, styles }) {
         >
           {stats.perDayLeft}
         </Text>
-        <Text style={styles.statLabel}>Ø verfügbar</Text>
-        <Text style={styles.statLabel}>pro Tag</Text>
+        <Text style={styles.statLabel}>{t('home.statsAvgAvailable')}</Text>
+        <Text style={styles.statLabel}>{t('common.perDay')}</Text>
       </View>
     </View>
   );
@@ -374,6 +377,7 @@ function createStyles(colors) {
 }
 
 export default function HomeScreen() {
+  const { t, locale } = useTranslation();
   const { colors, ready: themeReady } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
@@ -405,7 +409,10 @@ export default function HomeScreen() {
   const now = new Date();
   const monthExpenses = getMonthExpenses(expenses, now.getFullYear(), now.getMonth());
   const stats = calcMonthStats(expenses, budget, now);
-  const dayGroups = groupExpensesByDay(monthExpenses, now);
+  const dayGroups = useMemo(
+    () => groupExpensesByDay(monthExpenses, now),
+    [monthExpenses, locale],
+  );
 
   if (!fontsLoaded || !themeReady || loading) {
     return (
@@ -432,7 +439,7 @@ export default function HomeScreen() {
         <StatsRow stats={stats} budget={budget} colors={colors} styles={styles} />
 
         {dayGroups.length === 0 ? (
-          <Text style={styles.emptyText}>Noch keine Ausgaben in diesem Monat</Text>
+          <Text style={styles.emptyText}>{t('home.emptyMonth')}</Text>
         ) : (
           dayGroups.map((group) => (
             <DayGroup

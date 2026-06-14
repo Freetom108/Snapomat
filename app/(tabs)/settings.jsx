@@ -12,6 +12,7 @@ import {
   Linking,
   ActivityIndicator,
   Dimensions,
+  Clipboard,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { useRouter } from 'expo-router';
@@ -26,8 +27,9 @@ import {
   DMSans_900Black,
 } from '@expo-google-fonts/dm-sans';
 import { useTheme } from '../../hooks/useTheme';
-import { THEMES, resolveThemeId } from '../../constants/colors';
+import { resolveThemeId } from '../../constants/colors';
 import { setLocale } from '../../i18n';
+import { useTranslation } from '../../hooks/useTranslation';
 import {
   getBudget,
   saveBudget,
@@ -42,6 +44,8 @@ import {
   exportData,
   importData,
   getTheme,
+  getUserId,
+  formatUserIdDisplay,
 } from '../../store/storage';
 import {
   formatCurrency,
@@ -50,25 +54,26 @@ import {
 } from '../../utils/expenseHelpers';
 
 const LOCALE_OPTIONS = [
-  { code: 'auto', label: 'Automatisch', flag: '🌍' },
-  { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
-  { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'fr', label: 'Français', flag: '🇫🇷' },
-  { code: 'es', label: 'Español', flag: '🇪🇸' },
-  { code: 'it', label: 'Italiano', flag: '🇮🇹' },
-  { code: 'pt', label: 'Português', flag: '🇵🇹' },
-  { code: 'tr', label: 'Türkçe', flag: '🇹🇷' },
-  { code: 'pl', label: 'Polski', flag: '🇵🇱' },
+  { code: 'auto', flag: '🌍' },
+  { code: 'de', flag: '🇩🇪' },
+  { code: 'en', flag: '🇬🇧' },
+  { code: 'fr', flag: '🇫🇷' },
+  { code: 'es', flag: '🇪🇸' },
+  { code: 'it', flag: '🇮🇹' },
+  { code: 'pt', flag: '🇵🇹' },
+  { code: 'tr', flag: '🇹🇷' },
+  { code: 'pl', flag: '🇵🇱' },
 ];
 
-function getLocaleLabel(code) {
-  return LOCALE_OPTIONS.find((option) => option.code === code)?.label ?? code;
+function getLocaleLabel(code, t) {
+  return t(`settings.locales.${code}`);
 }
 
 const WARNING_STEPS = [50, 60, 70, 80, 90];
 const BUDGET_QUICK_ROW = [500, 1000, 1500, 2000];
 const BUDGET_QUICK_CENTER = 3000;
 const PRICING_SHEET_MAX_HEIGHT = Dimensions.get('window').height * 0.9;
+const SHEET_MIN_HEIGHT = Dimensions.get('window').height * 0.35;
 
 function formatQuickBudget(amount) {
   return amount.toLocaleString('de-DE');
@@ -216,18 +221,20 @@ function BudgetModal({
   styles,
   themeId,
 }) {
+  const { t } = useTranslation();
+
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={() => {}}>
       <View style={styles.pricingOverlay}>
-        <View style={[styles.budgetSheet, { backgroundColor: colors.card }]}>
+        <View style={[styles.bottomSheet, { backgroundColor: colors.card }]}>
           <View style={styles.pricingSheetHeader}>
             <View style={styles.pricingHeaderText}>
               <Text style={[styles.pricingHeaderTitle, { color: colors.text }]}>
-                🎯 Monatsbudget
+                {t('settings.budgetModalTitle')}
               </Text>
               <Text style={[styles.budgetModalSubtitle, { color: colors.muted }]}>
-                Wie viel möchtest du pro Monat ausgeben?{'\n'}
-                Du wirst bei {warningValue}% gewarnt.
+                {t('settings.budgetModalLine1')}{'\n'}
+                {t('settings.budgetModalLine2', { percent: warningValue })}
               </Text>
             </View>
             <Pressable
@@ -238,16 +245,18 @@ function BudgetModal({
                 pressed && { opacity: 0.7 },
               ]}
               accessibilityRole="button"
-              accessibilityLabel="Schließen"
+              accessibilityLabel={t('common.close')}
             >
               <Text style={[styles.pricingCloseText, { color: colors.muted }]}>✕</Text>
             </Pressable>
           </View>
 
           <ScrollView
-            showsVerticalScrollIndicator={false}
+            style={styles.bottomSheetScroll}
+            showsVerticalScrollIndicator
             contentContainerStyle={styles.budgetModalScroll}
             keyboardShouldPersistTaps="handled"
+            bounces
           >
             <View
               style={[
@@ -260,7 +269,7 @@ function BudgetModal({
                 value={budgetInput}
                 onChangeText={setBudgetInput}
                 keyboardType="decimal-pad"
-                placeholder="1.000"
+                placeholder={t('settings.budgetPlaceholder')}
                 placeholderTextColor={colors.muted}
                 style={[styles.budgetAmountInput, { color: colors.text }]}
               />
@@ -326,7 +335,7 @@ function BudgetModal({
                   { color: themeId === 'light' ? colors.text : colors.background },
                 ]}
               >
-                Speichern
+                {t('common.save')}
               </Text>
             </Pressable>
           </ScrollView>
@@ -364,107 +373,43 @@ function ThemeDots({ themeId, onSelect, colors, styles }) {
   );
 }
 
-const FAQ_ITEMS = [
-  {
-    id: 'intro',
-    question: 'App Intro wiederholen',
-    action: 'onboarding',
-    link: true,
-  },
-  {
-    id: 'upgrade',
-    question: 'Upgrade-Optionen anzeigen',
-    action: 'pricing',
-    link: true,
-  },
-  {
-    id: 'monthly-yearly',
-    question: 'Kann ich von Monatlich auf Jährlich wechseln?',
-    answer:
-      'Ja. Wie der Wechsel genau erfolgt hängt von den Regeln des jeweiligen App Stores ab. In den meisten Fällen kannst du dein aktuelles Abo verwalten und direkt auf das Jahresabo upgraden. Deine Daten und Credits bleiben dabei vollständig erhalten.',
-  },
-  {
-    id: 'data',
-    question: 'Was passiert mit meinen Daten?',
-    answer:
-      'Deine Daten werden ausschließlich lokal auf deinem Gerät gespeichert. Für die KI-Analyse wird das Foto kurz an unseren Server gesendet und danach sofort gelöscht. Nichts wird ohne deine Erlaubnis weitergegeben oder dauerhaft gespeichert.',
-  },
-  {
-    id: 'ai',
-    question: 'Wie funktioniert die KI-Analyse?',
-    answer:
-      'Du fotografierst einen Kassenzettel oder Kontoauszug. Snapomat sendet das Bild an eine KI die Händler, Betrag, Datum und Kategorie automatisch erkennt. Du überprüfst alle Daten vor dem Speichern – du hast immer das letzte Wort. Jede Analyse kostet 1 Credit.',
-  },
-  {
-    id: 'credits-normal',
-    question: 'Wie viele Credits brauche ich normalerweise?',
-    answer:
-      'Die meisten Nutzer kommen mit deutlich weniger als 100 Credits pro Monat aus. Das Monatsabo und insbesondere das Jahresabo sind für die normale Nutzung großzügig ausgelegt. Du musst dir keine Sorgen machen ständig Credits nachkaufen zu müssen.',
-  },
-  {
-    id: 'credits-expire',
-    question: 'Verfallen meine Credits?',
-    answer:
-      'Gekaufte Credit-Pakete verfallen nie. Bei monatlichen Abo-Credits gilt Transfair – nicht verbrauchte Credits werden automatisch in den nächsten Monat mitgenommen, bis maximal die Höhe deines monatlichen Pakets.',
-  },
-  {
-    id: 'transfair',
-    question: 'Was ist Transfair?',
-    answer:
-      'Transfair bedeutet dass nicht verbrauchte Credits automatisch in den nächsten Monat mitgenommen werden – bis maximal die Höhe deines monatlichen Pakets. So gehen dir keine Credits verloren wenn du in einem Monat nicht so viele KI-Analysen benötigst.',
-  },
-  {
-    id: 'credits-empty',
-    question: 'Was passiert wenn meine Credits aufgebraucht sind?',
-    answer:
-      'Im ersten Monat kannst du Buchungen kostenlos manuell eingeben. Ab dem zweiten Monat stehen dir 10 manuelle Eingaben gratis zur Verfügung. Danach kostet jede weitere Eingabe – ob Foto oder manuell – 1 Credit. Credits kannst du jederzeit unter Settings → Abo & Credits nachkaufen.',
-  },
-  {
-    id: 'credits-buy',
-    question: 'Kann ich Credits nachkaufen?',
-    answer:
-      'Ja, unter Settings → Abo & Credits findest du Pakete ab 1,99 €. Die Credits werden sofort gutgeschrieben und verfallen nie.',
-  },
-  {
-    id: 'budget',
-    question: 'Wie setze ich mein Monatsbudget?',
-    answer:
-      'Unter Settings → Budget & Berichte → Ausgabenlimit einstellen kannst du deinen gewünschten Betrag eingeben. Der Ring auf der Today-Seite zeigt dir dann immer wie viel du bereits verbraucht hast und wie viel du noch pro Tag ausgeben kannst. Du kannst außerdem festlegen bei welchem Prozentsatz du gewarnt werden möchtest – von 50% bis 90%.',
-  },
-  {
-    id: 'credits-statement',
-    question: 'Was passiert mit Gutschriften im Kontoauszug?',
-    answer:
-      'Snapomat erkennt automatisch nur Ausgaben und Belastungen. Gutschriften und Eingänge werden ignoriert. Falls doch ein Eingang erkannt wird kannst du ihn im Überprüfungs-Screen mit dem Löschen-Button entfernen bevor du speicherst.',
-  },
-  {
-    id: 'backup',
-    question: 'Was ist Backup & Restore?',
-    answer:
-      'Mit Backup & Restore kannst du alle deine Ausgaben, dein Budget und deine Einstellungen als Datei sichern und bei Bedarf wiederherstellen – zum Beispiel nach einem Handywechsel oder einer Neuinstallation. Du findest die Funktion unter Settings → Budget & Berichte → Backup & Restore.',
-  },
+const FAQ_ITEM_META = [
+  { id: 'intro', action: 'onboarding', link: true },
+  { id: 'upgrade', action: 'pricing', link: true },
+  { id: 'monthlyYearly' },
+  { id: 'data' },
+  { id: 'ai' },
+  { id: 'creditsNormal' },
+  { id: 'creditsExpire' },
+  { id: 'transfair' },
+  { id: 'creditsEmpty' },
+  { id: 'creditsBuy' },
+  { id: 'budget' },
+  { id: 'creditsStatement' },
+  { id: 'backup' },
 ];
 
-function formatError(error) {
-  if (!error) return 'Unbekannter Fehler';
+function formatError(error, t) {
+  if (!error) return t('common.unknownError');
   if (typeof error === 'string') return error;
   if (error.message) return error.message;
   return String(error);
 }
 
 function LanguageModal({ visible, locale, onSelect, onClose, colors, styles }) {
+  const { t } = useTranslation();
+
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={() => {}}>
       <View style={styles.pricingOverlay}>
-        <View style={[styles.languageSheet, { backgroundColor: colors.card }]}>
+        <View style={[styles.bottomSheet, { backgroundColor: colors.card }]}>
           <View style={styles.pricingSheetHeader}>
             <View style={styles.pricingHeaderText}>
               <Text style={[styles.pricingHeaderTitle, { color: colors.text }]}>
-                🌍 Sprache
+                {t('settings.languageModalTitle')}
               </Text>
               <Text style={[styles.languageModalHint, { color: colors.muted }]}>
-                Automatisch erkennt die Sprache deines Geräts. Du kannst sie hier manuell
-                überschreiben.
+                {t('settings.languageModalHint')}
               </Text>
             </View>
             <Pressable
@@ -475,16 +420,17 @@ function LanguageModal({ visible, locale, onSelect, onClose, colors, styles }) {
                 pressed && { opacity: 0.7 },
               ]}
               accessibilityRole="button"
-              accessibilityLabel="Schließen"
+              accessibilityLabel={t('common.close')}
             >
               <Text style={[styles.pricingCloseText, { color: colors.muted }]}>✕</Text>
             </Pressable>
           </View>
 
           <ScrollView
-            showsVerticalScrollIndicator={false}
+            style={styles.bottomSheetScroll}
+            showsVerticalScrollIndicator
             contentContainerStyle={styles.languageList}
-            bounces={false}
+            bounces
           >
             {LOCALE_OPTIONS.map((option, index) => {
               const isActive = locale === option.code;
@@ -502,7 +448,7 @@ function LanguageModal({ visible, locale, onSelect, onClose, colors, styles }) {
                   ]}
                 >
                   <Text style={[styles.languageRowText, { color: colors.text }]}>
-                    {option.flag} {option.label}
+                    {option.flag} {getLocaleLabel(option.code, t)}
                   </Text>
                   {isActive ? (
                     <Text style={[styles.languageCheck, { color: colors.accent }]}>✓</Text>
@@ -518,6 +464,7 @@ function LanguageModal({ visible, locale, onSelect, onClose, colors, styles }) {
 }
 
 function FaqModal({ visible, onClose, onAction, colors, styles }) {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(() => new Set());
 
   useEffect(() => {
@@ -549,11 +496,11 @@ function FaqModal({ visible, onClose, onAction, colors, styles }) {
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={() => {}}>
       <View style={styles.pricingOverlay}>
-        <View style={[styles.faqSheet, { backgroundColor: colors.card }]}>
+        <View style={[styles.bottomSheet, { backgroundColor: colors.card }]}>
           <View style={styles.pricingSheetHeader}>
             <View style={styles.pricingHeaderText}>
               <Text style={[styles.pricingHeaderTitle, { color: colors.text }]}>
-                ❓ FAQ
+                {t('settings.faqTitle')}
               </Text>
             </View>
             <Pressable
@@ -564,20 +511,23 @@ function FaqModal({ visible, onClose, onAction, colors, styles }) {
                 pressed && { opacity: 0.7 },
               ]}
               accessibilityRole="button"
-              accessibilityLabel="Schließen"
+              accessibilityLabel={t('common.close')}
             >
               <Text style={[styles.pricingCloseText, { color: colors.muted }]}>✕</Text>
             </Pressable>
           </View>
 
           <ScrollView
+            style={styles.bottomSheetScroll}
             showsVerticalScrollIndicator
             contentContainerStyle={styles.faqList}
             bounces
           >
-            {FAQ_ITEMS.map((item, index) => {
+            {FAQ_ITEM_META.map((item, index) => {
               const isExpanded = expanded.has(item.id);
               const isLink = !!item.link;
+              const question = t(`settings.faq.${item.id}.question`);
+              const answer = isLink ? null : t(`settings.faq.${item.id}.answer`);
 
               return (
                 <View
@@ -586,7 +536,7 @@ function FaqModal({ visible, onClose, onAction, colors, styles }) {
                     styles.faqItem,
                     {
                       borderBottomColor: colors.border,
-                      borderBottomWidth: index < FAQ_ITEMS.length - 1 ? 1 : 0,
+                      borderBottomWidth: index < FAQ_ITEM_META.length - 1 ? 1 : 0,
                     },
                   ]}
                 >
@@ -603,7 +553,7 @@ function FaqModal({ visible, onClose, onAction, colors, styles }) {
                         { color: isLink ? colors.accent : colors.text },
                       ]}
                     >
-                      {item.question}
+                      {question}
                     </Text>
                     <Text
                       style={[
@@ -616,7 +566,7 @@ function FaqModal({ visible, onClose, onAction, colors, styles }) {
                   </Pressable>
                   {!isLink && isExpanded ? (
                     <Text style={[styles.faqAnswer, { color: colors.muted }]}>
-                      {item.answer}
+                      {answer}
                     </Text>
                   ) : null}
                 </View>
@@ -630,10 +580,12 @@ function FaqModal({ visible, onClose, onAction, colors, styles }) {
 }
 
 function InfoSheetModal({ visible, title, onClose, colors, styles, children }) {
+  const { t } = useTranslation();
+
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={() => {}}>
       <View style={styles.pricingOverlay}>
-        <View style={[styles.infoSheet, { backgroundColor: colors.card }]}>
+        <View style={[styles.bottomSheet, { backgroundColor: colors.card }]}>
           <View style={styles.pricingSheetHeader}>
             <View style={styles.pricingHeaderText}>
               <Text style={[styles.pricingHeaderTitle, { color: colors.text }]}>{title}</Text>
@@ -646,16 +598,17 @@ function InfoSheetModal({ visible, title, onClose, colors, styles, children }) {
                 pressed && { opacity: 0.7 },
               ]}
               accessibilityRole="button"
-              accessibilityLabel="Schließen"
+              accessibilityLabel={t('common.close')}
             >
               <Text style={[styles.pricingCloseText, { color: colors.muted }]}>✕</Text>
             </Pressable>
           </View>
 
           <ScrollView
-            showsVerticalScrollIndicator={false}
+            style={styles.bottomSheetScroll}
+            showsVerticalScrollIndicator
             contentContainerStyle={styles.infoSheetList}
-            bounces={false}
+            bounces
           >
             {children}
           </ScrollView>
@@ -722,22 +675,48 @@ function InfoSheetRow({
   return <View style={rowStyle}>{content}</View>;
 }
 
+function UserIdRow({ label, userId, onCopy, colors, styles }) {
+  return (
+    <View style={[styles.infoSheetRow, { borderBottomWidth: 0 }]}>
+      <Text style={[styles.infoSheetLabel, { color: colors.text }]}>{label}</Text>
+      <Pressable
+        onPress={onCopy}
+        style={({ pressed }) => [styles.userIdCopyRow, pressed && { opacity: 0.75 }]}
+        accessibilityRole="button"
+      >
+        <Text
+          style={[
+            styles.infoSheetValue,
+            styles.infoSheetValueMono,
+            { color: colors.muted },
+          ]}
+        >
+          {formatUserIdDisplay(userId)}
+        </Text>
+        <Text style={styles.userIdCopyIcon}>📋</Text>
+      </Pressable>
+    </View>
+  );
+}
+
 function AboutAppModal({ visible, onClose, colors, styles }) {
+  const { t } = useTranslation();
+
   return (
     <InfoSheetModal
       visible={visible}
-      title="Über Snapomat"
+      title={t('settings.aboutModalTitle')}
       onClose={onClose}
       colors={colors}
       styles={styles}
     >
-      <InfoSheetRow label="App" value="Snapomat" colors={colors} styles={styles} />
-      <InfoSheetRow label="Version" value="1.0 MVP" colors={colors} styles={styles} />
-      <InfoSheetRow label="Status" value="Free" colors={colors} styles={styles} />
+      <InfoSheetRow label={t('settings.aboutAppLabel')} value="Snapomat" colors={colors} styles={styles} />
+      <InfoSheetRow label={t('settings.aboutVersionLabel')} value={t('settings.aboutVersionValue')} colors={colors} styles={styles} />
+      <InfoSheetRow label={t('settings.aboutStatusLabel')} value="Free" colors={colors} styles={styles} />
       <InfoSheetRow
-        label="Käufe wiederherstellen"
+        label={t('settings.restorePurchases')}
         labelColor={colors.accent}
-        onPress={() => Alert.alert('Käufe werden wiederhergestellt...')}
+        onPress={() => Alert.alert(t('settings.alerts.restoringPurchases'))}
         isLast
         colors={colors}
         styles={styles}
@@ -746,37 +725,37 @@ function AboutAppModal({ visible, onClose, colors, styles }) {
   );
 }
 
-function SupportFeedbackModal({ visible, onClose, colors, styles }) {
+function SupportFeedbackModal({ visible, onClose, userId, onCopyUserId, colors, styles }) {
+  const { t } = useTranslation();
+
   return (
     <InfoSheetModal
       visible={visible}
-      title="Support & Feedback"
+      title={t('settings.supportModalTitle')}
       onClose={onClose}
       colors={colors}
       styles={styles}
     >
       <InfoSheetRow
-        label="Kontakt / Feedback"
-        value="✉️ Schreiben"
+        label={t('settings.supportContactLabel')}
+        value={t('settings.supportContactAction')}
         valueColor={colors.accent}
         onPress={() => Linking.openURL('mailto:support@snapomat.app')}
         colors={colors}
         styles={styles}
       />
       <InfoSheetRow
-        label="Snapomat bewerten"
-        value="⭐ Bewerten"
+        label={t('settings.supportRateLabel')}
+        value={t('settings.supportRateAction')}
         valueColor={colors.accent}
-        onPress={() => Alert.alert('Vielen Dank für deine Bewertung!')}
+        onPress={() => Alert.alert(t('settings.alerts.thanksRating'))}
         colors={colors}
         styles={styles}
       />
-      <InfoSheetRow
-        label="User ID"
-        value="SN-A7F2...3C9"
-        valueColor={colors.muted}
-        valueStyle={styles.infoSheetValueMono}
-        isLast
+      <UserIdRow
+        label={t('settings.supportUserIdLabel')}
+        userId={userId}
+        onCopy={onCopyUserId}
         colors={colors}
         styles={styles}
       />
@@ -785,35 +764,37 @@ function SupportFeedbackModal({ visible, onClose, colors, styles }) {
 }
 
 function LegalModal({ visible, onClose, colors, styles }) {
+  const { t } = useTranslation();
+
   return (
     <InfoSheetModal
       visible={visible}
-      title="Rechtliches"
+      title={t('settings.legalModalTitle')}
       onClose={onClose}
       colors={colors}
       styles={styles}
     >
       <InfoSheetRow
-        label="Datenschutz"
-        value="↗ Öffnen"
+        label={t('settings.legalPrivacy')}
+        value={t('common.open')}
         valueColor={colors.accent}
         onPress={() => Linking.openURL('https://freetom108.github.io/privacy-policy')}
         colors={colors}
         styles={styles}
       />
       <InfoSheetRow
-        label="Nutzungsbedingungen"
-        value="↗ Öffnen"
+        label={t('settings.legalTerms')}
+        value={t('common.open')}
         valueColor={colors.accent}
-        onPress={() => Alert.alert('Folgt in Kürze')}
+        onPress={() => Alert.alert(t('common.comingSoon'))}
         colors={colors}
         styles={styles}
       />
       <InfoSheetRow
-        label="Impressum"
-        value="↗ Öffnen"
+        label={t('settings.legalImprint')}
+        value={t('common.open')}
         valueColor={colors.accent}
-        onPress={() => Alert.alert('Folgt in Kürze')}
+        onPress={() => Alert.alert(t('common.comingSoon'))}
         isLast
         colors={colors}
         styles={styles}
@@ -823,10 +804,12 @@ function LegalModal({ visible, onClose, colors, styles }) {
 }
 
 function BackupRestoreModal({ visible, onClose, onCreateBackup, onRestoreBackup, busy, colors, styles }) {
+  const { t } = useTranslation();
+
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={() => {}}>
       <View style={styles.pricingOverlay}>
-        <View style={[styles.infoSheet, { backgroundColor: colors.card }]}>
+        <View style={[styles.bottomSheet, { backgroundColor: colors.card }]}>
           <View style={styles.pricingSheetHeader}>
             <View style={styles.pricingHeaderText}>
               <Text style={[styles.pricingHeaderTitle, { color: colors.text }]}>
@@ -841,19 +824,20 @@ function BackupRestoreModal({ visible, onClose, onCreateBackup, onRestoreBackup,
                 pressed && { opacity: 0.7 },
               ]}
               accessibilityRole="button"
-              accessibilityLabel="Schließen"
+              accessibilityLabel={t('common.close')}
             >
               <Text style={[styles.pricingCloseText, { color: colors.muted }]}>✕</Text>
             </Pressable>
           </View>
 
           <ScrollView
-            showsVerticalScrollIndicator={false}
+            style={styles.bottomSheetScroll}
+            showsVerticalScrollIndicator
             contentContainerStyle={styles.infoSheetList}
-            bounces={false}
+            bounces
           >
             <Text style={[styles.backupHint, { color: colors.muted }]}>
-              Deine Ausgaben, Budget und Einstellungen werden gesichert.
+              {t('settings.backupHint')}
             </Text>
 
             <Pressable
@@ -865,7 +849,9 @@ function BackupRestoreModal({ visible, onClose, onCreateBackup, onRestoreBackup,
                 pressed && !busy && { opacity: 0.8 },
               ]}
             >
-              <Text style={[styles.backupActionText, { color: colors.text }]}>📤 Backup erstellen</Text>
+              <Text style={[styles.backupActionText, { color: colors.text }]}>
+                {t('settings.backupCreate')}
+              </Text>
             </Pressable>
 
             <Pressable
@@ -877,7 +863,9 @@ function BackupRestoreModal({ visible, onClose, onCreateBackup, onRestoreBackup,
                 pressed && !busy && { opacity: 0.8 },
               ]}
             >
-              <Text style={[styles.backupActionText, { color: colors.text }]}>📥 Backup wiederherstellen</Text>
+              <Text style={[styles.backupActionText, { color: colors.text }]}>
+                {t('settings.backupRestore')}
+              </Text>
             </Pressable>
 
             {busy ? <ActivityIndicator color={colors.accent} style={styles.backupSpinner} /> : null}
@@ -936,10 +924,11 @@ function PlanCard({ name, price, featured, badge, children, colors, styles }) {
 }
 
 function CreditsPricingSheet({ visible, credits, onClose, colors, styles }) {
+  const { t } = useTranslation();
   const packs = [
-    { credits: '100 Credits', price: '1,99 €' },
-    { credits: '500 Credits', price: '7,99 €' },
-    { credits: '1.000 Credits', price: '12,99 €' },
+    { credits: t('settings.pricingPack100'), price: t('settings.pricingPack100Price') },
+    { credits: t('settings.pricingPack500'), price: t('settings.pricingPack500Price') },
+    { credits: t('settings.pricingPack1000'), price: t('settings.pricingPack1000Price') },
   ];
 
   return (
@@ -950,17 +939,17 @@ function CreditsPricingSheet({ visible, credits, onClose, colors, styles }) {
       onRequestClose={() => {}}
     >
       <View style={styles.pricingOverlay}>
-        <View style={[styles.pricingSheet, { backgroundColor: colors.card }]}>
+        <View style={[styles.bottomSheet, { backgroundColor: colors.card }]}>
           <View style={styles.pricingSheetHeader}>
             <View style={styles.pricingHeaderText}>
               <Text style={[styles.pricingHeaderTitle, { color: colors.text }]}>
                 ⚡ Abo & Credits
               </Text>
               <Text style={[styles.pricingHeaderSubtitle, { color: colors.muted }]}>
-                Du hast noch {credits} Credits.
+                {t('settings.pricingCreditsRemaining', { count: credits })}
               </Text>
               <Text style={[styles.pricingHeaderHint, { color: colors.muted }]}>
-                1 Credit pro KI-Analyse.
+                {t('settings.pricingCreditHint')}
               </Text>
             </View>
             <Pressable
@@ -971,97 +960,103 @@ function CreditsPricingSheet({ visible, credits, onClose, colors, styles }) {
                 pressed && { opacity: 0.7 },
               ]}
               accessibilityRole="button"
-              accessibilityLabel="Schließen"
+              accessibilityLabel={t('common.close')}
             >
               <Text style={[styles.pricingCloseText, { color: colors.muted }]}>✕</Text>
             </Pressable>
           </View>
 
           <ScrollView
-            style={styles.pricingScrollView}
+            style={styles.bottomSheetScroll}
             contentContainerStyle={styles.pricingScroll}
             showsVerticalScrollIndicator
             bounces
             nestedScrollEnabled
           >
             <PlanCard name="Free" price="0 €" colors={colors} styles={styles}>
-              <Text style={[styles.planSectionLabel, { color: colors.muted }]}>MONAT 1</Text>
+              <Text style={[styles.planSectionLabel, { color: colors.muted }]}>
+                {t('settings.pricingMonth1')}
+              </Text>
               <PlanFeature
-                text="⚡ 20 KI-Credits · 1 Credit pro Analyse"
+                text={t('settings.pricingFreeMonth1Credits')}
                 colors={colors}
                 styles={styles}
               />
               <PlanFeature
-                text="✏️ Unbegrenzte manuelle Einträge"
+                text={t('settings.pricingFreeMonth1Manual')}
                 colors={colors}
                 styles={styles}
               />
               <Text style={[styles.planSectionLabel, styles.planSectionLabelSpaced, { color: colors.muted }]}>
-                AB MONAT 2
+                {t('settings.pricingFromMonth2')}
               </Text>
               <PlanFeature
-                text="⚡ KI-Analysen flexibel per Credit-Paket verfügbar"
+                text={t('settings.pricingFreeFromMonth2Ai')}
                 colors={colors}
                 styles={styles}
               />
               <PlanFeature
-                text="✏️ 10 manuelle Einträge pro Monat gratis"
+                text={t('settings.pricingFreeFromMonth2Manual')}
                 colors={colors}
                 styles={styles}
               />
             </PlanCard>
 
-            <PlanCard name="Monthly" price="3,99 € / Monat" colors={colors} styles={styles}>
+            <PlanCard name="Monthly" price={t('settings.pricingMonthlyPrice')} colors={colors} styles={styles}>
               <PlanFeature
-                text="⚡ 100 KI-Credits pro Monat"
+                text={t('settings.pricingMonthlyCredits')}
                 colors={colors}
                 styles={styles}
               />
               <PlanFeature
-                text="✏️ Unbegrenzte manuelle Einträge"
+                text={t('settings.pricingMonthlyManual')}
                 colors={colors}
                 styles={styles}
               />
               <PlanFeature
-                text="∞ Credits verfallen nie · nicht verbrauchte Credits bleiben erhalten"
+                text={t('settings.pricingMonthlyTransfair')}
                 colors={colors}
                 styles={styles}
               />
-              <Text style={[styles.planFootnote, { color: colors.muted }]}>Jederzeit kündbar</Text>
+              <Text style={[styles.planFootnote, { color: colors.muted }]}>
+                {t('settings.pricingCancelAnytime')}
+              </Text>
             </PlanCard>
 
             <PlanCard
               name="Yearly"
-              price="19,99 € / Jahr"
-              badge="-58%"
+              price={t('settings.pricingYearlyPrice')}
+              badge={t('settings.pricingYearlyBadge')}
               featured
               colors={colors}
               styles={styles}
             >
               <PlanFeature
-                text="⚡ 1.500 KI-Credits pro Jahr"
+                text={t('settings.pricingYearlyCredits')}
                 colors={colors}
                 styles={styles}
                 compactBottom
               />
               <PlanFeatureSubline
-                text="nur 1,67 €/Monat"
+                text={t('settings.pricingYearlyPerMonth')}
                 colors={colors}
                 styles={styles}
               />
               <PlanFeature
-                text="✏️ Unbegrenzte manuelle Einträge"
+                text={t('settings.pricingMonthlyManual')}
                 colors={colors}
                 styles={styles}
               />
               <PlanFeature
-                text="∞ Credits verfallen nie · nicht verbrauchte Credits bleiben erhalten"
+                text={t('settings.pricingYearlyTransfair')}
                 colors={colors}
                 styles={styles}
               />
             </PlanCard>
 
-            <Text style={[styles.packsSectionLabel, { color: colors.muted }]}>ZUSATZPAKETE</Text>
+            <Text style={[styles.packsSectionLabel, { color: colors.muted }]}>
+              {t('settings.pricingAddonPacks')}
+            </Text>
             <View style={[styles.packsCard, { backgroundColor: colors.background, borderColor: colors.border }]}>
               {packs.map((pack, index) => (
                 <View
@@ -1078,7 +1073,7 @@ function CreditsPricingSheet({ visible, credits, onClose, colors, styles }) {
             </View>
 
             <Text style={[styles.pricingFooter, { color: colors.muted }]}>
-              Einmalige Zahlung · Kein Abo
+              {t('settings.pricingAddonFooter')}
             </Text>
           </ScrollView>
         </View>
@@ -1190,11 +1185,16 @@ function createStyles(colors) {
       borderRadius: 9,
       top: -6,
     },
-    budgetSheet: {
+    bottomSheet: {
       borderTopLeftRadius: 24,
       borderTopRightRadius: 24,
+      minHeight: SHEET_MIN_HEIGHT,
       maxHeight: PRICING_SHEET_MAX_HEIGHT,
       width: '100%',
+    },
+    bottomSheetScroll: {
+      flexGrow: 1,
+      flexShrink: 1,
     },
     budgetModalScroll: {
       paddingHorizontal: 20,
@@ -1287,12 +1287,12 @@ function createStyles(colors) {
     themeDots: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 12,
+      gap: 14,
     },
     themeDot: {
-      width: 24,
-      height: 24,
-      borderRadius: 12,
+      width: 48,
+      height: 48,
+      borderRadius: 24,
     },
     dangerButton: {
       marginHorizontal: 16,
@@ -1324,21 +1324,15 @@ function createStyles(colors) {
       fontSize: 12,
       color: colors.muted,
     },
-    languageSheet: {
-      borderTopLeftRadius: 24,
-      borderTopRightRadius: 24,
-      maxHeight: PRICING_SHEET_MAX_HEIGHT,
-      width: '100%',
+    languageList: {
+      paddingHorizontal: 20,
+      paddingBottom: 32,
     },
     languageModalHint: {
       fontFamily: 'DMSans_400Regular',
       fontSize: 14,
       lineHeight: 20,
       marginTop: 4,
-    },
-    languageList: {
-      paddingHorizontal: 20,
-      paddingBottom: 32,
     },
     languageRow: {
       flexDirection: 'row',
@@ -1353,12 +1347,6 @@ function createStyles(colors) {
     languageCheck: {
       fontFamily: 'DMSans_700Bold',
       fontSize: 18,
-    },
-    faqSheet: {
-      borderTopLeftRadius: 24,
-      borderTopRightRadius: 24,
-      maxHeight: PRICING_SHEET_MAX_HEIGHT,
-      width: '100%',
     },
     faqList: {
       paddingHorizontal: 20,
@@ -1391,12 +1379,6 @@ function createStyles(colors) {
       lineHeight: 21,
       paddingBottom: 14,
     },
-    infoSheet: {
-      borderTopLeftRadius: 24,
-      borderTopRightRadius: 24,
-      maxHeight: PRICING_SHEET_MAX_HEIGHT,
-      width: '100%',
-    },
     infoSheetList: {
       paddingHorizontal: 20,
       paddingBottom: 32,
@@ -1422,16 +1404,18 @@ function createStyles(colors) {
       fontFamily: 'monospace',
       fontSize: 13,
     },
+    userIdCopyRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      gap: 8,
+    },
+    userIdCopyIcon: {
+      fontSize: 14,
+    },
     pricingOverlay: {
       flex: 1,
       backgroundColor: 'rgba(0,0,0,0.6)',
       justifyContent: 'flex-end',
-    },
-    pricingSheet: {
-      borderTopLeftRadius: 24,
-      borderTopRightRadius: 24,
-      maxHeight: PRICING_SHEET_MAX_HEIGHT,
-      width: '100%',
     },
     pricingSheetHeader: {
       flexDirection: 'row',
@@ -1455,10 +1439,6 @@ function createStyles(colors) {
       fontFamily: 'DMSans_400Regular',
       fontSize: 22,
       lineHeight: 24,
-    },
-    pricingScrollView: {
-      flexGrow: 0,
-      flexShrink: 1,
     },
     pricingScroll: {
       paddingHorizontal: 20,
@@ -1625,6 +1605,7 @@ function createStyles(colors) {
 
 export default function SettingsScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { colors, themeId, setTheme, ready: themeReady } = useTheme();
   const styles = useMemo(() => createStyles(colors), [colors]);
 
@@ -1632,6 +1613,7 @@ export default function SettingsScreen() {
   const [budgetWarning, setBudgetWarningState] = useState(80);
   const [credits, setCreditsState] = useState(5);
   const [locale, setLocaleState] = useState('de');
+  const [userId, setUserIdState] = useState('');
   const [loading, setLoading] = useState(true);
 
   const [showPricing, setShowPricing] = useState(false);
@@ -1654,16 +1636,18 @@ export default function SettingsScreen() {
   });
 
   const loadSettings = useCallback(async () => {
-    const [storedBudget, storedWarning, storedCredits, storedLocale] = await Promise.all([
+    const [storedBudget, storedWarning, storedCredits, storedLocale, storedUserId] = await Promise.all([
       getBudget(),
       getBudgetWarning(),
       getCredits(),
       getLocale(),
+      getUserId(),
     ]);
     setBudgetState(storedBudget);
     setBudgetWarningState(snapWarning(storedWarning));
     setCreditsState(storedCredits);
     setLocaleState(storedLocale);
+    setUserIdState(storedUserId);
     setBudgetInput(String(storedBudget));
     setLoading(false);
   }, []);
@@ -1709,7 +1693,11 @@ export default function SettingsScreen() {
     const label = formatMonthLabel(now.getFullYear(), now.getMonth());
 
     await Share.share({
-      message: `Snapomat Monatsbericht – ${label}\nAusgaben: ${formatCurrency(total)}\nBuchungen: ${monthExpenses.length}`,
+      message: t('settings.shareReportMessage', {
+        month: label,
+        total: formatCurrency(total),
+        count: monthExpenses.length,
+      }),
     });
   }
 
@@ -1718,7 +1706,7 @@ export default function SettingsScreen() {
     setBackupBusy(true);
     try {
       if (!FileSystem.cacheDirectory) {
-        throw new Error('FileSystem.cacheDirectory ist auf diesem Gerät nicht verfügbar.');
+        throw new Error(t('settings.alerts.cacheUnavailable'));
       }
 
       const json = await exportData();
@@ -1732,19 +1720,19 @@ export default function SettingsScreen() {
       const canShare = await Sharing.isAvailableAsync();
       if (!canShare) {
         Alert.alert(
-          'Backup erstellt',
-          `Datei gespeichert, Teilen ist hier nicht verfügbar.\n\n${uri}`,
+          t('settings.alerts.backupCreatedTitle'),
+          t('settings.alerts.backupCreatedNoShare', { uri }),
         );
         return;
       }
 
       await Sharing.shareAsync(uri, {
         mimeType: 'application/json',
-        dialogTitle: 'Snapomat Backup teilen',
+        dialogTitle: t('settings.alerts.shareBackupTitle'),
         UTI: 'public.json',
       });
     } catch (error) {
-      Alert.alert('Fehler', formatError(error));
+      Alert.alert(t('common.error'), formatError(error, t));
     } finally {
       setBackupBusy(false);
     }
@@ -1754,12 +1742,12 @@ export default function SettingsScreen() {
     if (backupBusy) return;
 
     Alert.alert(
-      'Backup wiederherstellen?',
-      'Bestehende Daten werden durch das Backup ersetzt.',
+      t('settings.alerts.restoreConfirmTitle'),
+      t('settings.alerts.restoreConfirmMessage'),
       [
-        { text: 'Abbrechen', style: 'cancel' },
+        { text: t('common.cancel'), style: 'cancel' },
         {
-          text: 'Fortfahren',
+          text: t('common.continue'),
           onPress: async () => {
             setBackupBusy(true);
             try {
@@ -1778,7 +1766,7 @@ export default function SettingsScreen() {
               const success = await importData(jsonString);
 
               if (!success) {
-                Alert.alert('Fehler', 'Backup konnte nicht importiert werden (ungültiges JSON).');
+                Alert.alert(t('common.error'), t('settings.alerts.restoreInvalidJson'));
                 return;
               }
 
@@ -1787,9 +1775,9 @@ export default function SettingsScreen() {
               await setTheme(resolveImportThemeId(storedTheme));
               await loadSettings();
               setShowBackup(false);
-              Alert.alert('Erfolg', 'Backup wurde wiederhergestellt.');
+              Alert.alert(t('common.success'), t('settings.alerts.restoreSuccess'));
             } catch (error) {
-              Alert.alert('Fehler', formatError(error));
+              Alert.alert(t('common.error'), formatError(error, t));
             } finally {
               setBackupBusy(false);
             }
@@ -1800,30 +1788,41 @@ export default function SettingsScreen() {
   }
 
   async function handleFaqAction(action) {
-    setShowFaq(false);
     if (action === 'onboarding') {
+      setShowFaq(false);
       await clearOnboardingDone();
-      router.push('/onboarding');
+      router.replace('/onboarding');
       return;
     }
+
+    setShowFaq(false);
     if (action === 'pricing') {
       setShowPricing(true);
     }
   }
 
+  async function handleCopyUserId() {
+    if (!userId) return;
+    Clipboard.setString(userId);
+    Alert.alert(t('settings.alerts.userIdCopied'));
+  }
+
   function handleDeleteAll() {
     Alert.alert(
-      'Alle App-Daten löschen?',
-      'Ausgaben, Budget und Einstellungen werden unwiderruflich gelöscht.',
+      t('settings.alerts.deleteAllTitle'),
+      t('settings.alerts.deleteAllMessage'),
       [
-        { text: 'Abbrechen', style: 'cancel' },
+        { text: t('common.cancel'), style: 'cancel' },
         {
-          text: 'Löschen',
+          text: t('common.delete'),
           style: 'destructive',
           onPress: async () => {
             await clearAllData();
             await loadSettings();
-            Alert.alert('Gelöscht', 'Alle App-Daten wurden entfernt.');
+            Alert.alert(
+              t('settings.alerts.deleteAllSuccessTitle'),
+              t('settings.alerts.deleteAllSuccessMessage'),
+            );
           },
         },
       ],
@@ -1846,7 +1845,7 @@ export default function SettingsScreen() {
           <Text style={styles.screenTitle}>Settings</Text>
         </View>
 
-        <Text style={styles.sectionLabel}>ABO</Text>
+        <Text style={styles.sectionLabel}>{t('settings.sections.subscription')}</Text>
         <View style={styles.card}>
           <SettingsRow
             emoji="⚡"
@@ -1858,20 +1857,20 @@ export default function SettingsScreen() {
           />
         </View>
 
-        <Text style={styles.sectionLabel}>BUDGET & BERICHTE</Text>
+        <Text style={styles.sectionLabel}>{t('settings.sections.budgetReports')}</Text>
         <View style={styles.card}>
           <SettingsRow
             emoji="🎯"
-            title="Monatsbudget festlegen"
-            subtitle="Ausgabenlimit einstellen"
+            title={t('settings.rows.monthlyBudgetTitle')}
+            subtitle={t('settings.rows.monthlyBudgetSubtitle')}
             onPress={openBudgetModal}
             colors={colors}
             styles={styles}
           />
           <SettingsRow
             emoji="📤"
-            title="Monatsbericht teilen"
-            subtitle="Als PDF verschicken"
+            title={t('settings.rows.shareReportTitle')}
+            subtitle={t('settings.rows.shareReportSubtitle')}
             onPress={handleShareReport}
             colors={colors}
             styles={styles}
@@ -1879,7 +1878,7 @@ export default function SettingsScreen() {
           <SettingsRow
             emoji="💾"
             title="Backup & Restore"
-            subtitle="Daten sichern & wiederherstellen"
+            subtitle={t('settings.rows.backupRestoreSubtitle')}
             onPress={() => setShowBackup(true)}
             last
             colors={colors}
@@ -1887,20 +1886,20 @@ export default function SettingsScreen() {
           />
         </View>
 
-        <Text style={styles.sectionLabel}>DARSTELLUNG</Text>
+        <Text style={styles.sectionLabel}>{t('settings.sections.appearance')}</Text>
         <View style={styles.card}>
           <SettingsRow
             emoji="🌍"
-            title="Sprache"
-            subtitle={getLocaleLabel(locale)}
+            title={t('settings.rows.languageTitle')}
+            subtitle={getLocaleLabel(locale, t)}
             onPress={() => setShowLanguage(true)}
             colors={colors}
             styles={styles}
           />
           <SettingsRow
             emoji="🎨"
-            title="Farbschema"
-            subtitle={THEMES[themeId]?.name ?? 'Theme'}
+            title={t('settings.rows.colorSchemeTitle')}
+            subtitle={t(`themes.${themeId}`) ?? 'Theme'}
             showChevron={false}
             colors={colors}
             styles={styles}
@@ -1913,36 +1912,36 @@ export default function SettingsScreen() {
           />
         </View>
 
-        <Text style={styles.sectionLabel}>ÜBER SNAPOMAT</Text>
+        <Text style={styles.sectionLabel}>{t('settings.sections.about')}</Text>
         <View style={styles.card}>
           <SettingsRow
             emoji="📱"
-            title="Über die App"
-            subtitle="Version 1.0 · Free"
+            title={t('settings.rows.aboutAppTitle')}
+            subtitle={t('settings.rows.aboutAppSubtitle')}
             onPress={() => setShowAbout(true)}
             colors={colors}
             styles={styles}
           />
           <SettingsRow
             emoji="❓"
-            title="FAQ"
-            subtitle="Häufige Fragen"
+            title={t('settings.rows.faqTitle')}
+            subtitle={t('settings.rows.faqSubtitle')}
             onPress={() => setShowFaq(true)}
             colors={colors}
             styles={styles}
           />
           <SettingsRow
             emoji="💬"
-            title="Support & Feedback"
-            subtitle="Kontakt · Bewerten"
+            title={t('settings.rows.supportTitle')}
+            subtitle={t('settings.rows.supportSubtitle')}
             onPress={() => setShowSupport(true)}
             colors={colors}
             styles={styles}
           />
           <SettingsRow
             emoji="🛡️"
-            title="Rechtliches"
-            subtitle="Datenschutz · Impressum"
+            title={t('settings.rows.legalTitle')}
+            subtitle={t('settings.rows.legalSubtitle')}
             onPress={() => setShowLegal(true)}
             last
             colors={colors}
@@ -1950,19 +1949,21 @@ export default function SettingsScreen() {
           />
         </View>
 
-        <Text style={[styles.sectionLabel, styles.sectionLabelDanger]}>GEFAHRENZONE</Text>
+        <Text style={[styles.sectionLabel, styles.sectionLabelDanger]}>
+          {t('settings.sections.dangerZone')}
+        </Text>
         <View style={styles.card}>
           <Pressable
             onPress={handleDeleteAll}
             style={({ pressed }) => [styles.dangerButton, pressed && { opacity: 0.8 }]}
           >
-            <Text style={styles.dangerButtonText}>🗑 Alle App-Daten löschen</Text>
+            <Text style={styles.dangerButtonText}>{t('settings.deleteAllData')}</Text>
           </Pressable>
         </View>
 
         <View style={styles.footer}>
           <Text style={styles.footerBrand}>SNAPOMAT</Text>
-          <Text style={styles.footerVersion}>Version 1.0 MVP</Text>
+          <Text style={styles.footerVersion}>{t('settings.versionMvp')}</Text>
         </View>
       </ScrollView>
 
@@ -1994,6 +1995,8 @@ export default function SettingsScreen() {
       <SupportFeedbackModal
         visible={showSupport}
         onClose={() => setShowSupport(false)}
+        userId={userId}
+        onCopyUserId={handleCopyUserId}
         colors={colors}
         styles={styles}
       />

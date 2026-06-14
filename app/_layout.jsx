@@ -1,11 +1,11 @@
 import 'react-native-gesture-handler';
 import { useEffect, useState } from 'react';
-import { Stack, useRouter, useSegments } from 'expo-router';
+import { Stack, useRouter, useSegments, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { View, ActivityIndicator } from 'react-native';
 import { ThemeProvider, useTheme } from '../hooks/useTheme';
 import { initI18n } from '../i18n';
-import { getOnboardingDone } from '../store/storage';
+import { getOnboardingDoneLive } from '../store/storage';
 import { DEFAULT_THEME_ID, THEMES } from '../constants/colors';
 
 function RootLayoutInner() {
@@ -13,6 +13,7 @@ function RootLayoutInner() {
   const [ready, setReady] = useState(false);
   const router = useRouter();
   const segments = useSegments();
+  const pathname = usePathname();
 
   useEffect(() => {
     async function init() {
@@ -26,7 +27,7 @@ function RootLayoutInner() {
     if (!ready) return;
 
     async function syncRoute() {
-      const done = await getOnboardingDone();
+      const done = await getOnboardingDoneLive();
 
       const inOnboarding = segments[0] === 'onboarding';
 
@@ -38,7 +39,7 @@ function RootLayoutInner() {
     }
 
     syncRoute();
-  }, [ready, segments, router]);
+  }, [ready, segments, pathname, router]);
 
   if (!ready || !themeReady) {
     const fallback = THEMES[DEFAULT_THEME_ID];

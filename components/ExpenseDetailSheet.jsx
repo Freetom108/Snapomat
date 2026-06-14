@@ -8,8 +8,9 @@ import {
   ScrollView,
   TextInput,
 } from 'react-native';
-import { CATEGORY_LIST, getCategory } from '../constants/categories';
+import { getCategory, getCategoryList } from '../constants/categories';
 import { useTheme } from '../hooks/useTheme';
+import { useTranslation } from '../hooks/useTranslation';
 import { deleteExpense, updateExpense } from '../store/storage';
 import { parseExpenseDate } from '../utils/expenseHelpers';
 
@@ -79,6 +80,8 @@ export default function ExpenseDetailSheet({
   onChanged,
 }) {
   const { colors } = useTheme();
+  const { t } = useTranslation();
+  const categories = getCategoryList();
   const [amount, setAmount] = useState('');
   const [date, setDate] = useState('');
   const [categoryId, setCategoryId] = useState('food');
@@ -135,13 +138,13 @@ export default function ExpenseDetailSheet({
               <Text style={styles.iconEmoji}>{category?.emoji ?? '💰'}</Text>
             </View>
             <Text style={[styles.merchant, { color: colors.text }]}>
-              {expense.merchant || 'Ausgabe'}
+              {expense.merchant || t('expenseDetail.defaultMerchant')}
             </Text>
           </View>
 
           <View style={[styles.fieldsCard, { backgroundColor: colors.background }]}>
             <View style={styles.fieldRow}>
-              <Text style={[styles.fieldLabel, { color: colors.muted }]}>Betrag</Text>
+              <Text style={[styles.fieldLabel, { color: colors.muted }]}>{t('expenseDetail.amount')}</Text>
               <TextInput
                 value={amount}
                 onChangeText={setAmount}
@@ -153,7 +156,7 @@ export default function ExpenseDetailSheet({
             </View>
             <View style={[styles.fieldDivider, { backgroundColor: colors.border }]} />
             <View style={styles.fieldRow}>
-              <Text style={[styles.fieldLabel, { color: colors.muted }]}>Datum</Text>
+              <Text style={[styles.fieldLabel, { color: colors.muted }]}>{t('expenseDetail.date')}</Text>
               <TextInput
                 value={date}
                 onChangeText={setDate}
@@ -165,17 +168,17 @@ export default function ExpenseDetailSheet({
             </View>
             <View style={[styles.fieldDivider, { backgroundColor: colors.border }]} />
             <View style={styles.fieldRow}>
-              <Text style={[styles.fieldLabel, { color: colors.muted }]}>Kategorie</Text>
+              <Text style={[styles.fieldLabel, { color: colors.muted }]}>{t('expenseDetail.category')}</Text>
               <Text style={[styles.fieldValue, { color: colors.text }]}>
                 {category ? `${category.emoji} ${category.label}` : categoryId}
               </Text>
             </View>
           </View>
 
-          <Text style={[styles.sectionLabel, { color: colors.muted }]}>KATEGORIE ÄNDERN</Text>
+          <Text style={[styles.sectionLabel, { color: colors.muted }]}>{t('expenseDetail.changeCategory')}</Text>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.chipScroll}>
             <View style={styles.chipRow}>
-              {CATEGORY_LIST.map((cat) => (
+              {categories.map((cat) => (
                 <CategoryChip
                   key={cat.id}
                   category={cat}
@@ -195,7 +198,9 @@ export default function ExpenseDetailSheet({
               { backgroundColor: colors.accent, opacity: saving ? 0.5 : pressed ? 0.85 : 1 },
             ]}
           >
-            <Text style={styles.saveButtonText}>{saving ? 'Speichern…' : 'Speichern'}</Text>
+            <Text style={styles.saveButtonText}>
+              {saving ? t('common.saving') : t('expenseDetail.save')}
+            </Text>
           </Pressable>
 
           <Pressable
@@ -206,11 +211,11 @@ export default function ExpenseDetailSheet({
               { borderColor: colors.red, opacity: deleting || pressed ? 0.7 : 1 },
             ]}
           >
-            <Text style={[styles.deleteButtonText, { color: colors.red }]}>Löschen</Text>
+            <Text style={[styles.deleteButtonText, { color: colors.red }]}>{t('expenseDetail.delete')}</Text>
           </Pressable>
 
           <Pressable onPress={onClose} style={styles.closeButton}>
-            <Text style={[styles.closeButtonText, { color: colors.muted }]}>Schließen</Text>
+            <Text style={[styles.closeButtonText, { color: colors.muted }]}>{t('expenseDetail.close')}</Text>
           </Pressable>
         </Pressable>
       </Pressable>

@@ -14,6 +14,7 @@ const DEFAULT_DATA = {
   theme: 'gold',
   onboardingDone: false,
   locale: 'de',
+  userId: null,
 };
 
 function normalizeCreditRollover(value) {
@@ -152,6 +153,21 @@ export async function saveTheme(themeId) {
   await saveData(data);
 }
 
+export async function getOnboardingDoneLive() {
+  try {
+    const raw = await AsyncStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const parsed = JSON.parse(raw);
+      if (parsed.onboardingDone === true) return true;
+    }
+  } catch {
+    // ignore parse errors
+  }
+
+  const legacy = await AsyncStorage.getItem('hasOnboarded');
+  return legacy === 'true';
+}
+
 export async function getOnboardingDone() {
   const data = await loadData();
   if (data.onboardingDone) return true;
@@ -170,12 +186,43 @@ export async function setOnboardingDone() {
   const data = await loadData();
   data.onboardingDone = true;
   await saveData(data);
+  await AsyncStorage.removeItem('hasOnboarded');
 }
 
 export async function clearOnboardingDone() {
   const data = await loadData();
   data.onboardingDone = false;
   await saveData(data);
+  await AsyncStorage.removeItem('hasOnboarded');
+}
+
+function randomHex(length) {
+  let result = '';
+  for (let i = 0; i < length; i += 1) {
+    result += Math.floor(Math.random() * 16).toString(16).toUpperCase();
+  }
+  return result;
+}
+
+function generateUserId() {
+  return `SN-${randomHex(4)}${randomHex(4)}${randomHex(4)}`;
+}
+
+export function formatUserIdDisplay(userId) {
+  if (!userId) return '';
+  const normalized = userId.startsWith('SN-') ? userId : `SN-${userId}`;
+  const body = normalized.slice(3);
+  if (body.length <= 7) return normalized;
+  return `SN-${body.slice(0, 4)}...${body.slice(-3)}`;
+}
+
+export async function getUserId() {
+  const data = await loadData();
+  if (data.userId) return data.userId;
+  const userId = generateUserId();
+  data.userId = userId;
+  await saveData(data);
+  return userId;
 }
 
 export async function getLocale() {

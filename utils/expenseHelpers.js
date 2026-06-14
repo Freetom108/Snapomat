@@ -1,7 +1,4 @@
-const MONTH_NAMES = [
-  'JANUAR', 'FEBRUAR', 'MÄRZ', 'APRIL', 'MAI', 'JUNI',
-  'JULI', 'AUGUST', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DEZEMBER',
-];
+import { getT, getLocale } from '../i18n';
 
 export function parseExpenseDate(dateStr) {
   if (!dateStr) return new Date();
@@ -46,16 +43,46 @@ export function formatAmountNumber(amount) {
   }).format(amount ?? 0);
 }
 
+function getDateLocaleTag() {
+  const locale = getLocale();
+  if (locale === 'de') return 'de-DE';
+  if (locale === 'en') return 'en-GB';
+  return locale;
+}
+
+function diffCalendarDays(date, now = new Date()) {
+  const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const startOfDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  return Math.round((startOfToday - startOfDate) / (1000 * 60 * 60 * 24));
+}
+
+export function formatRelativeDate(dateStr, now = new Date()) {
+  const date = parseExpenseDate(dateStr);
+  const diffDays = diffCalendarDays(date, now);
+
+  if (diffDays === 0) return getT('dates.today');
+  if (diffDays === 1) return getT('dates.yesterday');
+  if (diffDays >= 2 && diffDays < 7) return getT('dates.daysAgo', { count: diffDays });
+
+  return date.toLocaleDateString(getDateLocaleTag(), {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+  });
+}
+
 export function formatMonthLabel(year, month) {
-  return `${MONTH_NAMES[month]} ${year}`;
+  return `${getT(`months.${month}`)} ${year}`;
 }
 
 export function getDayLabel(date, now = new Date()) {
-  if (isSameDay(date, now)) return 'HEUTE';
-  const yesterday = new Date(now);
-  yesterday.setDate(now.getDate() - 1);
-  if (isSameDay(date, yesterday)) return 'GESTERN';
-  return date.toLocaleDateString('de-DE', {
+  const diffDays = diffCalendarDays(date, now);
+
+  if (diffDays === 0) return getT('dates.today');
+  if (diffDays === 1) return getT('dates.yesterday');
+  if (diffDays >= 2 && diffDays < 7) return getT('dates.daysAgo', { count: diffDays });
+
+  return date.toLocaleDateString(getDateLocaleTag(), {
     weekday: 'short',
     day: '2-digit',
     month: '2-digit',
@@ -77,7 +104,7 @@ export function groupExpensesByDay(expenses, now = new Date()) {
       const group = {
         id: key,
         label: getDayLabel(date, now),
-        isToday: getDayLabel(date, now) === 'HEUTE',
+        isToday: isSameDay(date, now),
         items: [],
         total: 0,
       };
