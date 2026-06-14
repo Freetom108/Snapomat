@@ -25,7 +25,7 @@ import { CATEGORY_LIST, CATEGORIES, getCategory, getCategoryList } from '../../c
 import { useTheme } from '../../hooks/useTheme';
 import { useTranslation } from '../../hooks/useTranslation';
 import { analyzeImage } from '../../services/apiGatekeeper';
-import { saveExpense } from '../../store/storage';
+import { getExpenses, saveExpense } from '../../store/storage';
 
 function withAlpha(hex, alpha) {
   const a = Math.round(alpha * 255)
@@ -126,6 +126,77 @@ function apiItemToForm(item) {
     date: formatDate(item.date),
     categoryId: normalizeCategoryId(item.category ?? item.categoryId),
   };
+}
+
+function normalizeStoredAmount(amount) {
+  const num = Number(amount);
+  if (Number.isNaN(num)) return 0;
+  return Math.round(num * 100) / 100;
+}
+
+function toIsoDate(dateStr) {
+  if (!dateStr) return '';
+  if (dateStr.includes('.')) return formDateToIso(dateStr);
+  return String(dateStr).slice(0, 10);
+}
+
+function isDuplicateEntry(expenses, amount, date) {
+  const targetAmount = normalizeStoredAmount(
+    typeof amount === 'string' ? parseFloat(amount.replace(',', '.')) : amount,
+  );
+  const targetDate = toIsoDate(date);
+
+  return expenses.some((expense) => (
+    normalizeStoredAmount(expense.amount) === targetAmount
+    && toIsoDate(expense.date) === targetDate
+  ));
+}
+
+function confirmDuplicateAdd(t) {
+  return new Promise((resolve) => {
+    Alert.alert(
+      t('import.duplicateTitle'),
+      t('import.duplicateMessage'),
+      [
+        {
+          text: t('import.duplicateCancel'),
+          style: 'cancel',
+          onPress: () => resolve(false),
+        },
+        {
+          text: t('import.duplicateConfirm'),
+          onPress: () => resolve(true),
+        },
+      ],
+      { cancelable: false },
+    );
+  });
+}
+
+async function filterItemsAfterDuplicateCheck(items, expenses, t) {
+  const kept = [];
+
+  for (const item of items) {
+    const amount = parseFloat(String(item.amount).replace(',', '.')) || 0;
+    if (isDuplicateEntry(expenses, amount, item.date)) {
+      const proceed = await confirmDuplicateAdd(t);
+      if (proceed) {
+        kept.push(item);
+      }
+    } else {
+      kept.push(item);
+    }
+  }
+
+  return kept;
+}
+
+async function proceedSingleReviewIfAllowed(formItem, expenses, t) {
+  const amount = parseFloat(String(formItem.amount).replace(',', '.')) || 0;
+  if (!isDuplicateEntry(expenses, amount, formItem.date)) {
+    return true;
+  }
+  return confirmDuplicateAdd(t);
 }
 
 function ScreenHeader({ styles }) {
@@ -924,15 +995,31 @@ export default function AddScreen() {
 
       setPhotoBase64(base64);
 
+      const expenses = await getExpenses();
+
       if (result.length === 1) {
         const nextForm = apiItemToForm(result[0]);
+        const allowed = await proceedSingleReviewIfAllowed(nextForm, expenses, t);
+        if (!allowed) {
+          setPhotoBase64(null);
+          setImportType(null);
+          return;
+        }
         setForm(nextForm);
         setSelectedCategory(nextForm.categoryId);
         setStep('review');
         return;
       }
 
-      setMultiItems(result.map(apiItemToForm));
+      const forms = result.map(apiItemToForm);
+      const filteredItems = await filterItemsAfterDuplicateCheck(forms, expenses, t);
+      if (filteredItems.length === 0) {
+        setPhotoBase64(null);
+        setImportType(null);
+        return;
+      }
+
+      setMultiItems(filteredItems);
       setStep('multi-review');
     } catch {
       Alert.alert(t('import.analysisFailed'));

@@ -82,6 +82,11 @@ export default {
     fieldDate: 'Date',
     sectionCategory: 'CATÉGORIE',
     analysisFailed: 'Analyse échouée – veuillez réessayer',
+    duplicateTitle: 'Entrée déjà existante',
+    duplicateMessage:
+      'Une entrée avec le même montant et la même date existe déjà. Ajouter quand même?',
+    duplicateConfirm: 'Ajouter quand même',
+    duplicateCancel: 'Annuler',
   },
   settings: {
     sections: {
@@ -109,7 +114,7 @@ export default {
       legalSubtitle: 'Confidentialité · Mentions légales',
     },
     deleteAllData: '🗑 Supprimer toutes les données',
-    versionMvp: 'Version 1.0 MVP',
+    versionMvp: 'Version 1.0',
     budgetModalTitle: '🎯 Budget mensuel',
     budgetModalLine1: 'Combien souhaitez-vous dépenser par mois ?',
     budgetModalLine2: 'Vous serez averti lorsque vos dépenses atteindront {{percent}} %.',
@@ -146,6 +151,11 @@ export default {
         question: 'Comment fonctionne l\'analyse IA ?',
         answer:
           'Vous photographiez un ticket ou un relevé bancaire. Snapomat envoie l\'image à une IA qui reconnaît automatiquement le commerçant, le montant, la date et la catégorie. Vous vérifiez tout avant d\'enregistrer – vous avez toujours le dernier mot. Chaque analyse coûte 1 Credit.',
+      },
+      scanCost: {
+        question: 'Combien coûte un scan ?',
+        answer:
+          'Un scan de ticket coûte 1 Credit. Un relevé bancaire photographié en format paysage est analysé deux fois pour une meilleure précision et coûte 2 Credits. Les saisies manuelles coûtent 1 Credit après le quota mensuel gratuit.',
       },
       creditsNormal: {
         question: 'De combien de Credits ai-je besoin ?',
@@ -191,7 +201,7 @@ export default {
     aboutModalTitle: 'À propos de Snapomat',
     aboutAppLabel: 'App',
     aboutVersionLabel: 'Version',
-    aboutVersionValue: '1.0 MVP',
+    aboutVersionValue: '1.0',
     aboutStatusLabel: 'Statut',
     restorePurchases: 'Restaurer les achats',
     supportModalTitle: 'Support & Feedback',

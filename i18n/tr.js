@@ -82,6 +82,11 @@ export default {
     fieldDate: 'Tarih',
     sectionCategory: 'KATEGORİ',
     analysisFailed: 'Analiz başarısız – tekrar dene',
+    duplicateTitle: 'Kayıt zaten mevcut',
+    duplicateMessage:
+      'Aynı tutar ve tarihle bir kayıt zaten var. Yine de eklensin mi?',
+    duplicateConfirm: 'Yine de ekle',
+    duplicateCancel: 'İptal',
   },
   settings: {
     sections: {
@@ -109,7 +114,7 @@ export default {
       legalSubtitle: 'Gizlilik · Künye',
     },
     deleteAllData: '🗑 Tüm uygulama verilerini sil',
-    versionMvp: 'Sürüm 1.0 MVP',
+    versionMvp: 'Sürüm 1.0',
     budgetModalTitle: '🎯 Aylık bütçe',
     budgetModalLine1: 'Ayda ne kadar harcamak istiyorsun?',
     budgetModalLine2: 'Harcamaların %{{percent}} seviyesine ulaştığında bildirim alırsın.',
@@ -146,6 +151,11 @@ export default {
         question: 'YZ analizi nasıl çalışır?',
         answer:
           'Fiş veya banka ekstresi fotoğraflarsın. Snapomat görüntüyü iş yeri, tutar, tarih ve kategoriyi otomatik tanıyan bir YZ\'ye gönderir. Kaydetmeden önce tüm verileri kontrol edersin – son söz sende. Her analiz 1 Credit tutar.',
+      },
+      scanCost: {
+        question: 'Bir tarama ne kadar tutar?',
+        answer:
+          'Fiş taraması 1 Credit tutar. Yatay formatta çekilen banka ekstresi daha iyi doğruluk için iki kez analiz edilir ve 2 Credit tutar. Ücretsiz aylık kotadan sonra manuel girişler 1 Credit tutar.',
       },
       creditsNormal: {
         question: 'Normalde kaç Credit\'e ihtiyacım var?',
@@ -191,7 +201,7 @@ export default {
     aboutModalTitle: 'Snapomat hakkında',
     aboutAppLabel: 'Uygulama',
     aboutVersionLabel: 'Sürüm',
-    aboutVersionValue: '1.0 MVP',
+    aboutVersionValue: '1.0',
     aboutStatusLabel: 'Durum',
     restorePurchases: 'Satın alımları geri yükle',
     supportModalTitle: 'Support & Feedback',

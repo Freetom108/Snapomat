@@ -1,30 +1,35 @@
 import 'react-native-gesture-handler';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Stack, useRouter, useSegments, usePathname } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import * as SplashScreen from 'expo-splash-screen';
 import { View, ActivityIndicator } from 'react-native';
+import AnimatedSplash from '../components/AnimatedSplash';
 import { ThemeProvider, useTheme } from '../hooks/useTheme';
 import { initI18n } from '../i18n';
 import { getOnboardingDoneLive } from '../store/storage';
 import { DEFAULT_THEME_ID, THEMES } from '../constants/colors';
 
+SplashScreen.preventAutoHideAsync().catch(() => {});
+
 function RootLayoutInner() {
   const { theme, ready: themeReady } = useTheme();
   const [ready, setReady] = useState(false);
+  const [splashDone, setSplashDone] = useState(false);
   const router = useRouter();
   const segments = useSegments();
   const pathname = usePathname();
 
   useEffect(() => {
-    async function init() {
-      await initI18n();
-      setReady(true);
-    }
-    init();
+    SplashScreen.hideAsync().catch(() => {});
   }, []);
 
   useEffect(() => {
-    if (!ready) return;
+    initI18n().then(() => setReady(true));
+  }, []);
+
+  useEffect(() => {
+    if (!ready || !splashDone) return;
 
     async function syncRoute() {
       const done = await getOnboardingDoneLive();
@@ -39,7 +44,15 @@ function RootLayoutInner() {
     }
 
     syncRoute();
-  }, [ready, segments, pathname, router]);
+  }, [ready, splashDone, segments, pathname, router]);
+
+  const handleSplashFinish = useCallback(() => {
+    setSplashDone(true);
+  }, []);
+
+  if (!splashDone) {
+    return <AnimatedSplash onFinish={handleSplashFinish} />;
+  }
 
   if (!ready || !themeReady) {
     const fallback = THEMES[DEFAULT_THEME_ID];

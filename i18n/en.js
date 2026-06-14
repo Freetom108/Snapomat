@@ -82,6 +82,11 @@ export default {
     fieldDate: 'Date',
     sectionCategory: 'CATEGORY',
     analysisFailed: 'Analysis failed – please try again',
+    duplicateTitle: 'Entry already exists',
+    duplicateMessage:
+      'An entry with the same amount and date is already saved. Add anyway?',
+    duplicateConfirm: 'Add anyway',
+    duplicateCancel: 'Cancel',
   },
   settings: {
     sections: {
@@ -109,7 +114,7 @@ export default {
       legalSubtitle: 'Privacy · Imprint',
     },
     deleteAllData: '🗑 Delete all app data',
-    versionMvp: 'Version 1.0 MVP',
+    versionMvp: 'Version 1.0',
     budgetModalTitle: '🎯 Monthly budget',
     budgetModalLine1: 'How much do you want to spend per month?',
     budgetModalLine2: 'You will be notified when your spending reaches {{percent}}%.',
@@ -146,6 +151,11 @@ export default {
         question: 'How does AI analysis work?',
         answer:
           'You photograph a receipt or bank statement. Snapomat sends the image to an AI that automatically recognizes merchant, amount, date and category. You review all data before saving – you always have the final say. Each analysis costs 1 Credit.',
+      },
+      scanCost: {
+        question: 'How many credits does a scan cost?',
+        answer:
+          'A receipt scan costs 1 Credit. A bank statement photographed in landscape format requires two analyses for better accuracy and costs 2 Credits. Manual entries cost 1 Credit after the free monthly limit.',
       },
       creditsNormal: {
         question: 'How many credits do I normally need?',
@@ -191,7 +201,7 @@ export default {
     aboutModalTitle: 'About Snapomat',
     aboutAppLabel: 'App',
     aboutVersionLabel: 'Version',
-    aboutVersionValue: '1.0 MVP',
+    aboutVersionValue: '1.0',
     aboutStatusLabel: 'Status',
     restorePurchases: 'Restore purchases',
     supportModalTitle: 'Support & Feedback',
@@ -208,7 +218,7 @@ export default {
     backupCreate: '📤 Create backup',
     backupRestore: '📥 Restore backup',
     pricingCreditsRemaining: 'You still have {{count}} Credits.',
-    pricingCreditHint: '1 Credit per AI analysis.',
+    pricingCreditHint: '1–2 Credits per scan',
     pricingMonth1: 'MONTH 1',
     pricingFromMonth2: 'FROM MONTH 2',
     pricingFreeMonth1Credits: '⚡ 20 AI Credits · 1 Credit per analysis',

@@ -379,6 +379,7 @@ const FAQ_ITEM_META = [
   { id: 'monthlyYearly' },
   { id: 'data' },
   { id: 'ai' },
+  { id: 'scanCost' },
   { id: 'creditsNormal' },
   { id: 'creditsExpire' },
   { id: 'transfair' },

@@ -82,6 +82,11 @@ export default {
     fieldDate: 'Data',
     sectionCategory: 'CATEGORIA',
     analysisFailed: 'Análise falhou – tenta outra vez',
+    duplicateTitle: 'Entrada já existente',
+    duplicateMessage:
+      'Já existe uma entrada com o mesmo valor e data. Adicionar mesmo assim?',
+    duplicateConfirm: 'Adicionar mesmo assim',
+    duplicateCancel: 'Cancelar',
   },
   settings: {
     sections: {
@@ -109,7 +114,7 @@ export default {
       legalSubtitle: 'Privacidade · Impressum',
     },
     deleteAllData: '🗑 Apagar todos os dados',
-    versionMvp: 'Versão 1.0 MVP',
+    versionMvp: 'Versão 1.0',
     budgetModalTitle: '🎯 Orçamento mensal',
     budgetModalLine1: 'Quanto queres gastar por mês?',
     budgetModalLine2: 'Serás notificado quando os teus gastos atingirem {{percent}} %.',
@@ -146,6 +151,11 @@ export default {
         question: 'Como funciona a análise IA?',
         answer:
           'Fotografas um recibo ou extrato bancário. O Snapomat envia a imagem a uma IA que reconhece comerciante, valor, data e categoria. Revês tudo antes de guardar – és tu quem decide. Cada análise custa 1 Credit.',
+      },
+      scanCost: {
+        question: 'Quanto custa uma digitalização?',
+        answer:
+          'Um recibo custa 1 Credit. Um extrato bancário em formato horizontal é analisado duas vezes para maior precisão e custa 2 Credits. Entradas manuais custam 1 Credit após o limite mensal gratuito.',
       },
       creditsNormal: {
         question: 'Quantos Credits preciso normalmente?',
@@ -191,7 +201,7 @@ export default {
     aboutModalTitle: 'Sobre o Snapomat',
     aboutAppLabel: 'App',
     aboutVersionLabel: 'Versão',
-    aboutVersionValue: '1.0 MVP',
+    aboutVersionValue: '1.0',
     aboutStatusLabel: 'Estado',
     restorePurchases: 'Restaurar compras',
     supportModalTitle: 'Support & Feedback',

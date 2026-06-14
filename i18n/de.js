@@ -82,6 +82,11 @@ export default {
     fieldDate: 'Datum',
     sectionCategory: 'KATEGORIE',
     analysisFailed: 'Analyse fehlgeschlagen – bitte erneut versuchen',
+    duplicateTitle: 'Eintrag bereits vorhanden',
+    duplicateMessage:
+      'Ein Eintrag mit gleichem Betrag und Datum ist bereits gespeichert. Trotzdem hinzufügen?',
+    duplicateConfirm: 'Trotzdem hinzufügen',
+    duplicateCancel: 'Abbrechen',
   },
   settings: {
     sections: {
@@ -109,7 +114,7 @@ export default {
       legalSubtitle: 'Datenschutz · Impressum',
     },
     deleteAllData: '🗑 Alle App-Daten löschen',
-    versionMvp: 'Version 1.0 MVP',
+    versionMvp: 'Version 1.0',
     budgetModalTitle: '🎯 Monatsbudget',
     budgetModalLine1: 'Wie viel möchtest du pro Monat ausgeben?',
     budgetModalLine2: 'Du wirst benachrichtigt wenn deine Ausgaben {{percent}}% erreichen.',
@@ -146,6 +151,11 @@ export default {
         question: 'Wie funktioniert die KI-Analyse?',
         answer:
           'Du fotografierst einen Kassenzettel oder Kontoauszug. Snapomat sendet das Bild an eine KI die Händler, Betrag, Datum und Kategorie automatisch erkennt. Du überprüfst alle Daten vor dem Speichern – du hast immer das letzte Wort. Jede Analyse kostet 1 Credit.',
+      },
+      scanCost: {
+        question: 'Was kostet ein Scan?',
+        answer:
+          'Ein Kassenzettel-Scan kostet 1 Credit. Ein Kontoauszug im Querformat wird für bessere Erkennungsgenauigkeit zweifach analysiert und kostet 2 Credits. Manuelle Einträge kosten 1 Credit nach dem monatlichen Freikontingent.',
       },
       creditsNormal: {
         question: 'Wie viele Credits brauche ich normalerweise?',
@@ -191,7 +201,7 @@ export default {
     aboutModalTitle: 'Über Snapomat',
     aboutAppLabel: 'App',
     aboutVersionLabel: 'Version',
-    aboutVersionValue: '1.0 MVP',
+    aboutVersionValue: '1.0',
     aboutStatusLabel: 'Status',
     restorePurchases: 'Käufe wiederherstellen',
     supportModalTitle: 'Support & Feedback',
@@ -208,7 +218,7 @@ export default {
     backupCreate: '📤 Backup erstellen',
     backupRestore: '📥 Backup wiederherstellen',
     pricingCreditsRemaining: 'Du hast noch {{count}} Credits.',
-    pricingCreditHint: '1 Credit pro KI-Analyse.',
+    pricingCreditHint: '1–2 Credits pro Scan',
     pricingMonth1: 'MONAT 1',
     pricingFromMonth2: 'AB MONAT 2',
     pricingFreeMonth1Credits: '⚡ 20 KI-Credits · 1 Credit pro Analyse',

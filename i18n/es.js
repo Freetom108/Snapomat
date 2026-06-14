@@ -82,6 +82,11 @@ export default {
     fieldDate: 'Fecha',
     sectionCategory: 'CATEGORÍA',
     analysisFailed: 'Análisis fallido – inténtalo de nuevo',
+    duplicateTitle: 'Entrada ya existente',
+    duplicateMessage:
+      'Ya existe una entrada con el mismo importe y fecha. ¿Añadir de todas formas?',
+    duplicateConfirm: 'Añadir de todas formas',
+    duplicateCancel: 'Cancelar',
   },
   settings: {
     sections: {
@@ -109,7 +114,7 @@ export default {
       legalSubtitle: 'Privacidad · Aviso legal',
     },
     deleteAllData: '🗑 Borrar todos los datos',
-    versionMvp: 'Versión 1.0 MVP',
+    versionMvp: 'Versión 1.0',
     budgetModalTitle: '🎯 Presupuesto mensual',
     budgetModalLine1: '¿Cuánto quieres gastar al mes?',
     budgetModalLine2: 'Te avisaremos cuando tus gastos lleguen al {{percent}} %.',
@@ -146,6 +151,11 @@ export default {
         question: '¿Cómo funciona el análisis IA?',
         answer:
           'Fotografías un ticket o extracto bancario. Snapomat envía la imagen a una IA que reconoce comercio, importe, fecha y categoría. Revisas todo antes de guardar – tú tienes la última palabra. Cada análisis cuesta 1 Credit.',
+      },
+      scanCost: {
+        question: '¿Cuánto cuesta un escaneo?',
+        answer:
+          'Un ticket cuesta 1 Credit. Un extracto bancario en horizontal se analiza dos veces para mayor precisión y cuesta 2 Credits. Las entradas manuales cuestan 1 Credit tras el límite mensual gratuito.',
       },
       creditsNormal: {
         question: '¿Cuántos Credits necesito normalmente?',
@@ -191,7 +201,7 @@ export default {
     aboutModalTitle: 'Sobre Snapomat',
     aboutAppLabel: 'App',
     aboutVersionLabel: 'Versión',
-    aboutVersionValue: '1.0 MVP',
+    aboutVersionValue: '1.0',
     aboutStatusLabel: 'Estado',
     restorePurchases: 'Restaurar compras',
     supportModalTitle: 'Support & Feedback',

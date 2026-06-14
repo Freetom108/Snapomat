@@ -82,6 +82,11 @@ export default {
     fieldDate: 'Data',
     sectionCategory: 'CATEGORIA',
     analysisFailed: 'Analisi fallita – riprova',
+    duplicateTitle: 'Voce già esistente',
+    duplicateMessage:
+      'Esiste già una voce con lo stesso importo e data. Aggiungere comunque?',
+    duplicateConfirm: 'Aggiungi comunque',
+    duplicateCancel: 'Annulla',
   },
   settings: {
     sections: {
@@ -109,7 +114,7 @@ export default {
       legalSubtitle: 'Privacy · Note legali',
     },
     deleteAllData: '🗑 Elimina tutti i dati',
-    versionMvp: 'Versione 1.0 MVP',
+    versionMvp: 'Versione 1.0',
     budgetModalTitle: '🎯 Budget mensile',
     budgetModalLine1: 'Quanto vuoi spendere al mese?',
     budgetModalLine2: 'Riceverai una notifica quando le spese raggiungono il {{percent}} %.',
@@ -146,6 +151,11 @@ export default {
         question: 'Come funziona l\'analisi IA?',
         answer:
           'Fotografi uno scontrino o estratto conto. Snapomat invia l\'immagine a un\'IA che riconosce esercente, importo, data e categoria. Controlli tutto prima di salvare – hai sempre l\'ultima parola. Ogni analisi costa 1 Credit.',
+      },
+      scanCost: {
+        question: 'Quanto costa una scansione?',
+        answer:
+          'Uno scontrino costa 1 Credit. Un estratto conto in formato orizzontale viene analizzato due volte per maggiore precisione e costa 2 Credits. Le voci manuali costano 1 Credit dopo il contingente mensile gratuito.',
       },
       creditsNormal: {
         question: 'Quanti Credits mi servono di solito?',
@@ -191,7 +201,7 @@ export default {
     aboutModalTitle: 'Info su Snapomat',
     aboutAppLabel: 'App',
     aboutVersionLabel: 'Versione',
-    aboutVersionValue: '1.0 MVP',
+    aboutVersionValue: '1.0',
     aboutStatusLabel: 'Stato',
     restorePurchases: 'Ripristina acquisti',
     supportModalTitle: 'Support & Feedback',

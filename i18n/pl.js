@@ -82,6 +82,11 @@ export default {
     fieldDate: 'Data',
     sectionCategory: 'KATEGORIA',
     analysisFailed: 'Analiza nieudana – spróbuj ponownie',
+    duplicateTitle: 'Wpis już istnieje',
+    duplicateMessage:
+      'Wpis z tą samą kwotą i datą już istnieje. Dodać mimo to?',
+    duplicateConfirm: 'Dodaj mimo to',
+    duplicateCancel: 'Anuluj',
   },
   settings: {
     sections: {
@@ -109,7 +114,7 @@ export default {
       legalSubtitle: 'Prywatność · Impressum',
     },
     deleteAllData: '🗑 Usuń wszystkie dane aplikacji',
-    versionMvp: 'Wersja 1.0 MVP',
+    versionMvp: 'Wersja 1.0',
     budgetModalTitle: '🎯 Budżet miesięczny',
     budgetModalLine1: 'Ile chcesz wydawać miesięcznie?',
     budgetModalLine2: 'Dostaniesz powiadomienie, gdy wydatki osiągną {{percent}} %.',
@@ -146,6 +151,11 @@ export default {
         question: 'Jak działa analiza AI?',
         answer:
           'Fotografujesz paragon lub wyciąg bankowy. Snapomat wysyła obraz do AI, która rozpoznaje sklep, kwotę, datę i kategorię. Sprawdzasz wszystko przed zapisem – ostatnie słowo należy do Ciebie. Każda analiza kosztuje 1 Credit.',
+      },
+      scanCost: {
+        question: 'Ile kosztuje skan?',
+        answer:
+          'Skan paragonu kosztuje 1 Credit. Wyciąg bankowy sfotografowany w formacie poziomym jest analizowany dwukrotnie dla lepszej dokładności i kosztuje 2 Credits. Wpisy ręczne kosztują 1 Credit po miesięcznym darmowym limicie.',
       },
       creditsNormal: {
         question: 'Ile Credits zwykle potrzebuję?',
@@ -191,7 +201,7 @@ export default {
     aboutModalTitle: 'O Snapomat',
     aboutAppLabel: 'Aplikacja',
     aboutVersionLabel: 'Wersja',
-    aboutVersionValue: '1.0 MVP',
+    aboutVersionValue: '1.0',
     aboutStatusLabel: 'Status',
     restorePurchases: 'Przywróć zakupy',
     supportModalTitle: 'Support & Feedback',
