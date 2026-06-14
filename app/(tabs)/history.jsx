@@ -26,8 +26,41 @@ import EmptyState from '../../components/EmptyState';
 import {
   formatMonthLabel,
   getMonthExpenses,
+  parseExpenseDate,
   toRowExpense,
 } from '../../utils/expenseHelpers';
+
+function groupExpensesByMonth(expenses) {
+  const map = new Map();
+
+  expenses.forEach((expense) => {
+    const date = parseExpenseDate(expense.date);
+    const year = date.getFullYear();
+    const month = date.getMonth();
+    const key = `${year}-${month}`;
+
+    if (!map.has(key)) {
+      map.set(key, {
+        id: key,
+        year,
+        month,
+        label: formatMonthLabel(year, month),
+        items: [],
+      });
+    }
+
+    map.get(key).items.push(expense);
+  });
+
+  return Array.from(map.values())
+    .sort((a, b) => b.year - a.year || b.month - a.month)
+    .map((group) => ({
+      ...group,
+      items: [...group.items].sort(
+        (a, b) => parseExpenseDate(b.date) - parseExpenseDate(a.date),
+      ),
+    }));
+}
 
 function withAlpha(hex, alpha) {
   const a = Math.round(alpha * 255)
@@ -146,6 +179,20 @@ function createStyles(colors) {
     list: {
       gap: 8,
     },
+    monthGroup: {
+      marginBottom: 20,
+    },
+    monthGroupLabel: {
+      fontFamily: 'DMSans_800ExtraBold',
+      fontSize: 11,
+      letterSpacing: 1,
+      textTransform: 'uppercase',
+      color: colors.muted,
+      marginBottom: 10,
+    },
+    monthNavDisabled: {
+      opacity: 0.35,
+    },
   });
 }
 
@@ -184,17 +231,37 @@ export default function HistoryScreen() {
 
   const year = monthDate.getFullYear();
   const month = monthDate.getMonth();
+  const isSearching = search.trim().length > 0;
 
-  const monthExpenses = getMonthExpenses(expenses, year, month);
-
-  const filtered = monthExpenses.filter((expense) => {
-    const matchesCategory = !selectedCategory || expense.category === selectedCategory;
+  const filteredExpenses = useMemo(() => {
     const query = search.trim().toLowerCase();
-    const matchesSearch = !query || (expense.merchant ?? '').toLowerCase().includes(query);
-    return matchesCategory && matchesSearch;
-  });
+    return expenses.filter((expense) => {
+      const matchesCategory = !selectedCategory || expense.category === selectedCategory;
+      const matchesSearch = !query || (expense.merchant ?? '').toLowerCase().includes(query);
+      return matchesCategory && matchesSearch;
+    });
+  }, [expenses, search, selectedCategory]);
+
+  const monthExpenses = useMemo(() => {
+    if (isSearching) return filteredExpenses;
+    return getMonthExpenses(filteredExpenses, year, month);
+  }, [filteredExpenses, isSearching, year, month]);
+
+  const searchGroups = useMemo(() => {
+    if (!isSearching) return [];
+    return groupExpensesByMonth(filteredExpenses);
+  }, [filteredExpenses, isSearching]);
+
+  function handleSearchChange(value) {
+    setSearch(value);
+    if (!value.trim()) {
+      const now = new Date();
+      setMonthDate(new Date(now.getFullYear(), now.getMonth(), 1));
+    }
+  }
 
   function shiftMonth(delta) {
+    if (isSearching) return;
     setMonthDate((prev) => new Date(prev.getFullYear(), prev.getMonth() + delta, 1));
   }
 
@@ -219,7 +286,7 @@ export default function HistoryScreen() {
             <Ionicons name="search" size={16} color={colors.muted} />
             <TextInput
               value={search}
-              onChangeText={setSearch}
+              onChangeText={handleSearchChange}
               placeholder="Händler suchen..."
               placeholderTextColor={colors.muted}
               style={styles.searchInput}
@@ -276,22 +343,52 @@ export default function HistoryScreen() {
             })}
           </ScrollView>
 
-          <View style={styles.monthNav}>
-            <Pressable onPress={() => shiftMonth(-1)} style={styles.monthButton}>
+          <View style={[styles.monthNav, isSearching && styles.monthNavDisabled]}>
+            <Pressable
+              onPress={() => shiftMonth(-1)}
+              disabled={isSearching}
+              style={styles.monthButton}
+            >
               <Text style={styles.monthChevron}>‹</Text>
             </Pressable>
-            <Text style={styles.monthLabel}>{formatMonthLabel(year, month)}</Text>
-            <Pressable onPress={() => shiftMonth(1)} style={styles.monthButton}>
+            <Text style={styles.monthLabel}>
+              {isSearching ? 'Alle Ergebnisse' : formatMonthLabel(year, month)}
+            </Text>
+            <Pressable
+              onPress={() => shiftMonth(1)}
+              disabled={isSearching}
+              style={styles.monthButton}
+            >
               <Text style={styles.monthChevron}>›</Text>
             </Pressable>
           </View>
         </View>
 
-        {filtered.length === 0 ? (
+        {isSearching ? (
+          searchGroups.length === 0 ? (
+            <EmptyState emoji="🔍" title="Keine Ergebnisse gefunden" theme={theme} />
+          ) : (
+            searchGroups.map((group) => (
+              <View key={group.id} style={styles.monthGroup}>
+                <Text style={styles.monthGroupLabel}>{group.label}</Text>
+                <View style={styles.list}>
+                  {group.items.map((item) => (
+                    <ExpenseRow
+                      key={item.id}
+                      expense={toRowExpense(item)}
+                      theme={theme}
+                      onPress={() => setSelectedExpense(item)}
+                    />
+                  ))}
+                </View>
+              </View>
+            ))
+          )
+        ) : monthExpenses.length === 0 ? (
           <EmptyState emoji="📋" title="Keine Buchungen in diesem Monat" theme={theme} />
         ) : (
           <View style={styles.list}>
-            {filtered.map((item) => (
+            {monthExpenses.map((item) => (
               <ExpenseRow
                 key={item.id}
                 expense={toRowExpense(item)}
