@@ -20,7 +20,7 @@ import {
 import { CATEGORY_LIST, getCategory, getCategoryLabel } from '../../constants/categories';
 import { useTheme } from '../../hooks/useTheme';
 import { useTranslation } from '../../hooks/useTranslation';
-import { getExpenses } from '../../store/storage';
+import { getExpenses, saveHistorySelectedMonth, getHistorySelectedMonth } from '../../store/storage';
 import ExpenseRow from '../../components/ExpenseRow';
 import ExpenseDetailSheet from '../../components/ExpenseDetailSheet';
 import EmptyState from '../../components/EmptyState';
@@ -231,8 +231,31 @@ export default function HistoryScreen() {
     }, [loadData]),
   );
 
+  useFocusEffect(
+    useCallback(() => {
+      let active = true;
+
+      async function restoreSelectedMonth() {
+        const saved = await getHistorySelectedMonth();
+        if (!active) return;
+        if (saved) {
+          setMonthDate(new Date(saved.year, saved.month, 1));
+          return;
+        }
+        const now = new Date();
+        await saveHistorySelectedMonth(now.getFullYear(), now.getMonth());
+      }
+
+      restoreSelectedMonth();
+      return () => {
+        active = false;
+      };
+    }, []),
+  );
+
   const year = monthDate.getFullYear();
   const month = monthDate.getMonth();
+
   const isSearching = search.trim().length > 0;
 
   const filteredExpenses = useMemo(() => {
@@ -258,13 +281,19 @@ export default function HistoryScreen() {
     setSearch(value);
     if (!value.trim()) {
       const now = new Date();
-      setMonthDate(new Date(now.getFullYear(), now.getMonth(), 1));
+      const next = new Date(now.getFullYear(), now.getMonth(), 1);
+      setMonthDate(next);
+      saveHistorySelectedMonth(next.getFullYear(), next.getMonth());
     }
   }
 
   function shiftMonth(delta) {
     if (isSearching) return;
-    setMonthDate((prev) => new Date(prev.getFullYear(), prev.getMonth() + delta, 1));
+    setMonthDate((prev) => {
+      const next = new Date(prev.getFullYear(), prev.getMonth() + delta, 1);
+      saveHistorySelectedMonth(next.getFullYear(), next.getMonth());
+      return next;
+    });
   }
 
   if (!fontsLoaded || !themeReady || loading) {

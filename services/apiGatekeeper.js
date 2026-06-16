@@ -39,7 +39,7 @@ export async function guardedFetch(url, options = {}) {
   return response;
 }
 
-export async function analyzeImage(imageBase64, type = 'statement') {
+export async function analyzeImage(imageBase64) {
   try {
     if (!canMakeRequest()) {
       console.log('[analyzeImage] rate limit reached');
@@ -50,14 +50,13 @@ export async function analyzeImage(imageBase64, type = 'statement') {
 
     // TODO: DEV ONLY – remove before release
     console.log('[analyzeImage] base64 length:', imageBase64?.length ?? 0);
-    console.log('[analyzeImage] type:', type);
 
     const response = await fetch(WORKER_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ image: imageBase64, type }),
+      body: JSON.stringify({ image: imageBase64 }),
     });
 
     // TODO: DEV ONLY – remove before release

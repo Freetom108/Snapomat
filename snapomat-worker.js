@@ -7,21 +7,25 @@ const CORS_HEADERS = {
 const MODEL = 'claude-haiku-4-5';
 
 const RECEIPT_SYSTEM_PROMPT =
-  'You analyze a receipt photo. Extract ONLY the final total amount paid, the merchant name, and the date. ' +
-  'Return ONLY valid JSON with exactly ONE object: [{merchant, amount, date, category}]. ' +
-  'Take the bold total sum at the bottom, not individual items. ' +
-  "Category is always 'food' unless the merchant is clearly not a food store.";
+  'You are a receipt analyzer. Extract the following from the receipt photo: ' +
+  '1. MERCHANT: The store or business name as printed on the receipt. ' +
+  '2. AMOUNT: The final total amount paid (look for "Total", "Summe", "Gesamt", "Betrag" at the bottom). Return as a number without currency symbol. ' +
+  '3. DATE: The purchase date exactly as on the receipt. Format as YYYY-MM-DD. Convert DD.MM.YYYY correctly. ' +
+  '4. CATEGORY: Choose exactly one from: food, going-out, mobility, home, fixed, shopping, health. ' +
+  'food = supermarket, grocery, bakery, food store. ' +
+  'going-out = restaurant, cafe, bar, fast food, cinema, entertainment. ' +
+  'mobility = gas station, parking, public transport, car service. ' +
+  'home = furniture, hardware store, household items. ' +
+  'fixed = insurance, subscription, utility, phone, internet. ' +
+  'shopping = clothing, electronics, books, general retail. ' +
+  'health = pharmacy, doctor, sports, wellness. ' +
+  '5. merchantConfidence: number between 0.0 and 1.0 indicating how clearly the merchant name was readable. Set below 0.7 if the store name is unclear, partially visible, or uncertain. ' +
+  '6. dateConfidence: number between 0.0 and 1.0 indicating how clearly the date was readable. Set below 0.7 if the date is small, blurry, cut off, partially hidden, or uncertain. ' +
+  '7. amountConfidence: number between 0.0 and 1.0 indicating how clearly the total amount was readable. Set below 0.7 if unclear. ' +
+  '8. warning: set to "DATE_UNCERTAIN" if dateConfidence is below 0.7, "AMOUNT_UNCERTAIN" if amountConfidence is below 0.7, "MERCHANT_UNCERTAIN" if merchantConfidence is below 0.7, null if all are clearly readable. ' +
+  'Return ONLY valid JSON array with exactly one object: [{merchant, amount, date, category, merchantConfidence, dateConfidence, amountConfidence, warning}]. No explanation, no markdown.';
 
-const STATEMENT_SYSTEM_PROMPT =
-  'You analyze a bank statement photo. Extract ONLY individual transaction lines with merchant/description, amount and date. ' +
-  'IGNORE completely: ' +
-  'Account balance (Kontostand, alter Kontostand, neuer Kontostand), ' +
-  'Sum rows (Summe der Belastungen, Summe der Gutschriften), ' +
-  'Credits, refunds and incoming transfers (Gutschrift, Eingang), ' +
-  'Any totals or summary rows, ' +
-  'Bank name and account information. ' +
-  'Only extract actual individual expense transactions. ' +
-  'Return ONLY valid JSON array: [{merchant, amount, date, category}]';
+const RECEIPT_USER_PROMPT = 'Extract the receipt total as a JSON array with one object.';
 
 function jsonResponse(body, status = 200) {
   return new Response(JSON.stringify(body), {
@@ -36,21 +40,6 @@ function jsonResponse(body, status = 200) {
 function normalizeMediaType(mediaType) {
   const allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
   return allowed.includes(mediaType) ? mediaType : 'image/jpeg';
-}
-
-function normalizeScanType(type) {
-  return type === 'receipt' ? 'receipt' : 'statement';
-}
-
-function getSystemPrompt(type) {
-  return type === 'receipt' ? RECEIPT_SYSTEM_PROMPT : STATEMENT_SYSTEM_PROMPT;
-}
-
-function getUserPrompt(type) {
-  if (type === 'receipt') {
-    return 'Extract the receipt total as a JSON array with one object.';
-  }
-  return 'Extract all expenses from this image as a JSON array.';
 }
 
 function parseExpenses(text) {
@@ -69,11 +58,14 @@ function parseExpenses(text) {
     amount: Number(item.amount) || 0,
     date: String(item.date ?? '').trim(),
     category: String(item.category ?? 'food').trim(),
+    merchantConfidence: Number(item.merchantConfidence) ?? 0.9,
+    dateConfidence: Number(item.dateConfidence) ?? 0.9,
+    amountConfidence: Number(item.amountConfidence) ?? 0.9,
+    warning: item.warning ?? null,
   }));
 }
 
-async function analyzeImage(apiKey, base64, mediaType, scanType) {
-  const type = normalizeScanType(scanType);
+async function analyzeImage(apiKey, base64, mediaType) {
   const response = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
@@ -84,7 +76,7 @@ async function analyzeImage(apiKey, base64, mediaType, scanType) {
     body: JSON.stringify({
       model: MODEL,
       max_tokens: 1024,
-      system: getSystemPrompt(type),
+      system: RECEIPT_SYSTEM_PROMPT,
       messages: [
         {
           role: 'user',
@@ -99,7 +91,7 @@ async function analyzeImage(apiKey, base64, mediaType, scanType) {
             },
             {
               type: 'text',
-              text: getUserPrompt(type),
+              text: RECEIPT_USER_PROMPT,
             },
           ],
         },
@@ -148,10 +140,9 @@ export default {
     }
 
     const mediaType = body.mediaType ?? body.media_type ?? 'image/jpeg';
-    const scanType = normalizeScanType(body.type);
 
     try {
-      const expenses = await analyzeImage(env.ANTHROPIC_API_KEY, base64, mediaType, scanType);
+      const expenses = await analyzeImage(env.ANTHROPIC_API_KEY, base64, mediaType);
       return jsonResponse({ success: true, data: expenses });
     } catch (err) {
       return jsonResponse({ success: false, error: err.message ?? 'Analysis failed' }, 500);

@@ -1,4 +1,5 @@
 import { getT, getLocale } from '../i18n';
+import { CATEGORIES } from '../constants/categories';
 
 export function parseExpenseDate(dateStr) {
   if (!dateStr) return new Date();
@@ -127,6 +128,33 @@ export function toRowExpense(expense) {
     ...expense,
     categoryId: expense.category ?? expense.categoryId,
   };
+}
+
+function getCategoryEmoji(categoryId) {
+  const id = categoryId ?? 'food';
+  return CATEGORIES[id]?.emoji ?? CATEGORIES.food.emoji;
+}
+
+export function buildMonthlyShareReport(monthExpenses, year, month, t) {
+  const sorted = [...monthExpenses].sort(
+    (a, b) => parseExpenseDate(a.date) - parseExpenseDate(b.date),
+  );
+  const total = sorted.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
+  const label = formatMonthLabel(year, month);
+  const header = t('settings.shareReportMessage', {
+    month: label,
+    total: formatCurrency(total),
+    count: sorted.length,
+  });
+  const entryLines = sorted.map((expense) => {
+    const categoryId = expense.category ?? expense.categoryId ?? 'food';
+    const emoji = getCategoryEmoji(categoryId);
+    const amount = formatCurrency(Number(expense.amount) || 0);
+    return `${emoji} ${expense.merchant ?? ''} – ${amount}`;
+  });
+
+  if (entryLines.length === 0) return header;
+  return `${header}\n\n${entryLines.join('\n')}`;
 }
 
 export function calcMonthStats(expenses, budget, now = new Date()) {

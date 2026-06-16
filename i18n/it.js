@@ -62,19 +62,14 @@ export default {
   import: {
     receiptTitle: 'Scontrino',
     receiptSubtitle: 'Scatta foto',
-    statementTitle: 'Estratto conto',
-    statementSubtitle: 'Scatta foto',
+    receiptHint:
+      'Suggerimento: Buona illuminazione migliora il riconoscimento. I campi incerti sono contrassegnati con ⚠️ – tocca per correggere gratuitamente.',
     or: 'oppure',
     manualEntry: 'Inserisci manualmente',
     cameraPermission: 'Accesso alla fotocamera necessario',
     cameraGrant: 'Consenti',
     scanTitle: 'Analisi in corso...',
     scanSubtitle: 'Elaborazione documento',
-    multiDetected: '{{count}} voci rilevate – controlla i dati',
-    multiSection: 'TUTTE LE VOCI',
-    unknownMerchant: 'Sconosciuto',
-    removeEntry: 'Rimuovi voce',
-    saveAll: 'Salva tutto',
     reviewDetected: '✅ Rilevato – controlla i dati',
     reviewSection: 'CONTROLLA DATI',
     fieldMerchant: 'Esercente',
@@ -100,7 +95,7 @@ export default {
       monthlyBudgetTitle: 'Imposta budget mensile',
       monthlyBudgetSubtitle: 'Definisci limite di spesa',
       shareReportTitle: 'Condividi report mensile',
-      shareReportSubtitle: 'Invia come PDF',
+      shareReportSubtitle: 'Scegli il mese in History e condividi via WhatsApp, email e altro',
       backupRestoreSubtitle: 'Salva e ripristina dati',
       languageTitle: 'Lingua',
       colorSchemeTitle: 'Schema colori',
@@ -114,6 +109,7 @@ export default {
       legalSubtitle: 'Privacy · Note legali',
     },
     deleteAllData: '🗑 Elimina tutti i dati',
+    subscriptionCreditsTitle: 'Abbonamento & Crediti',
     versionMvp: 'Versione 1.0',
     budgetModalTitle: '🎯 Budget mensile',
     budgetModalLine1: 'Quanto vuoi spendere al mese?',
@@ -140,7 +136,7 @@ export default {
       monthlyYearly: {
         question: 'Posso passare da Monthly a Yearly?',
         answer:
-          'Sì. Il passaggio dipende dalle regole dello store. Di solito puoi gestire l\'abbonamento e passare direttamente al piano Yearly. Dati e Credits restano intatti.',
+          'Sì. Il passaggio dipende dalle regole dello store. Di solito puoi gestire l\'abbonamento e passare direttamente al piano Yearly. Dati e Crediti restano intatti.',
       },
       data: {
         question: 'Cosa succede ai miei dati?',
@@ -150,52 +146,37 @@ export default {
       ai: {
         question: 'Come funziona l\'analisi IA?',
         answer:
-          'Fotografi uno scontrino o estratto conto. Snapomat invia l\'immagine a un\'IA che riconosce esercente, importo, data e categoria. Controlli tutto prima di salvare – hai sempre l\'ultima parola. Ogni analisi costa 1 Credit.',
+          'Fotografi uno scontrino. Snapomat invia l\'immagine a un\'IA che riconosce esercente, importo, data e categoria. Controlli tutto prima di salvare – hai sempre l\'ultima parola. Ogni analisi costa 1 Credito.',
       },
       scanCost: {
-        question: 'Quanto costa una scansione?',
+        question: 'Cosa sono i Crediti?',
         answer:
-          'Uno scontrino costa 1 Credit. Un estratto conto in formato orizzontale viene analizzato due volte per maggiore precisione e costa 2 Credits. Le voci manuali costano 1 Credit dopo il contingente mensile gratuito.',
-      },
-      creditsNormal: {
-        question: 'Quanti Credits mi servono di solito?',
-        answer:
-          'La maggior parte degli utenti usa molto meno di 100 Credits al mese. L\'abbonamento Monthly e soprattutto Yearly sono pensati per un uso normale. Non dovrai comprare Credits continuamente.',
-      },
-      creditsExpire: {
-        question: 'I miei Credits scadono?',
-        answer:
-          'I pacchetti Credits acquistati non scadono mai. Per l\'abbonamento Monthly vale Transfair: i Credits non usati passano al mese successivo, fino all\'importo del pacchetto mensile.',
-      },
-      transfair: {
-        question: 'Cos\'è Transfair?',
-        answer:
-          'Transfair significa che i Credits non usati passano automaticamente al mese successivo – fino all\'importo del pacchetto mensile. Non perdi Credits nei mesi con meno analisi IA.',
-      },
-      creditsEmpty: {
-        question: 'Cosa succede quando finiscono i Credits?',
-        answer:
-          'Il primo mese puoi inserire voci manualmente gratis. Dal secondo mese hai 10 inserimenti manuali gratuiti. Poi ogni voce extra – foto o manuale – costa 1 Credit. Puoi comprare Credits in Settings → Abo & Credits.',
+          'I Crediti sono la valuta per le analisi IA in Snapomat. Ogni foto di uno scontrino costa 1 Credito. Le voci manuali sono gratuite. Come abbonato ricevi automaticamente 100 Crediti freschi ogni mese.',
       },
       creditsBuy: {
-        question: 'Posso comprare altri Credits?',
+        question: 'Posso comprare altri Crediti?',
         answer:
-          'Sì, in Settings → Abo & Credits trovi pacchetti da 1,99 €. I Credits vengono accreditati subito e non scadono.',
+          'Sì. Come abbonato Monthly o Yearly puoi acquistare pacchetti aggiuntivi di Crediti in qualsiasi momento in Impostazioni → Abbonamento & Crediti. Non scadono mai.',
       },
       budget: {
         question: 'Come imposto il budget mensile?',
         answer:
           'In Settings → Budget & Reports → Definisci limite di spesa inserisci l\'importo desiderato. L\'anello in Today mostra quanto hai speso e quanto ti resta al giorno. Puoi anche scegliere la percentuale di avviso – dal 50 % al 90 %.',
       },
-      creditsStatement: {
-        question: 'Cosa succede con gli accrediti nell\'estratto conto?',
-        answer:
-          'Snapomat riconosce solo spese e addebiti. Accrediti e bonifici in entrata vengono ignorati. Se un accredito viene rilevato, puoi rimuoverlo nella schermata di revisione prima di salvare.',
-      },
       backup: {
         question: 'Cos\'è Backup & Restore?',
         answer:
           'Con Backup & Restore salvi spese, budget e impostazioni in un file e le ripristini quando serve – ad esempio dopo un cambio telefono o reinstallazione. Lo trovi in Settings → Budget & Reports → Backup & Restore.',
+      },
+      fixedCosts: {
+        question: 'Cosa sono i costi fissi in Snapomat?',
+        answer:
+          'I costi fissi sono spese mensili regolari come affitto, luce, internet o abbonamenti streaming. Le inserisci una volta nell\'app e vengono contabilizzate automaticamente ogni mese. Puoi modificarle o eliminarle in qualsiasi momento.',
+      },
+      entryLimit: {
+        question: 'Come funziona il limite di inserimenti?',
+        answer:
+          'Il primo mese hai 20 Crediti e 20 inserimenti manuali gratis. Dal secondo mese, come utente Free, hai 10 Crediti e 10 inserimenti manuali al mese. Con un abbonamento hai inserimenti manuali illimitati e 100 Crediti al mese.',
       },
     },
     aboutModalTitle: 'Info su Snapomat',
@@ -217,34 +198,29 @@ export default {
     backupHint: 'Spese, budget e impostazioni verranno salvati.',
     backupCreate: '📤 Crea backup',
     backupRestore: '📥 Ripristina backup',
-    pricingCreditsRemaining: 'Hai ancora {{count}} Credits.',
-    pricingCreditHint: '1 Credit per analisi IA.',
+    pricingCreditsRemaining: 'Hai ancora {{count}} Crediti.',
+    pricingCreditHint: '1 Credito per scansione',
     pricingMonth1: 'MESE 1',
     pricingFromMonth2: 'DAL MESE 2',
-    pricingFreeMonth1Credits: '⚡ 20 Credits IA · 1 Credit per analisi',
-    pricingFreeMonth1Manual: '✏️ Inserimenti manuali illimitati',
-    pricingFreeFromMonth2Ai: '⚡ Analisi IA con pacchetti Credits',
-    pricingFreeFromMonth2Manual: '✏️ 10 inserimenti manuali gratis al mese',
+    pricingFreeMonth1Credits: '⚡ 20 Crediti',
+    pricingFreeMonth1Manual: '✏️ 20 inserimenti manuali',
+    pricingFreeFromMonth2Ai: '⚡ 10 Crediti al mese',
+    pricingFreeFromMonth2Manual: '✏️ 10 inserimenti manuali al mese',
     pricingMonthlyPrice: '3,99 € / mese',
-    pricingMonthlyCredits: '⚡ 100 Credits IA al mese',
+    pricingMonthlyCredits: '⚡ 100 Crediti al mese',
     pricingMonthlyManual: '✏️ Inserimenti manuali illimitati',
-    pricingMonthlyTransfair: '∞ Transfair – Credits non usati al mese successivo',
     pricingCancelAnytime: 'Disdici quando vuoi',
     pricingYearlyPrice: '19,99 € / anno',
-    pricingYearlyBadge: '-58%',
-    pricingYearlyCredits: '⚡ 1.500 Credits IA all\'anno',
-    pricingYearlyPerMonth: 'solo 1,67 €/mese',
-    pricingYearlyTransfair: '∞ Transfair – Credits non usati si accumulano',
     pricingAddonPacks: 'PACCHETTI EXTRA',
     pricingAddonFooter: 'Pagamento unico · Nessun abbonamento',
-    pricingPack100: '100 Credits',
-    pricingPack100Price: '1,99 €',
-    pricingPack500: '500 Credits',
-    pricingPack500Price: '7,99 €',
-    pricingPack1000: '1.000 Credits',
-    pricingPack1000Price: '12,99 €',
+    pricingPack50: '50 Crediti',
+    pricingPack50Price: '1,99 €',
+    pricingPack200: '200 Crediti',
+    pricingPack200Price: '5,99 €',
+    pricingPack500: '500 Crediti',
+    pricingPack500Price: '12,99 €',
     shareReportMessage:
-      'Report mensile Snapomat – {{month}}\nSpese: {{total}}\nVoci: {{count}}',
+      'Report mensile Snapomat – {{month}}\nSpese: {{total}} | Voci: {{count}}',
     alerts: {
       restoringPurchases: 'Ripristino acquisti...',
       thanksRating: 'Grazie per la valutazione!',
@@ -273,14 +249,14 @@ export default {
   onboarding: {
     title1: 'Fotografa lo scontrino –',
     title1gold: 'l\'IA fa il resto',
-    sub1: 'Scontrino o estratto conto: Snapomat rileva importo ed esercente, suggerisce una categoria e tu confermi la voce.',
+    sub1: 'Fotografa uno scontrino. Snapomat riconosce automaticamente importo ed esercente, suggerisce una categoria adatta e crea la voce. Devi solo confermare.',
     sub1small: 'Puoi inserire i dati manualmente in qualsiasi momento.',
     title2: 'Tieni sotto controllo',
     title2gold: 'il tuo budget',
-    sub2: 'Imposta il budget mensile. L\'anello delle spese ti mostra dove sei – e quanto ti resta disponibile.',
-    title3: 'Le tue spese',
-    title3gold: 'a colpo d\'occhio',
-    sub3: 'Capisci subito dove va il tuo denaro – per categoria, esercente o mese.',
+    sub2: 'Imposta il budget mensile. L\'anello delle spese ti mostra in ogni momento quanto hai già speso e quanto ti resta disponibile. Così sai sempre la tua situazione finanziaria.',
+    title3: 'Registra i costi fissi una volta –',
+    title3gold: 'risparmia tempo in modo duraturo',
+    sub3: 'Affitto, Netflix, contratto mobile o assicurazione: basta inserirli una volta. Snapomat considera automaticamente le tue spese regolari e mantiene il budget aggiornato.',
     skip: 'Salta',
     getStarted: 'Inizia',
   },

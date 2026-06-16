@@ -62,19 +62,14 @@ export default {
   import: {
     receiptTitle: 'Paragon',
     receiptSubtitle: 'Zrób zdjęcie',
-    statementTitle: 'Wyciąg bankowy',
-    statementSubtitle: 'Zrób zdjęcie',
+    receiptHint:
+      'Wskazówka: Dobre oświetlenie poprawia rozpoznawanie. Niepewne pola są oznaczone ⚠️ – dotknij, aby poprawić bezpłatnie.',
     or: 'lub',
     manualEntry: 'Wpisz ręcznie',
     cameraPermission: 'Wymagany dostęp do aparatu',
     cameraGrant: 'Zezwól',
     scanTitle: 'Analizowanie...',
     scanSubtitle: 'Przetwarzanie dokumentu',
-    multiDetected: '{{count}} wpisów wykryto – sprawdź dane',
-    multiSection: 'WSZYSTKIE WPISY',
-    unknownMerchant: 'Nieznany',
-    removeEntry: 'Usuń wpis',
-    saveAll: 'Zapisz wszystko',
     reviewDetected: '✅ Wykryto – sprawdź dane',
     reviewSection: 'SPRAWDŹ DANE',
     fieldMerchant: 'Sklep',
@@ -100,7 +95,7 @@ export default {
       monthlyBudgetTitle: 'Ustaw budżet miesięczny',
       monthlyBudgetSubtitle: 'Ustaw limit wydatków',
       shareReportTitle: 'Udostępnij raport miesięczny',
-      shareReportSubtitle: 'Wyślij jako PDF',
+      shareReportSubtitle: 'Wybierz miesiąc w History i udostępnij przez WhatsApp, e-mail i więcej',
       backupRestoreSubtitle: 'Kopia zapasowa i przywracanie',
       languageTitle: 'Język',
       colorSchemeTitle: 'Schemat kolorów',
@@ -114,6 +109,7 @@ export default {
       legalSubtitle: 'Prywatność · Impressum',
     },
     deleteAllData: '🗑 Usuń wszystkie dane aplikacji',
+    subscriptionCreditsTitle: 'Subskrypcja & Kredyty',
     versionMvp: 'Wersja 1.0',
     budgetModalTitle: '🎯 Budżet miesięczny',
     budgetModalLine1: 'Ile chcesz wydawać miesięcznie?',
@@ -140,7 +136,7 @@ export default {
       monthlyYearly: {
         question: 'Czy mogę przejść z Monthly na Yearly?',
         answer:
-          'Tak. Zasady zmiany zależą od sklepu z aplikacjami. Zwykle możesz zarządzać subskrypcją i od razu przejść na plan Yearly. Twoje dane i Credits pozostają nienaruszone.',
+          'Tak. Zasady zmiany zależą od sklepu z aplikacjami. Zwykle możesz zarządzać subskrypcją i od razu przejść na plan Yearly. Twoje dane i Kredyty pozostają nienaruszone.',
       },
       data: {
         question: 'Co dzieje się z moimi danymi?',
@@ -150,52 +146,37 @@ export default {
       ai: {
         question: 'Jak działa analiza AI?',
         answer:
-          'Fotografujesz paragon lub wyciąg bankowy. Snapomat wysyła obraz do AI, która rozpoznaje sklep, kwotę, datę i kategorię. Sprawdzasz wszystko przed zapisem – ostatnie słowo należy do Ciebie. Każda analiza kosztuje 1 Credit.',
+          'Fotografujesz paragon. Snapomat wysyła obraz do AI, która rozpoznaje sklep, kwotę, datę i kategorię. Sprawdzasz wszystko przed zapisem – ostatnie słowo należy do Ciebie. Każda analiza kosztuje 1 Kredyt.',
       },
       scanCost: {
-        question: 'Ile kosztuje skan?',
+        question: 'Czym są Kredyty?',
         answer:
-          'Skan paragonu kosztuje 1 Credit. Wyciąg bankowy sfotografowany w formacie poziomym jest analizowany dwukrotnie dla lepszej dokładności i kosztuje 2 Credits. Wpisy ręczne kosztują 1 Credit po miesięcznym darmowym limicie.',
-      },
-      creditsNormal: {
-        question: 'Ile Credits zwykle potrzebuję?',
-        answer:
-          'Większość użytkowników zużywa znacznie mniej niż 100 Credits miesięcznie. Subskrypcja Monthly, a zwłaszcza Yearly, wystarcza przy normalnym użytkowaniu. Nie musisz ciągle dokupywać Credits.',
-      },
-      creditsExpire: {
-        question: 'Czy moje Credits wygasają?',
-        answer:
-          'Kupione pakiety Credits nigdy nie wygasają. Przy subskrypcji Monthly obowiązuje Transfair – niewykorzystane Credits przechodzą na następny miesiąc, do wysokości pakietu miesięcznego.',
-      },
-      transfair: {
-        question: 'Czym jest Transfair?',
-        answer:
-          'Transfair oznacza, że niewykorzystane Credits automatycznie przechodzą na następny miesiąc – do wysokości pakietu miesięcznego. Nie tracisz Credits w miesiącach z mniejszą liczbą analiz AI.',
-      },
-      creditsEmpty: {
-        question: 'Co gdy skończą mi się Credits?',
-        answer:
-          'W pierwszym miesiącu możesz wpisywać dane ręcznie za darmo. Od drugiego miesiąca masz 10 darmowych wpisów ręcznych. Potem każdy kolejny wpis – zdjęcie lub ręczny – kosztuje 1 Credit. Credits kupisz w Settings → Abo & Credits.',
+          'Kredyty to waluta analiz AI w Snapomat. Każde zdjęcie paragonu kosztuje 1 Kredyt. Wpisy ręczne są bezpłatne. Jako abonent otrzymujesz automatycznie 100 świeżych Kredytów każdego miesiąca.',
       },
       creditsBuy: {
-        question: 'Czy mogę dokupić Credits?',
+        question: 'Czy mogę dokupić Kredyty?',
         answer:
-          'Tak, w Settings → Abo & Credits znajdziesz pakiety od 1,99 €. Credits są dodawane od razu i nigdy nie wygasają.',
+          'Tak. Jako subskrybent Monthly lub Yearly możesz w każdej chwili dokupić dodatkowe pakiety Kredytów w Ustawienia → Subskrypcja & Kredyty. Nigdy nie wygasają.',
       },
       budget: {
         question: 'Jak ustawić budżet miesięczny?',
         answer:
           'W Settings → Budget & Reports → Ustaw limit wydatków wpisz kwotę. Pierścień na stronie Today pokazuje, ile wydałeś i ile możesz jeszcze wydać dziennie. Możesz też ustawić procent ostrzeżenia – od 50 % do 90 %.',
       },
-      creditsStatement: {
-        question: 'Co z uznaniem na wyciągu bankowym?',
-        answer:
-          'Snapomat rozpoznaje tylko wydatki i obciążenia. Uznania i wpływy są ignorowane. Jeśli wpływ zostanie wykryty, możesz go usunąć na ekranie podglądu przed zapisem.',
-      },
       backup: {
         question: 'Czym jest Backup & Restore?',
         answer:
           'Backup & Restore pozwala zapisać wydatki, budżet i ustawienia w pliku i przywrócić je w razie potrzeby – np. po zmianie telefonu lub reinstalacji. Funkcja jest w Settings → Budget & Reports → Backup & Restore.',
+      },
+      fixedCosts: {
+        question: 'Czym są koszty stałe w Snapomat?',
+        answer:
+          'Koszty stałe to regularne miesięczne wydatki, takie jak czynsz, prąd, internet lub subskrypcje streamingowe. Wprowadzasz je raz w aplikacji, a co miesiąc są automatycznie doliczane do wydatków. Możesz je w każdej chwili edytować lub usunąć.',
+      },
+      entryLimit: {
+        question: 'Jak działa limit wpisów?',
+        answer:
+          'W pierwszym miesiącu masz 20 Kredytów i 20 wpisów ręcznych gratis. Od drugiego miesiąca jako użytkownik Free masz 10 Kredytów i 10 wpisów ręcznych miesięcznie. Z subskrypcją masz nielimitowane wpisy ręczne i 100 Kredytów miesięcznie.',
       },
     },
     aboutModalTitle: 'O Snapomat',
@@ -217,34 +198,29 @@ export default {
     backupHint: 'Twoje wydatki, budżet i ustawienia zostaną zapisane.',
     backupCreate: '📤 Utwórz kopię',
     backupRestore: '📥 Przywróć kopię',
-    pricingCreditsRemaining: 'Masz jeszcze {{count}} Credits.',
-    pricingCreditHint: '1 Credit na analizę AI.',
+    pricingCreditsRemaining: 'Masz jeszcze {{count}} Kredytów.',
+    pricingCreditHint: '1 Kredyt na skan',
     pricingMonth1: 'MIESIĄC 1',
     pricingFromMonth2: 'OD MIESIĄCA 2',
-    pricingFreeMonth1Credits: '⚡ 20 Credits AI · 1 Credit na analizę',
-    pricingFreeMonth1Manual: '✏️ Nielimitowane wpisy ręczne',
-    pricingFreeFromMonth2Ai: '⚡ Analizy AI w pakietach Credits',
-    pricingFreeFromMonth2Manual: '✏️ 10 darmowych wpisów ręcznych miesięcznie',
+    pricingFreeMonth1Credits: '⚡ 20 Kredytów',
+    pricingFreeMonth1Manual: '✏️ 20 wpisów ręcznych',
+    pricingFreeFromMonth2Ai: '⚡ 10 Kredytów miesięcznie',
+    pricingFreeFromMonth2Manual: '✏️ 10 wpisów ręcznych miesięcznie',
     pricingMonthlyPrice: '3,99 € / miesiąc',
-    pricingMonthlyCredits: '⚡ 100 Credits AI miesięcznie',
+    pricingMonthlyCredits: '⚡ 100 Kredytów miesięcznie',
     pricingMonthlyManual: '✏️ Nielimitowane wpisy ręczne',
-    pricingMonthlyTransfair: '∞ Transfair – niewykorzystane Credits przechodzą na następny miesiąc',
     pricingCancelAnytime: 'Anuluj w dowolnym momencie',
     pricingYearlyPrice: '19,99 € / rok',
-    pricingYearlyBadge: '-58%',
-    pricingYearlyCredits: '⚡ 1 500 Credits AI rocznie',
-    pricingYearlyPerMonth: 'tylko 1,67 €/miesiąc',
-    pricingYearlyTransfair: '∞ Transfair – niewykorzystane Credits się kumulują',
     pricingAddonPacks: 'PAKIETY DODATKOWE',
     pricingAddonFooter: 'Jednorazowa płatność · Bez subskrypcji',
-    pricingPack100: '100 Credits',
-    pricingPack100Price: '1,99 €',
-    pricingPack500: '500 Credits',
-    pricingPack500Price: '7,99 €',
-    pricingPack1000: '1 000 Credits',
-    pricingPack1000Price: '12,99 €',
+    pricingPack50: '50 Kredytów',
+    pricingPack50Price: '1,99 €',
+    pricingPack200: '200 Kredytów',
+    pricingPack200Price: '5,99 €',
+    pricingPack500: '500 Kredytów',
+    pricingPack500Price: '12,99 €',
     shareReportMessage:
-      'Miesięczny raport Snapomat – {{month}}\nWydatki: {{total}}\nWpisy: {{count}}',
+      'Miesięczny raport Snapomat – {{month}}\nWydatki: {{total}} | Wpisy: {{count}}',
     alerts: {
       restoringPurchases: 'Przywracanie zakupów...',
       thanksRating: 'Dziękujemy za ocenę!',
@@ -273,14 +249,14 @@ export default {
   onboarding: {
     title1: 'Sfotografuj paragon –',
     title1gold: 'AI zrobi resztę',
-    sub1: 'Paragon lub wyciąg bankowy: Snapomat rozpoznaje kwotę i sklep, proponuje kategorię, a Ty zatwierdzasz wpis.',
+    sub1: 'Sfotografuj paragon. Snapomat automatycznie rozpoznaje kwotę i sklep, proponuje odpowiednią kategorię i tworzy wpis. Ty tylko potwierdzasz.',
     sub1small: 'W każdej chwili możesz też wpisać dane ręcznie.',
     title2: 'Miej kontrolę',
     title2gold: 'nad budżetem',
-    sub2: 'Ustaw budżet miesięczny. Pierścień wydatków pokazuje, na czym stoisz – i ile jeszcze możesz wydać.',
-    title3: 'Twoje wydatki',
-    title3gold: 'na pierwszy rzut oka',
-    sub3: 'Od razu widzisz, gdzie idą pieniądze – według kategorii, sklepu lub miesiąca.',
+    sub2: 'Ustaw budżet miesięczny. Pierścień wydatków pokazuje Ci w każdej chwili, ile już wydałeś i ile jeszcze masz do dyspozycji. Dzięki temu zawsze wiesz, na jakim jesteś etapie finansowym.',
+    title3: 'Wprowadź koszty stałe raz –',
+    title3gold: 'oszczędzaj czas na stałe',
+    sub3: 'Czynsz, Netflix, abonament komórkowy lub ubezpieczenie: wystarczy dodać raz. Snapomat automatycznie uwzględnia regularne wydatki i utrzymuje budżet na bieżąco.',
     skip: 'Pomiń',
     getStarted: 'Zacznij',
   },

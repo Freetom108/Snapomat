@@ -13,6 +13,7 @@ const DEFAULT_DATA = {
   },
   theme: 'gold',
   onboardingDone: false,
+  onboardingCompleted: false,
   locale: 'de',
   userId: null,
 };
@@ -153,12 +154,16 @@ export async function saveTheme(themeId) {
   await saveData(data);
 }
 
+function isOnboardingCompleted(data) {
+  return data.onboardingCompleted === true || data.onboardingDone === true;
+}
+
 export async function getOnboardingDoneLive() {
   try {
     const raw = await AsyncStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (parsed.onboardingDone === true) return true;
+      if (isOnboardingCompleted(parsed)) return true;
     }
   } catch {
     // ignore parse errors
@@ -170,10 +175,11 @@ export async function getOnboardingDoneLive() {
 
 export async function getOnboardingDone() {
   const data = await loadData();
-  if (data.onboardingDone) return true;
+  if (isOnboardingCompleted(data)) return true;
 
   const legacy = await AsyncStorage.getItem('hasOnboarded');
   if (legacy === 'true') {
+    data.onboardingCompleted = true;
     data.onboardingDone = true;
     await saveData(data);
     return true;
@@ -184,6 +190,7 @@ export async function getOnboardingDone() {
 
 export async function setOnboardingDone() {
   const data = await loadData();
+  data.onboardingCompleted = true;
   data.onboardingDone = true;
   await saveData(data);
   await AsyncStorage.removeItem('hasOnboarded');
@@ -191,6 +198,7 @@ export async function setOnboardingDone() {
 
 export async function clearOnboardingDone() {
   const data = await loadData();
+  data.onboardingCompleted = false;
   data.onboardingDone = false;
   await saveData(data);
   await AsyncStorage.removeItem('hasOnboarded');
@@ -233,6 +241,30 @@ export async function getLocale() {
 export async function saveLocale(locale) {
   const data = await loadData();
   data.locale = locale;
+  await saveData(data);
+}
+
+export async function getHistorySelectedMonth() {
+  const data = await loadData();
+  const value = data.historySelectedMonth;
+  if (
+    value
+    && Number.isInteger(value.year)
+    && Number.isInteger(value.month)
+    && value.month >= 0
+    && value.month <= 11
+  ) {
+    return { year: value.year, month: value.month };
+  }
+  return null;
+}
+
+export async function saveHistorySelectedMonth(year, month) {
+  const data = await loadData();
+  data.historySelectedMonth = {
+    year: Number(year),
+    month: Number(month),
+  };
   await saveData(data);
 }
 

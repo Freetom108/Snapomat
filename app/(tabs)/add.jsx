@@ -41,31 +41,10 @@ async function imageToBase64(uri, actions = []) {
   return result.base64;
 }
 
-async function analyzeWithBestOrientation(uri, width, height, scanType) {
-  if (width <= height) {
-    const base64 = await imageToBase64(uri);
-    const result = await analyzeImage(base64, scanType);
-    return { base64, result };
-  }
-
-  const [base6490, base64270] = await Promise.all([
-    imageToBase64(uri, [{ rotate: 90 }]),
-    imageToBase64(uri, [{ rotate: 270 }]),
-  ]);
-
-  const [result90, result270] = await Promise.all([
-    analyzeImage(base6490, scanType),
-    analyzeImage(base64270, scanType),
-  ]);
-
-  const count90 = result90?.length ?? 0;
-  const count270 = result270?.length ?? 0;
-
-  if (count270 > count90) {
-    return { base64: base64270, result: result270 };
-  }
-
-  return { base64: base6490, result: result90 };
+async function analyzeReceipt(uri) {
+  const base64 = await imageToBase64(uri);
+  const result = await analyzeImage(base64);
+  return { base64, result };
 }
 
 const EMPTY_MANUAL = {
@@ -73,7 +52,16 @@ const EMPTY_MANUAL = {
   amount: '',
   date: new Date().toLocaleDateString('de-DE'),
   categoryId: 'food',
+  merchantConfidence: 0.9,
+  dateConfidence: 0.9,
+  amountConfidence: 0.9,
 };
+
+const UNCERTAIN_GOLD = '#E8B84B';
+
+function isUncertainConfidence(confidence) {
+  return Number(confidence) < 0.7;
+}
 
 function formatAmount(amount) {
   const num = Number(amount);
@@ -125,6 +113,9 @@ function apiItemToForm(item) {
     amount: formatAmount(item.amount),
     date: formatDate(item.date),
     categoryId: normalizeCategoryId(item.category ?? item.categoryId),
+    merchantConfidence: Number(item.merchantConfidence) ?? 0.9,
+    dateConfidence: Number(item.dateConfidence) ?? 0.9,
+    amountConfidence: Number(item.amountConfidence) ?? 0.9,
   };
 }
 
@@ -173,24 +164,6 @@ function confirmDuplicateAdd(t) {
   });
 }
 
-async function filterItemsAfterDuplicateCheck(items, expenses, t) {
-  const kept = [];
-
-  for (const item of items) {
-    const amount = parseFloat(String(item.amount).replace(',', '.')) || 0;
-    if (isDuplicateEntry(expenses, amount, item.date)) {
-      const proceed = await confirmDuplicateAdd(t);
-      if (proceed) {
-        kept.push(item);
-      }
-    } else {
-      kept.push(item);
-    }
-  }
-
-  return kept;
-}
-
 async function proceedSingleReviewIfAllowed(formItem, expenses, t) {
   const amount = parseFloat(String(formItem.amount).replace(',', '.')) || 0;
   if (!isDuplicateEntry(expenses, amount, formItem.date)) {
@@ -208,7 +181,7 @@ function ScreenHeader({ styles }) {
   );
 }
 
-function SelectionStep({ colors, styles, onReceipt, onStatement, onManual }) {
+function SelectionStep({ colors, styles, onReceipt, onManual }) {
   const { t } = useTranslation();
 
   return (
@@ -226,23 +199,7 @@ function SelectionStep({ colors, styles, onReceipt, onStatement, onManual }) {
         </View>
       </Pressable>
 
-      <Pressable
-        onPress={onStatement}
-        style={({ pressed }) => [styles.optionButton, pressed && styles.pressed]}
-      >
-        <View
-          style={[
-            styles.iconBox,
-            { backgroundColor: withAlpha(CATEGORIES.mobility.color, 0.12) },
-          ]}
-        >
-          <Text style={styles.iconEmoji}>🏦</Text>
-        </View>
-        <View style={styles.optionText}>
-          <Text style={styles.optionTitle}>{t('import.statementTitle')}</Text>
-          <Text style={styles.optionSubtitle}>{t('import.statementSubtitle')}</Text>
-        </View>
-      </Pressable>
+      <Text style={styles.receiptHint}>{t('import.receiptHint')}</Text>
 
       <View style={styles.dividerRow}>
         <View style={styles.dividerLine} />
@@ -309,17 +266,31 @@ function CameraModal({ visible, colors, styles, onCancel, onCapture }) {
   );
 }
 
-function ReviewField({ label, value, onChangeText, colors, styles, keyboardType = 'default' }) {
+function ReviewField({
+  label,
+  value,
+  onChangeText,
+  colors,
+  styles,
+  keyboardType = 'default',
+  uncertain = false,
+}) {
   return (
     <View style={styles.fieldRow}>
       <Text style={styles.fieldLabel}>{label}</Text>
-      <TextInput
-        value={value}
-        onChangeText={onChangeText}
-        style={styles.fieldValue}
-        keyboardType={keyboardType}
-        placeholderTextColor={colors.muted}
-      />
+      <View style={styles.fieldValueWrap}>
+        {uncertain ? <Text style={styles.fieldWarningPrefix}>⚠️ </Text> : null}
+        <TextInput
+          value={value}
+          onChangeText={onChangeText}
+          style={[
+            styles.fieldValue,
+            uncertain && styles.fieldValueUncertain,
+          ]}
+          keyboardType={keyboardType}
+          placeholderTextColor={colors.muted}
+        />
+      </View>
     </View>
   );
 }
@@ -401,86 +372,6 @@ function ScanOverlay({ visible, colors, styles }) {
   );
 }
 
-function MultiReviewStep({ colors, styles, items, onSaveAll, onRemoveItem, onCancel, saving }) {
-  const { t } = useTranslation();
-
-  return (
-    <View style={styles.reviewContent}>
-      <View
-        style={[
-          styles.successBadge,
-          {
-            backgroundColor: withAlpha(colors.green, 0.1),
-            borderColor: withAlpha(colors.green, 0.2),
-          },
-        ]}
-      >
-        <Text style={[styles.successBadgeText, { color: colors.green }]}>
-          {t('import.multiDetected', { count: items.length })}
-        </Text>
-      </View>
-
-      <Text style={styles.sectionLabel}>{t('import.multiSection')}</Text>
-
-      {items.map((item, index) => {
-        const category = getCategory(item.categoryId);
-        return (
-          <View
-            key={`${item.merchant}-${item.date}-${index}`}
-            style={[styles.multiCard, index < items.length - 1 && styles.multiCardSpacing]}
-          >
-            <View style={styles.multiCardInner}>
-              <View style={styles.multiCardBody}>
-                <View style={styles.multiRow}>
-                  <Text style={styles.multiMerchant}>{item.merchant || t('import.unknownMerchant')}</Text>
-                  <Text style={styles.multiAmount}>{item.amount} €</Text>
-                </View>
-                <View style={styles.multiRow}>
-                  <Text style={styles.multiMeta}>
-                    {category ? `${category.emoji} ${category.label}` : item.categoryId}
-                  </Text>
-                  <Text style={styles.multiMeta}>{item.date}</Text>
-                </View>
-              </View>
-              <Pressable
-                onPress={() => onRemoveItem(index)}
-                hitSlop={8}
-                style={({ pressed }) => [
-                  styles.multiRemoveButton,
-                  pressed && { opacity: 0.6 },
-                ]}
-                accessibilityRole="button"
-                accessibilityLabel={t('import.removeEntry')}
-              >
-                <Text style={[styles.multiRemoveText, { color: colors.muted }]}>×</Text>
-              </Pressable>
-            </View>
-          </View>
-        );
-      })}
-
-      <Pressable
-        onPress={onSaveAll}
-        disabled={saving || items.length === 0}
-        style={({ pressed }) => [
-          styles.saveButton,
-          {
-            backgroundColor: colors.accent,
-            opacity: saving || items.length === 0 ? 0.5 : 1,
-          },
-          pressed && !saving && items.length > 0 && styles.pressed,
-        ]}
-      >
-        <Text style={styles.saveButtonText}>{saving ? t('common.saving') : t('import.saveAll')}</Text>
-      </Pressable>
-
-      <Pressable onPress={onCancel} style={styles.cancelButton}>
-        <Text style={styles.cancelButtonText}>{t('common.cancel')}</Text>
-      </Pressable>
-    </View>
-  );
-}
-
 function ReviewStep({
   colors,
   styles,
@@ -528,6 +419,7 @@ function ReviewStep({
           onChangeText={(merchant) => setForm((prev) => ({ ...prev, merchant }))}
           colors={colors}
           styles={styles}
+          uncertain={isUncertainConfidence(form.merchantConfidence)}
         />
         <View style={styles.fieldDivider} />
         <ReviewField
@@ -537,6 +429,7 @@ function ReviewStep({
           colors={colors}
           styles={styles}
           keyboardType="decimal-pad"
+          uncertain={isUncertainConfidence(form.amountConfidence)}
         />
         <View style={styles.fieldDivider} />
         <ReviewField
@@ -545,6 +438,7 @@ function ReviewStep({
           onChangeText={(date) => setForm((prev) => ({ ...prev, date }))}
           colors={colors}
           styles={styles}
+          uncertain={isUncertainConfidence(form.dateConfidence)}
         />
       </View>
 
@@ -603,6 +497,23 @@ function createStyles(colors) {
       paddingTop: 50,
       paddingBottom: 32,
     },
+    selectLayout: {
+      flex: 1,
+    },
+    selectHeader: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      paddingHorizontal: 20,
+      paddingTop: 50,
+    },
+    selectCentered: {
+      flex: 1,
+      paddingHorizontal: 20,
+      paddingBottom: 32,
+      justifyContent: 'center',
+    },
     header: {
       marginBottom: 24,
     },
@@ -653,6 +564,14 @@ function createStyles(colors) {
       fontFamily: 'DMSans_400Regular',
       fontSize: 15,
       color: colors.muted,
+    },
+    receiptHint: {
+      fontFamily: 'DMSans_400Regular',
+      fontSize: 12,
+      color: colors.muted,
+      textAlign: 'center',
+      marginTop: 8,
+      paddingHorizontal: 8,
     },
     dividerRow: {
       flexDirection: 'row',
@@ -790,12 +709,26 @@ function createStyles(colors) {
       fontSize: 15,
       color: colors.muted,
     },
+    fieldValueWrap: {
+      flex: 1,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+    },
+    fieldWarningPrefix: {
+      fontFamily: 'DMSans_700Bold',
+      fontSize: 17,
+      color: UNCERTAIN_GOLD,
+    },
     fieldValue: {
       flex: 1,
       fontFamily: 'DMSans_700Bold',
       fontSize: 17,
       color: colors.text,
       textAlign: 'right',
+    },
+    fieldValueUncertain: {
+      color: UNCERTAIN_GOLD,
     },
     fieldDivider: {
       height: 1,
@@ -894,56 +827,6 @@ function createStyles(colors) {
       fontSize: 15,
       color: colors.muted,
     },
-    multiCard: {
-      backgroundColor: colors.card,
-      borderRadius: 16,
-      padding: 16,
-    },
-    multiCardSpacing: {
-      marginBottom: 12,
-    },
-    multiCardInner: {
-      flexDirection: 'row',
-      alignItems: 'flex-start',
-      gap: 8,
-    },
-    multiCardBody: {
-      flex: 1,
-    },
-    multiRemoveButton: {
-      width: 28,
-      height: 28,
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginTop: -2,
-    },
-    multiRemoveText: {
-      fontFamily: 'DMSans_400Regular',
-      fontSize: 22,
-      lineHeight: 24,
-    },
-    multiRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      marginBottom: 4,
-    },
-    multiMerchant: {
-      fontFamily: 'DMSans_700Bold',
-      fontSize: 15,
-      color: colors.text,
-      flex: 1,
-    },
-    multiAmount: {
-      fontFamily: 'DMSans_700Bold',
-      fontSize: 16,
-      color: colors.text,
-    },
-    multiMeta: {
-      fontFamily: 'DMSans_400Regular',
-      fontSize: 12,
-      color: colors.muted,
-    },
   });
 }
 
@@ -956,11 +839,9 @@ export default function AddScreen() {
   const [step, setStep] = useState('select');
   const [showCamera, setShowCamera] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
-  const [importType, setImportType] = useState(null);
   const [photoBase64, setPhotoBase64] = useState(null);
   const [form, setForm] = useState(EMPTY_MANUAL);
   const [selectedCategory, setSelectedCategory] = useState(EMPTY_MANUAL.categoryId);
-  const [multiItems, setMultiItems] = useState([]);
   const [saving, setSaving] = useState(false);
 
   const [fontsLoaded] = useFonts({
@@ -970,8 +851,7 @@ export default function AddScreen() {
     DMSans_900Black,
   });
 
-  function openCamera(type) {
-    setImportType(type);
+  function openCamera() {
     setShowCamera(true);
   }
 
@@ -980,13 +860,7 @@ export default function AddScreen() {
     setIsScanning(true);
 
     try {
-      const scanType = importType ?? 'statement';
-      const { base64, result } = await analyzeWithBestOrientation(
-        photo.uri,
-        photo.width,
-        photo.height,
-        scanType,
-      );
+      const { base64, result } = await analyzeReceipt(photo.uri);
 
       if (!base64 || !result || result.length === 0) {
         Alert.alert(t('import.analysisFailed'));
@@ -996,31 +870,15 @@ export default function AddScreen() {
       setPhotoBase64(base64);
 
       const expenses = await getExpenses();
-
-      if (result.length === 1) {
-        const nextForm = apiItemToForm(result[0]);
-        const allowed = await proceedSingleReviewIfAllowed(nextForm, expenses, t);
-        if (!allowed) {
-          setPhotoBase64(null);
-          setImportType(null);
-          return;
-        }
-        setForm(nextForm);
-        setSelectedCategory(nextForm.categoryId);
-        setStep('review');
-        return;
-      }
-
-      const forms = result.map(apiItemToForm);
-      const filteredItems = await filterItemsAfterDuplicateCheck(forms, expenses, t);
-      if (filteredItems.length === 0) {
+      const nextForm = apiItemToForm(result[0]);
+      const allowed = await proceedSingleReviewIfAllowed(nextForm, expenses, t);
+      if (!allowed) {
         setPhotoBase64(null);
-        setImportType(null);
         return;
       }
-
-      setMultiItems(filteredItems);
-      setStep('multi-review');
+      setForm(nextForm);
+      setSelectedCategory(nextForm.categoryId);
+      setStep('review');
     } catch {
       Alert.alert(t('import.analysisFailed'));
       setPhotoBase64(null);
@@ -1030,7 +888,6 @@ export default function AddScreen() {
   }
 
   function handleManual() {
-    setImportType('manual');
     setPhotoBase64(null);
     setForm({ ...EMPTY_MANUAL });
     setSelectedCategory(EMPTY_MANUAL.categoryId);
@@ -1040,28 +897,8 @@ export default function AddScreen() {
   function handleBack() {
     setStep('select');
     setPhotoBase64(null);
-    setImportType(null);
     setForm({ ...EMPTY_MANUAL });
     setSelectedCategory(EMPTY_MANUAL.categoryId);
-    setMultiItems([]);
-  }
-
-  function handleRemoveMultiItem(index) {
-    setMultiItems((prev) => prev.filter((_, i) => i !== index));
-  }
-
-  async function handleSaveAll() {
-    if (saving) return;
-    setSaving(true);
-    try {
-      for (const item of multiItems) {
-        await saveExpense(formToExpense(item));
-      }
-      handleBack();
-      router.replace('/(tabs)');
-    } finally {
-      setSaving(false);
-    }
   }
 
   function handleSelectCategory(categoryId) {
@@ -1096,28 +933,23 @@ export default function AddScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <ScreenHeader styles={styles} />
-
-        {step === 'select' ? (
-          <SelectionStep
-            colors={colors}
-            styles={styles}
-            onReceipt={() => openCamera('receipt')}
-            onStatement={() => openCamera('statement')}
-            onManual={handleManual}
-          />
-        ) : step === 'multi-review' ? (
-          <MultiReviewStep
-            colors={colors}
-            styles={styles}
-            items={multiItems}
-            onSaveAll={handleSaveAll}
-            onRemoveItem={handleRemoveMultiItem}
-            onCancel={handleBack}
-            saving={saving}
-          />
-        ) : (
+      {step === 'select' ? (
+        <View style={styles.selectLayout}>
+          <View style={styles.selectCentered}>
+            <SelectionStep
+              colors={colors}
+              styles={styles}
+              onReceipt={openCamera}
+              onManual={handleManual}
+            />
+          </View>
+          <View style={styles.selectHeader}>
+            <ScreenHeader styles={styles} />
+          </View>
+        </View>
+      ) : (
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          <ScreenHeader styles={styles} />
           <ReviewStep
             colors={colors}
             styles={styles}
@@ -1129,8 +961,8 @@ export default function AddScreen() {
             onCancel={handleBack}
             saving={saving}
           />
-        )}
-      </ScrollView>
+        </ScrollView>
+      )}
 
       <ScanOverlay visible={isScanning} colors={colors} styles={styles} />
 

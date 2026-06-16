@@ -62,19 +62,14 @@ export default {
   import: {
     receiptTitle: 'Kassenzettel',
     receiptSubtitle: 'Foto aufnehmen',
-    statementTitle: 'Kontoauszug',
-    statementSubtitle: 'Foto aufnehmen',
+    receiptHint:
+      'Tipp: Gutes Licht und ein flach fotografierter Beleg verbessern die Erkennung. Unsichere Felder werden mit ⚠️ markiert – einfach antippen und kostenlos korrigieren.',
     or: 'oder',
     manualEntry: 'Manuell eingeben',
     cameraPermission: 'Kamerazugriff erforderlich',
     cameraGrant: 'Berechtigung erteilen',
     scanTitle: 'Analyse läuft...',
     scanSubtitle: 'Beleg wird ausgewertet',
-    multiDetected: '{{count}} Einträge erkannt – bitte prüfen',
-    multiSection: 'ALLE EINTRÄGE',
-    unknownMerchant: 'Unbekannt',
-    removeEntry: 'Eintrag entfernen',
-    saveAll: 'Alle speichern',
     reviewDetected: '✅ Erkannt – bitte überprüfen',
     reviewSection: 'DATEN PRÜFEN',
     fieldMerchant: 'Händler',
@@ -100,7 +95,7 @@ export default {
       monthlyBudgetTitle: 'Monatsbudget festlegen',
       monthlyBudgetSubtitle: 'Ausgabenlimit einstellen',
       shareReportTitle: 'Monatsbericht teilen',
-      shareReportSubtitle: 'Als PDF verschicken',
+      shareReportSubtitle: 'Monat in History wählen und per WhatsApp, Mail & mehr teilen',
       backupRestoreSubtitle: 'Daten sichern & wiederherstellen',
       languageTitle: 'Sprache',
       colorSchemeTitle: 'Farbschema',
@@ -114,6 +109,7 @@ export default {
       legalSubtitle: 'Datenschutz · Impressum',
     },
     deleteAllData: '🗑 Alle App-Daten löschen',
+    subscriptionCreditsTitle: 'Abo & Credits',
     versionMvp: 'Version 1.0',
     budgetModalTitle: '🎯 Monatsbudget',
     budgetModalLine1: 'Wie viel möchtest du pro Monat ausgeben?',
@@ -150,52 +146,37 @@ export default {
       ai: {
         question: 'Wie funktioniert die KI-Analyse?',
         answer:
-          'Du fotografierst einen Kassenzettel oder Kontoauszug. Snapomat sendet das Bild an eine KI die Händler, Betrag, Datum und Kategorie automatisch erkennt. Du überprüfst alle Daten vor dem Speichern – du hast immer das letzte Wort. Jede Analyse kostet 1 Credit.',
+          'Du fotografierst einen Kassenzettel. Snapomat sendet das Bild an eine KI die Händler, Betrag, Datum und Kategorie automatisch erkennt. Du überprüfst alle Daten vor dem Speichern – du hast immer das letzte Wort. Jede Analyse kostet 1 Credit.',
       },
       scanCost: {
-        question: 'Was kostet ein Scan?',
+        question: 'Was sind Credits?',
         answer:
-          'Ein Kassenzettel-Scan kostet 1 Credit. Ein Kontoauszug im Querformat wird für bessere Erkennungsgenauigkeit zweifach analysiert und kostet 2 Credits. Manuelle Einträge kosten 1 Credit nach dem monatlichen Freikontingent.',
-      },
-      creditsNormal: {
-        question: 'Wie viele Credits brauche ich normalerweise?',
-        answer:
-          'Die meisten Nutzer kommen mit deutlich weniger als 100 Credits pro Monat aus. Das Monatsabo und insbesondere das Jahresabo sind für die normale Nutzung großzügig ausgelegt. Du musst dir keine Sorgen machen ständig Credits nachkaufen zu müssen.',
-      },
-      creditsExpire: {
-        question: 'Verfallen meine Credits?',
-        answer:
-          'Gekaufte Credit-Pakete verfallen nie. Bei monatlichen Abo-Credits gilt Transfair – nicht verbrauchte Credits werden automatisch in den nächsten Monat mitgenommen, bis maximal die Höhe deines monatlichen Pakets.',
-      },
-      transfair: {
-        question: 'Was ist Transfair?',
-        answer:
-          'Transfair bedeutet dass nicht verbrauchte Credits automatisch in den nächsten Monat mitgenommen werden – bis maximal die Höhe deines monatlichen Pakets. So gehen dir keine Credits verloren wenn du in einem Monat nicht so viele KI-Analysen benötigst.',
-      },
-      creditsEmpty: {
-        question: 'Was passiert wenn meine Credits aufgebraucht sind?',
-        answer:
-          'Im ersten Monat kannst du Buchungen kostenlos manuell eingeben. Ab dem zweiten Monat stehen dir 10 manuelle Eingaben gratis zur Verfügung. Danach kostet jede weitere Eingabe – ob Foto oder manuell – 1 Credit. Credits kannst du jederzeit unter Settings → Abo & Credits nachkaufen.',
+          'Credits sind die Währung für KI-Analysen in Snapomat. Jedes Foto eines Kassenzettels kostet 1 Credit. Manuelle Einträge kosten keine Credits. Als Abonnent bekommst du jeden Monat automatisch 100 frische Credits.',
       },
       creditsBuy: {
         question: 'Kann ich Credits nachkaufen?',
         answer:
-          'Ja, unter Settings → Abo & Credits findest du Pakete ab 1,99 €. Die Credits werden sofort gutgeschrieben und verfallen nie.',
+          'Ja. Als Monats- oder Jahresabonnent kannst du jederzeit unter Einstellungen → Abo & Credits zusätzliche Credit-Pakete kaufen. Diese verfallen nie.',
       },
       budget: {
         question: 'Wie setze ich mein Monatsbudget?',
         answer:
           'Unter Settings → Budget & Berichte → Ausgabenlimit einstellen kannst du deinen gewünschten Betrag eingeben. Der Ring auf der Today-Seite zeigt dir dann immer wie viel du bereits verbraucht hast und wie viel du noch pro Tag ausgeben kannst. Du kannst außerdem festlegen bei welchem Prozentsatz du gewarnt werden möchtest – von 50% bis 90%.',
       },
-      creditsStatement: {
-        question: 'Was passiert mit Gutschriften im Kontoauszug?',
-        answer:
-          'Snapomat erkennt automatisch nur Ausgaben und Belastungen. Gutschriften und Eingänge werden ignoriert. Falls doch ein Eingang erkannt wird kannst du ihn im Überprüfungs-Screen mit dem Löschen-Button entfernen bevor du speicherst.',
-      },
       backup: {
         question: 'Was ist Backup & Restore?',
         answer:
           'Mit Backup & Restore kannst du alle deine Ausgaben, dein Budget und deine Einstellungen als Datei sichern und bei Bedarf wiederherstellen – zum Beispiel nach einem Handywechsel oder einer Neuinstallation. Du findest die Funktion unter Settings → Budget & Reports → Backup & Restore.',
+      },
+      fixedCosts: {
+        question: 'Was sind Fixkosten in Snapomat?',
+        answer:
+          'Fixkosten sind regelmäßige monatliche Ausgaben wie Miete, Strom, Internet oder Streaming-Abos. Du erfasst sie einmalig in der App und sie werden automatisch jeden Monat in deine Ausgaben eingerechnet. Du kannst sie jederzeit anpassen oder löschen.',
+      },
+      entryLimit: {
+        question: 'Wie funktioniert das Eintragslimit?',
+        answer:
+          'Im ersten Monat hast du 20 Credits und 20 manuelle Einträge gratis. Ab dem zweiten Monat stehen dir als Free User 10 Credits und 10 manuelle Einträge pro Monat zur Verfügung. Mit einem Abo hast du unbegrenzte manuelle Einträge und 100 Credits pro Monat.',
       },
     },
     aboutModalTitle: 'Über Snapomat',
@@ -218,33 +199,28 @@ export default {
     backupCreate: '📤 Backup erstellen',
     backupRestore: '📥 Backup wiederherstellen',
     pricingCreditsRemaining: 'Du hast noch {{count}} Credits.',
-    pricingCreditHint: '1–2 Credits pro Scan',
+    pricingCreditHint: '1 Credit pro Scan',
     pricingMonth1: 'MONAT 1',
     pricingFromMonth2: 'AB MONAT 2',
-    pricingFreeMonth1Credits: '⚡ 20 KI-Credits · 1 Credit pro Analyse',
-    pricingFreeMonth1Manual: '✏️ Unbegrenzte manuelle Einträge',
-    pricingFreeFromMonth2Ai: '⚡ KI-Analysen flexibel per Credit-Paket verfügbar',
-    pricingFreeFromMonth2Manual: '✏️ 10 manuelle Einträge pro Monat gratis',
+    pricingFreeMonth1Credits: '⚡ 20 Credits',
+    pricingFreeMonth1Manual: '✏️ 20 manuelle Einträge',
+    pricingFreeFromMonth2Ai: '⚡ 10 Credits pro Monat',
+    pricingFreeFromMonth2Manual: '✏️ 10 manuelle Einträge pro Monat',
     pricingMonthlyPrice: '3,99 € / Monat',
-    pricingMonthlyCredits: '⚡ 100 KI-Credits pro Monat',
+    pricingMonthlyCredits: '⚡ 100 Credits pro Monat',
     pricingMonthlyManual: '✏️ Unbegrenzte manuelle Einträge',
-    pricingMonthlyTransfair: '∞ Transfair – nicht verbrauchte Credits werden mitgenommen',
     pricingCancelAnytime: 'Jederzeit kündbar',
     pricingYearlyPrice: '19,99 € / Jahr',
-    pricingYearlyBadge: '-58%',
-    pricingYearlyCredits: '⚡ 1.500 KI-Credits pro Jahr',
-    pricingYearlyPerMonth: 'nur 1,67 €/Monat',
-    pricingYearlyTransfair: '∞ Transfair – nicht verbrauchte Credits werden mitgenommen',
     pricingAddonPacks: 'ZUSATZPAKETE',
     pricingAddonFooter: 'Einmalige Zahlung · Kein Abo',
-    pricingPack100: '100 Credits',
-    pricingPack100Price: '1,99 €',
+    pricingPack50: '50 Credits',
+    pricingPack50Price: '1,99 €',
+    pricingPack200: '200 Credits',
+    pricingPack200Price: '5,99 €',
     pricingPack500: '500 Credits',
-    pricingPack500Price: '7,99 €',
-    pricingPack1000: '1.000 Credits',
-    pricingPack1000Price: '12,99 €',
+    pricingPack500Price: '12,99 €',
     shareReportMessage:
-      'Snapomat Monatsbericht – {{month}}\nAusgaben: {{total}}\nBuchungen: {{count}}',
+      'Snapomat Monatsbericht – {{month}}\nAusgaben: {{total}} | Buchungen: {{count}}',
     alerts: {
       restoringPurchases: 'Käufe werden wiederhergestellt...',
       thanksRating: 'Vielen Dank für deine Bewertung!',
@@ -273,14 +249,14 @@ export default {
   onboarding: {
     title1: 'Beleg fotografieren –',
     title1gold: 'die KI erledigt den Rest',
-    sub1: 'Ob Kassenzettel oder Kontoauszug – Snapomat erkennt Betrag und Händler, schlägt eine passende Kategorie vor und du bestätigst den Eintrag.',
+    sub1: 'Fotografiere einen Kassenzettel. Snapomat erkennt Betrag und Händler automatisch, schlägt eine passende Kategorie vor und erstellt den Eintrag. Du bestätigst nur noch.',
     sub1small: 'Die Belegerfassung kann auch jederzeit manuell erfolgen.',
     title2: 'Behalte den Überblick',
     title2gold: 'über dein Budget',
-    sub2: 'Lege dein Monatsbudget fest. Der Ausgabenring zeigt dir jederzeit wo du stehst – und wie viel Geld du noch zur Verfügung hast.',
-    title3: 'Deine Ausgaben',
-    title3gold: 'auf einen Blick',
-    sub3: 'Erkenne sofort, wo dein Geld wirklich hingeht – nach Kategorie, Händler oder Monat.',
+    sub2: 'Lege dein Monatsbudget fest. Der Ausgabenring zeigt dir jederzeit, wie viel Geld du bereits ausgegeben hast und wie viel noch verfügbar ist. So weißt du immer, wo du finanziell stehst.',
+    title3: 'Fixkosten einmal erfassen –',
+    title3gold: 'dauerhaft Zeit sparen',
+    sub3: 'Miete, Netflix, Handyvertrag oder Versicherung: Einmal anlegen genügt. Snapomat berücksichtigt deine regelmäßigen Ausgaben automatisch und hält dein Budget aktuell.',
     skip: 'Überspringen',
     getStarted: 'App starten',
   },

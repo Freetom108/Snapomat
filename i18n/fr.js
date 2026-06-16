@@ -62,19 +62,14 @@ export default {
   import: {
     receiptTitle: 'Ticket de caisse',
     receiptSubtitle: 'Prendre une photo',
-    statementTitle: 'Relevé bancaire',
-    statementSubtitle: 'Prendre une photo',
+    receiptHint:
+      'Conseil: Un bon éclairage améliore la reconnaissance. Les champs incertains sont marqués ⚠️ – appuyez pour corriger gratuitement.',
     or: 'ou',
     manualEntry: 'Saisir manuellement',
     cameraPermission: 'Accès à la caméra requis',
     cameraGrant: 'Autoriser',
     scanTitle: 'Analyse en cours...',
     scanSubtitle: 'Document en cours de traitement',
-    multiDetected: '{{count}} entrées détectées – veuillez vérifier',
-    multiSection: 'TOUTES LES ENTRÉES',
-    unknownMerchant: 'Inconnu',
-    removeEntry: 'Supprimer l\'entrée',
-    saveAll: 'Tout enregistrer',
     reviewDetected: '✅ Détecté – veuillez vérifier',
     reviewSection: 'VÉRIFIER LES DONNÉES',
     fieldMerchant: 'Commerçant',
@@ -100,7 +95,7 @@ export default {
       monthlyBudgetTitle: 'Définir le budget mensuel',
       monthlyBudgetSubtitle: 'Fixer la limite de dépenses',
       shareReportTitle: 'Partager le rapport mensuel',
-      shareReportSubtitle: 'Envoyer en PDF',
+      shareReportSubtitle: 'Choisir le mois dans History et partager via WhatsApp, e-mail & plus',
       backupRestoreSubtitle: 'Sauvegarder et restaurer les données',
       languageTitle: 'Langue',
       colorSchemeTitle: 'Schéma de couleurs',
@@ -114,6 +109,7 @@ export default {
       legalSubtitle: 'Confidentialité · Mentions légales',
     },
     deleteAllData: '🗑 Supprimer toutes les données',
+    subscriptionCreditsTitle: 'Abonnement & Crédits',
     versionMvp: 'Version 1.0',
     budgetModalTitle: '🎯 Budget mensuel',
     budgetModalLine1: 'Combien souhaitez-vous dépenser par mois ?',
@@ -140,7 +136,7 @@ export default {
       monthlyYearly: {
         question: 'Puis-je passer de Monthly à Yearly ?',
         answer:
-          'Oui. Le changement dépend des règles de l\'App Store concerné. Dans la plupart des cas, vous pouvez gérer votre abonnement actuel et passer directement au forfait Yearly. Vos données et vos Credits restent intacts.',
+          'Oui. Le changement dépend des règles de l\'App Store concerné. Dans la plupart des cas, vous pouvez gérer votre abonnement actuel et passer directement au forfait Yearly. Vos données et vos Crédits restent intacts.',
       },
       data: {
         question: 'Que deviennent mes données ?',
@@ -150,52 +146,37 @@ export default {
       ai: {
         question: 'Comment fonctionne l\'analyse IA ?',
         answer:
-          'Vous photographiez un ticket ou un relevé bancaire. Snapomat envoie l\'image à une IA qui reconnaît automatiquement le commerçant, le montant, la date et la catégorie. Vous vérifiez tout avant d\'enregistrer – vous avez toujours le dernier mot. Chaque analyse coûte 1 Credit.',
+          'Vous photographiez un ticket de caisse. Snapomat envoie l\'image à une IA qui reconnaît automatiquement le commerçant, le montant, la date et la catégorie. Vous vérifiez tout avant d\'enregistrer – vous avez toujours le dernier mot. Chaque analyse coûte 1 Crédit.',
       },
       scanCost: {
-        question: 'Combien coûte un scan ?',
+        question: 'Que sont les Crédits ?',
         answer:
-          'Un scan de ticket coûte 1 Credit. Un relevé bancaire photographié en format paysage est analysé deux fois pour une meilleure précision et coûte 2 Credits. Les saisies manuelles coûtent 1 Credit après le quota mensuel gratuit.',
-      },
-      creditsNormal: {
-        question: 'De combien de Credits ai-je besoin ?',
-        answer:
-          'La plupart des utilisateurs consomment bien moins de 100 Credits par mois. L\'abonnement Monthly et surtout Yearly sont largement dimensionnés pour un usage normal. Pas besoin de racheter des Credits en permanence.',
-      },
-      creditsExpire: {
-        question: 'Mes Credits expirent-ils ?',
-        answer:
-          'Les packs de Credits achetés n\'expirent jamais. Pour les Credits d\'abonnement Monthly, Transfair s\'applique – les Credits non utilisés sont reportés au mois suivant, jusqu\'au montant de votre forfait mensuel.',
-      },
-      transfair: {
-        question: 'Qu\'est-ce que Transfair ?',
-        answer:
-          'Transfair signifie que les Credits non utilisés sont automatiquement reportés au mois suivant – jusqu\'au montant de votre forfait mensuel. Vous ne perdez pas de Credits les mois où vous faites moins d\'analyses IA.',
-      },
-      creditsEmpty: {
-        question: 'Que se passe-t-il quand mes Credits sont épuisés ?',
-        answer:
-          'Le premier mois, vous pouvez saisir des entrées manuellement gratuitement. À partir du deuxième mois, vous disposez de 10 saisies manuelles gratuites. Ensuite, chaque entrée supplémentaire – photo ou manuelle – coûte 1 Credit. Vous pouvez racheter des Credits à tout moment dans Settings → Abo & Credits.',
+          'Les Crédits sont la monnaie des analyses IA dans Snapomat. Chaque photo d\'un reçu coûte 1 Crédit. Les saisies manuelles sont gratuites. En tant qu\'abonné, vous recevez automatiquement 100 Crédits frais chaque mois.',
       },
       creditsBuy: {
-        question: 'Puis-je acheter des Credits ?',
+        question: 'Puis-je acheter des Crédits ?',
         answer:
-          'Oui, dans Settings → Abo & Credits vous trouverez des packs à partir de 1,99 €. Les Credits sont crédités immédiatement et n\'expirent jamais.',
+          'Oui. En tant qu\'abonné Monthly ou Yearly, vous pouvez acheter des packs de Crédits supplémentaires à tout moment dans Réglages → Abonnement & Crédits. Ils n\'expirent jamais.',
       },
       budget: {
         question: 'Comment définir mon budget mensuel ?',
         answer:
           'Dans Settings → Budget & Reports → Fixer la limite de dépenses, saisissez le montant souhaité. L\'anneau sur la page Today indique combien vous avez dépensé et combien il vous reste par jour. Vous pouvez aussi choisir à quel pourcentage être averti – de 50 % à 90 %.',
       },
-      creditsStatement: {
-        question: 'Que se passe-t-il avec les crédits sur un relevé bancaire ?',
-        answer:
-          'Snapomat ne reconnaît que les dépenses et les débits. Les crédits et virements entrants sont ignorés. Si un crédit est quand même détecté, vous pouvez le supprimer à l\'écran de vérification avant d\'enregistrer.',
-      },
       backup: {
         question: 'Qu\'est-ce que Backup & Restore ?',
         answer:
           'Avec Backup & Restore, vous pouvez sauvegarder toutes vos dépenses, votre budget et vos réglages dans un fichier et les restaurer si besoin – par exemple après un changement de téléphone ou une réinstallation. La fonction se trouve dans Settings → Budget & Reports → Backup & Restore.',
+      },
+      fixedCosts: {
+        question: 'Que sont les charges fixes dans Snapomat ?',
+        answer:
+          'Les charges fixes sont des dépenses mensuelles régulières comme le loyer, l\'électricité, internet ou les abonnements streaming. Vous les enregistrez une fois dans l\'app et elles sont automatiquement comptabilisées chaque mois. Vous pouvez les modifier ou les supprimer à tout moment.',
+      },
+      entryLimit: {
+        question: 'Comment fonctionne la limite d\'entrées ?',
+        answer:
+          'Le premier mois, vous disposez de 20 Crédits et 20 saisies manuelles gratuites. À partir du deuxième mois, en tant qu\'utilisateur Free, vous avez 10 Crédits et 10 saisies manuelles par mois. Avec un abonnement, vous avez des saisies manuelles illimitées et 100 Crédits par mois.',
       },
     },
     aboutModalTitle: 'À propos de Snapomat',
@@ -217,34 +198,29 @@ export default {
     backupHint: 'Vos dépenses, budget et réglages seront sauvegardés.',
     backupCreate: '📤 Créer une sauvegarde',
     backupRestore: '📥 Restaurer une sauvegarde',
-    pricingCreditsRemaining: 'Il vous reste {{count}} Credits.',
-    pricingCreditHint: '1 Credit par analyse IA.',
+    pricingCreditsRemaining: 'Il vous reste {{count}} Crédits.',
+    pricingCreditHint: '1 Crédit par scan',
     pricingMonth1: 'MOIS 1',
     pricingFromMonth2: 'À PARTIR DU MOIS 2',
-    pricingFreeMonth1Credits: '⚡ 20 Credits IA · 1 Credit par analyse',
-    pricingFreeMonth1Manual: '✏️ Saisies manuelles illimitées',
-    pricingFreeFromMonth2Ai: '⚡ Analyses IA via packs de Credits',
-    pricingFreeFromMonth2Manual: '✏️ 10 saisies manuelles gratuites par mois',
+    pricingFreeMonth1Credits: '⚡ 20 Crédits',
+    pricingFreeMonth1Manual: '✏️ 20 saisies manuelles',
+    pricingFreeFromMonth2Ai: '⚡ 10 Crédits par mois',
+    pricingFreeFromMonth2Manual: '✏️ 10 saisies manuelles par mois',
     pricingMonthlyPrice: '3,99 € / mois',
-    pricingMonthlyCredits: '⚡ 100 Credits IA par mois',
+    pricingMonthlyCredits: '⚡ 100 Crédits par mois',
     pricingMonthlyManual: '✏️ Saisies manuelles illimitées',
-    pricingMonthlyTransfair: '∞ Transfair – Credits non utilisés reportés au mois suivant',
     pricingCancelAnytime: 'Résiliable à tout moment',
     pricingYearlyPrice: '19,99 € / an',
-    pricingYearlyBadge: '-58%',
-    pricingYearlyCredits: '⚡ 1 500 Credits IA par an',
-    pricingYearlyPerMonth: 'soit 1,67 €/mois',
-    pricingYearlyTransfair: '∞ Transfair – Credits non utilisés reportés',
     pricingAddonPacks: 'PACKS SUPPLÉMENTAIRES',
     pricingAddonFooter: 'Paiement unique · Sans abonnement',
-    pricingPack100: '100 Credits',
-    pricingPack100Price: '1,99 €',
-    pricingPack500: '500 Credits',
-    pricingPack500Price: '7,99 €',
-    pricingPack1000: '1 000 Credits',
-    pricingPack1000Price: '12,99 €',
+    pricingPack50: '50 Crédits',
+    pricingPack50Price: '1,99 €',
+    pricingPack200: '200 Crédits',
+    pricingPack200Price: '5,99 €',
+    pricingPack500: '500 Crédits',
+    pricingPack500Price: '12,99 €',
     shareReportMessage:
-      'Rapport mensuel Snapomat – {{month}}\nDépenses : {{total}}\nEntrées : {{count}}',
+      'Rapport mensuel Snapomat – {{month}}\nDépenses : {{total}} | Entrées : {{count}}',
     alerts: {
       restoringPurchases: 'Restauration des achats...',
       thanksRating: 'Merci pour votre note !',
@@ -271,16 +247,16 @@ export default {
     light: 'Clair',
   },
   onboarding: {
-    title1: 'Photographiez votre ticket –',
+    title1: 'Photographiez un ticket –',
     title1gold: 'l\'IA s\'occupe du reste',
-    sub1: 'Ticket de caisse ou relevé bancaire : Snapomat détecte le montant et le commerçant, propose une catégorie et vous confirmez l\'entrée.',
+    sub1: 'Photographiez un ticket de caisse. Snapomat reconnaît automatiquement le montant et le commerçant, propose une catégorie adaptée et crée l\'entrée. Il ne vous reste plus qu\'à confirmer.',
     sub1small: 'La saisie manuelle reste possible à tout moment.',
-    title2: 'Gardez le contrôle',
-    title2gold: 'de votre budget',
-    sub2: 'Fixez votre budget mensuel. L\'anneau de dépenses vous montre où vous en êtes – et combien il vous reste.',
-    title3: 'Vos dépenses',
-    title3gold: 'en un coup d\'œil',
-    sub3: 'Voyez tout de suite où va votre argent – par catégorie, commerçant ou mois.',
+    title2: 'Gardez une vue d\'ensemble',
+    title2gold: 'sur votre budget',
+    sub2: 'Définissez votre budget mensuel. L\'anneau de dépenses vous indique à tout moment combien vous avez déjà dépensé et combien il vous reste. Vous savez ainsi toujours où vous en êtes financièrement.',
+    title3: 'Saisir les charges fixes une fois –',
+    title3gold: 'gagner du temps durablement',
+    sub3: 'Loyer, Netflix, forfait mobile ou assurance : une seule saisie suffit. Snapomat prend automatiquement en compte vos dépenses régulières et garde votre budget à jour.',
     skip: 'Passer',
     getStarted: 'Commencer',
   },

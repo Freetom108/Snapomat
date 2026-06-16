@@ -62,19 +62,14 @@ export default {
   import: {
     receiptTitle: 'Fiş',
     receiptSubtitle: 'Fotoğraf çek',
-    statementTitle: 'Banka ekstresi',
-    statementSubtitle: 'Fotoğraf çek',
+    receiptHint:
+      'İpucu: İyi ışık tanımayı geliştirir. Belirsiz alanlar ⚠️ ile işaretlenir – düzeltmek için dokunun, ücretsizdir.',
     or: 'veya',
     manualEntry: 'Elle gir',
     cameraPermission: 'Kamera erişimi gerekli',
     cameraGrant: 'İzin ver',
     scanTitle: 'Analiz ediliyor...',
     scanSubtitle: 'Belge işleniyor',
-    multiDetected: '{{count}} kayıt bulundu – lütfen kontrol et',
-    multiSection: 'TÜM KAYITLAR',
-    unknownMerchant: 'Bilinmiyor',
-    removeEntry: 'Kaydı sil',
-    saveAll: 'Tümünü kaydet',
     reviewDetected: '✅ Algılandı – lütfen kontrol et',
     reviewSection: 'VERİLERİ KONTROL ET',
     fieldMerchant: 'İş yeri',
@@ -100,7 +95,7 @@ export default {
       monthlyBudgetTitle: 'Aylık bütçe belirle',
       monthlyBudgetSubtitle: 'Harcama limiti ayarla',
       shareReportTitle: 'Aylık raporu paylaş',
-      shareReportSubtitle: 'PDF olarak gönder',
+      shareReportSubtitle: 'History\'de ay seç ve WhatsApp, e-posta ve daha fazlasıyla paylaş',
       backupRestoreSubtitle: 'Verileri yedekle ve geri yükle',
       languageTitle: 'Dil',
       colorSchemeTitle: 'Renk şeması',
@@ -114,6 +109,7 @@ export default {
       legalSubtitle: 'Gizlilik · Künye',
     },
     deleteAllData: '🗑 Tüm uygulama verilerini sil',
+    subscriptionCreditsTitle: 'Abonelik & Krediler',
     versionMvp: 'Sürüm 1.0',
     budgetModalTitle: '🎯 Aylık bütçe',
     budgetModalLine1: 'Ayda ne kadar harcamak istiyorsun?',
@@ -140,7 +136,7 @@ export default {
       monthlyYearly: {
         question: 'Monthly\'den Yearly\'ye geçebilir miyim?',
         answer:
-          'Evet. Geçiş ilgili uygulama mağazasının kurallarına bağlıdır. Çoğu durumda mevcut aboneliğini yönetip doğrudan Yearly plana geçebilirsin. Verilerin ve Credits\'lerin korunur.',
+          'Evet. Geçiş ilgili uygulama mağazasının kurallarına bağlıdır. Çoğu durumda mevcut aboneliğini yönetip doğrudan Yearly plana geçebilirsin. Verilerin ve Kredilerin korunur.',
       },
       data: {
         question: 'Verilerime ne olur?',
@@ -150,52 +146,37 @@ export default {
       ai: {
         question: 'YZ analizi nasıl çalışır?',
         answer:
-          'Fiş veya banka ekstresi fotoğraflarsın. Snapomat görüntüyü iş yeri, tutar, tarih ve kategoriyi otomatik tanıyan bir YZ\'ye gönderir. Kaydetmeden önce tüm verileri kontrol edersin – son söz sende. Her analiz 1 Credit tutar.',
+          'Fiş fotoğraflarsın. Snapomat görüntüyü iş yeri, tutar, tarih ve kategoriyi otomatik tanıyan bir YZ\'ye gönderir. Kaydetmeden önce tüm verileri kontrol edersin – son söz sende. Her analiz 1 Kredi harcar.',
       },
       scanCost: {
-        question: 'Bir tarama ne kadar tutar?',
+        question: 'Krediler nedir?',
         answer:
-          'Fiş taraması 1 Credit tutar. Yatay formatta çekilen banka ekstresi daha iyi doğruluk için iki kez analiz edilir ve 2 Credit tutar. Ücretsiz aylık kotadan sonra manuel girişler 1 Credit tutar.',
-      },
-      creditsNormal: {
-        question: 'Normalde kaç Credit\'e ihtiyacım var?',
-        answer:
-          'Çoğu kullanıcı ayda 100 Credit\'ten çok daha az harcar. Monthly ve özellikle Yearly abonelik normal kullanım için bolca yeterli. Sürekli Credit alman gerekmez.',
-      },
-      creditsExpire: {
-        question: 'Credit\'lerim sona erer mi?',
-        answer:
-          'Satın alınan Credit paketleri asla sona ermez. Monthly abonelik Credit\'lerinde Transfair geçerlidir – kullanılmayan Credit\'ler aylık paket tutarına kadar sonraki aya devredilir.',
-      },
-      transfair: {
-        question: 'Transfair nedir?',
-        answer:
-          'Transfair, kullanılmayan Credit\'lerin otomatik olarak sonraki aya devredilmesi demektir – aylık paket tutarına kadar. Daha az YZ analizi yaptığın aylarda Credit kaybetmezsin.',
-      },
-      creditsEmpty: {
-        question: 'Credit\'lerim bittiğinde ne olur?',
-        answer:
-          'İlk ay kayıtları ücretsiz elle girebilirsin. İkinci aydan itibaren 10 ücretsiz manuel giriş hakkın var. Sonrasında her ek giriş – fotoğraf veya manuel – 1 Credit tutar. Settings → Abo & Credits\'ten istediğin zaman Credit alabilirsin.',
+          'Krediler, Snapomat\'taki YZ analizlerinin birimidir. Her fiş fotoğrafı 1 Kredi harcar. Manuel girişler ücretsizdir. Abone olarak her ay otomatik olarak 100 yeni Kredi alırsın.',
       },
       creditsBuy: {
-        question: 'Daha fazla Credit alabilir miyim?',
+        question: 'Daha fazla Kredi alabilir miyim?',
         answer:
-          'Evet, Settings → Abo & Credits\'te 1,99 €\'dan başlayan paketler var. Credit\'ler anında yüklenir ve asla sona ermez.',
+          'Evet. Monthly veya Yearly abone olarak Ayarlar → Abonelik & Krediler bölümünden istediğin zaman ek Kredi paketleri satın alabilirsin. Bunlar asla sona ermez.',
       },
       budget: {
         question: 'Aylık bütçemi nasıl ayarlarım?',
         answer:
           'Settings → Budget & Reports → Harcama limiti ayarla bölümünden istediğin tutarı girebilirsin. Today sayfasındaki halka ne kadar harcadığını ve günlük ne kadarın kaldığını gösterir. Ayrıca %50 ile %90 arasında uyarı yüzdesi belirleyebilirsin.',
       },
-      creditsStatement: {
-        question: 'Banka ekstresindeki alacaklar ne olur?',
-        answer:
-          'Snapomat yalnızca giderleri ve borçlandırmaları tanır. Alacaklar ve gelen havaleler yok sayılır. Yine de bir gelir algılanırsa kaydetmeden önce inceleme ekranından silebilirsin.',
-      },
       backup: {
         question: 'Backup & Restore nedir?',
         answer:
           'Backup & Restore ile tüm harcamalarını, bütçeni ve ayarlarını bir dosyaya kaydedip gerektiğinde geri yükleyebilirsin – örneğin telefon değiştirdikten veya yeniden yükledikten sonra. Settings → Budget & Reports → Backup & Restore\'da bulabilirsin.',
+      },
+      fixedCosts: {
+        question: 'Snapomat\'ta sabit giderler nedir?',
+        answer:
+          'Sabit giderler kira, elektrik, internet veya streaming abonelikleri gibi düzenli aylık harcamalardır. Uygulamaya bir kez girersin ve her ay otomatik olarak harcamalarına eklenir. İstediğin zaman düzenleyebilir veya silebilirsin.',
+      },
+      entryLimit: {
+        question: 'Giriş limiti nasıl çalışır?',
+        answer:
+          'İlk ay 20 Kredi ve 20 manuel giriş ücretsiz. İkinci aydan itibaren Free kullanıcı olarak ayda 10 Kredi ve 10 manuel giriş hakkın var. Abonelikle sınırsız manuel giriş ve ayda 100 Kredi alırsın.',
       },
     },
     aboutModalTitle: 'Snapomat hakkında',
@@ -217,34 +198,29 @@ export default {
     backupHint: 'Harcamaların, bütçen ve ayarların yedeklenecek.',
     backupCreate: '📤 Yedek oluştur',
     backupRestore: '📥 Yedeği geri yükle',
-    pricingCreditsRemaining: 'Hâlâ {{count}} Credit\'in var.',
-    pricingCreditHint: 'YZ analizi başına 1 Credit.',
+    pricingCreditsRemaining: 'Hâlâ {{count}} Kredin var.',
+    pricingCreditHint: 'Tarama başına 1 Kredi',
     pricingMonth1: 'AY 1',
     pricingFromMonth2: '2. AYDAN İTİBAREN',
-    pricingFreeMonth1Credits: '⚡ 20 YZ Credit · analiz başına 1 Credit',
-    pricingFreeMonth1Manual: '✏️ Sınırsız manuel giriş',
-    pricingFreeFromMonth2Ai: '⚡ YZ analizleri Credit paketleriyle',
-    pricingFreeFromMonth2Manual: '✏️ Ayda 10 ücretsiz manuel giriş',
+    pricingFreeMonth1Credits: '⚡ 20 Kredi',
+    pricingFreeMonth1Manual: '✏️ 20 manuel giriş',
+    pricingFreeFromMonth2Ai: '⚡ Ayda 10 Kredi',
+    pricingFreeFromMonth2Manual: '✏️ Ayda 10 manuel giriş',
     pricingMonthlyPrice: '3,99 € / ay',
-    pricingMonthlyCredits: '⚡ Ayda 100 YZ Credit',
+    pricingMonthlyCredits: '⚡ Ayda 100 Kredi',
     pricingMonthlyManual: '✏️ Sınırsız manuel giriş',
-    pricingMonthlyTransfair: '∞ Transfair – kullanılmayan Credit\'ler sonraki aya devredilir',
     pricingCancelAnytime: 'İstediğin zaman iptal et',
     pricingYearlyPrice: '19,99 € / yıl',
-    pricingYearlyBadge: '-58%',
-    pricingYearlyCredits: '⚡ Yılda 1.500 YZ Credit',
-    pricingYearlyPerMonth: 'aylık sadece 1,67 €',
-    pricingYearlyTransfair: '∞ Transfair – kullanılmayan Credit\'ler devredilir',
     pricingAddonPacks: 'EK PAKETLER',
     pricingAddonFooter: 'Tek seferlik ödeme · Abonelik yok',
-    pricingPack100: '100 Credits',
-    pricingPack100Price: '1,99 €',
-    pricingPack500: '500 Credits',
-    pricingPack500Price: '7,99 €',
-    pricingPack1000: '1.000 Credits',
-    pricingPack1000Price: '12,99 €',
+    pricingPack50: '50 Kredi',
+    pricingPack50Price: '1,99 €',
+    pricingPack200: '200 Kredi',
+    pricingPack200Price: '5,99 €',
+    pricingPack500: '500 Kredi',
+    pricingPack500Price: '12,99 €',
     shareReportMessage:
-      'Snapomat aylık rapor – {{month}}\nHarcamalar: {{total}}\nKayıtlar: {{count}}',
+      'Snapomat aylık rapor – {{month}}\nHarcamalar: {{total}} | Kayıtlar: {{count}}',
     alerts: {
       restoringPurchases: 'Satın alımlar geri yükleniyor...',
       thanksRating: 'Değerlendirmen için teşekkürler!',
@@ -273,14 +249,14 @@ export default {
   onboarding: {
     title1: 'Fişini fotoğrafla –',
     title1gold: 'YZ gerisini halleder',
-    sub1: 'Fiş veya banka ekstresi: Snapomat tutarı ve iş yerini algılar, uygun kategoriyi önerir, sen kaydı onaylarsın.',
+    sub1: 'Bir fiş fotoğrafla. Snapomat tutarı ve iş yerini otomatik tanır, uygun bir kategori önerir ve kaydı oluşturur. Sen sadece onaylarsın.',
     sub1small: 'İstediğin zaman elle de girebilirsin.',
     title2: 'Bütçene',
-    title2gold: 'hakim ol',
-    sub2: 'Aylık bütçeni belirle. Harcama halkası nerede olduğunu ve ne kadar paran kaldığını gösterir.',
-    title3: 'Harcamaların',
-    title3gold: 'tek bakışta',
-    sub3: 'Paranın nereye gittiğini hemen gör – kategori, iş yeri veya aya göre.',
+    title2gold: 'hakim kal',
+    sub2: 'Aylık bütçeni belirle. Harcama halkası sana her an ne kadar harcadığını ve ne kadar paran kaldığını gösterir. Böylece mali durumunu her zaman bilirsin.',
+    title3: 'Sabit giderleri bir kez gir –',
+    title3gold: 'kalıcı olarak zaman kazan',
+    sub3: 'Kira, Netflix, telefon sözleşmesi veya sigorta: Bir kez eklemen yeterli. Snapomat düzenli harcamalarını otomatik hesaba katar ve bütçeni güncel tutar.',
     skip: 'Atla',
     getStarted: 'Başla',
   },

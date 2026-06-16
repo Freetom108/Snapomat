@@ -1,7 +1,6 @@
 import { useMemo, useState, useCallback } from 'react';
 import { View, Text, ScrollView, TouchableOpacity, Pressable, StyleSheet, ActivityIndicator } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
-import Svg, { Circle } from 'react-native-svg';
 import {
   useFonts,
   DMSans_400Regular,
@@ -11,6 +10,7 @@ import {
 } from '@expo-google-fonts/dm-sans';
 import { getCategory } from '../../constants/categories';
 import ExpenseDetailSheet from '../../components/ExpenseDetailSheet';
+import ExpenseRing, { RING_SIZE } from '../../components/ExpenseRing';
 import { useTheme } from '../../hooks/useTheme';
 import { useTranslation } from '../../hooks/useTranslation';
 import { getExpenses, getBudget } from '../../store/storage';
@@ -22,60 +22,11 @@ import {
   calcMonthStats,
 } from '../../utils/expenseHelpers';
 
-const RING_RADIUS = 95;
-const RING_STROKE = 10;
-const RING_SIZE = RING_RADIUS * 2 + RING_STROKE;
-
 function withOpacity(hex, opacity) {
   const alpha = Math.round(opacity * 255)
     .toString(16)
     .padStart(2, '0');
   return `${hex}${alpha}`;
-}
-
-function ExpenseRing({ stats, colors, styles }) {
-  const { t } = useTranslation();
-  const cx = RING_SIZE / 2;
-  const cy = RING_SIZE / 2;
-  const circumference = 2 * Math.PI * RING_RADIUS;
-  const strokeDashoffset = circumference * (1 - stats.progress);
-
-  return (
-    <View style={styles.ringSection}>
-      <Text style={styles.monthLabel}>{stats.monthLabel}</Text>
-      <View style={styles.ringWrap}>
-        <Svg width={RING_SIZE} height={RING_SIZE}>
-          <Circle
-            cx={cx}
-            cy={cy}
-            r={RING_RADIUS}
-            stroke={colors.border}
-            strokeWidth={RING_STROKE}
-            fill="none"
-          />
-          <Circle
-            cx={cx}
-            cy={cy}
-            r={RING_RADIUS}
-            stroke={colors.accent}
-            strokeWidth={RING_STROKE}
-            fill="none"
-            strokeDasharray={circumference}
-            strokeDashoffset={strokeDashoffset}
-            strokeLinecap="round"
-            rotation="-90"
-            origin={`${cx}, ${cy}`}
-          />
-        </Svg>
-        <View style={styles.ringCenter}>
-          <Text style={styles.ringLabel}>{t('home.ringExpenses')}</Text>
-          <Text style={styles.ringAmount}>{formatAmountNumber(stats.spent)}</Text>
-          <Text style={styles.ringPercent}>{stats.percent}%</Text>
-          <Text style={styles.ringBudget}>{t('home.ringBudgetOf', { amount: stats.budgetFormatted })}</Text>
-        </View>
-      </View>
-    </View>
-  );
 }
 
 function StatsRow({ stats, budget, colors, styles }) {

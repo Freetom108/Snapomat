@@ -40,16 +40,15 @@ import {
   getLocale,
   saveLocale,
   clearAllData,
-  clearOnboardingDone,
   exportData,
   importData,
   getTheme,
   getUserId,
   formatUserIdDisplay,
+  getHistorySelectedMonth,
 } from '../../store/storage';
 import {
-  formatCurrency,
-  formatMonthLabel,
+  buildMonthlyShareReport,
   getMonthExpenses,
 } from '../../utils/expenseHelpers';
 
@@ -374,20 +373,17 @@ function ThemeDots({ themeId, onSelect, colors, styles }) {
 }
 
 const FAQ_ITEM_META = [
+  { id: 'ai' },
   { id: 'intro', action: 'onboarding', link: true },
   { id: 'upgrade', action: 'pricing', link: true },
   { id: 'monthlyYearly' },
   { id: 'data' },
-  { id: 'ai' },
   { id: 'scanCost' },
-  { id: 'creditsNormal' },
-  { id: 'creditsExpire' },
-  { id: 'transfair' },
-  { id: 'creditsEmpty' },
   { id: 'creditsBuy' },
   { id: 'budget' },
-  { id: 'creditsStatement' },
   { id: 'backup' },
+  { id: 'fixedCosts' },
+  { id: 'entryLimit' },
 ];
 
 function formatError(error, t) {
@@ -927,9 +923,9 @@ function PlanCard({ name, price, featured, badge, children, colors, styles }) {
 function CreditsPricingSheet({ visible, credits, onClose, colors, styles }) {
   const { t } = useTranslation();
   const packs = [
-    { credits: t('settings.pricingPack100'), price: t('settings.pricingPack100Price') },
+    { credits: t('settings.pricingPack50'), price: t('settings.pricingPack50Price') },
+    { credits: t('settings.pricingPack200'), price: t('settings.pricingPack200Price') },
     { credits: t('settings.pricingPack500'), price: t('settings.pricingPack500Price') },
-    { credits: t('settings.pricingPack1000'), price: t('settings.pricingPack1000Price') },
   ];
 
   return (
@@ -944,13 +940,10 @@ function CreditsPricingSheet({ visible, credits, onClose, colors, styles }) {
           <View style={styles.pricingSheetHeader}>
             <View style={styles.pricingHeaderText}>
               <Text style={[styles.pricingHeaderTitle, { color: colors.text }]}>
-                ⚡ Abo & Credits
+                ⚡ {t('settings.subscriptionCreditsTitle')}
               </Text>
               <Text style={[styles.pricingHeaderSubtitle, { color: colors.muted }]}>
                 {t('settings.pricingCreditsRemaining', { count: credits })}
-              </Text>
-              <Text style={[styles.pricingHeaderHint, { color: colors.muted }]}>
-                {t('settings.pricingCreditHint')}
               </Text>
             </View>
             <Pressable
@@ -1014,11 +1007,6 @@ function CreditsPricingSheet({ visible, credits, onClose, colors, styles }) {
                 colors={colors}
                 styles={styles}
               />
-              <PlanFeature
-                text={t('settings.pricingMonthlyTransfair')}
-                colors={colors}
-                styles={styles}
-              />
               <Text style={[styles.planFootnote, { color: colors.muted }]}>
                 {t('settings.pricingCancelAnytime')}
               </Text>
@@ -1027,29 +1015,17 @@ function CreditsPricingSheet({ visible, credits, onClose, colors, styles }) {
             <PlanCard
               name="Yearly"
               price={t('settings.pricingYearlyPrice')}
-              badge={t('settings.pricingYearlyBadge')}
               featured
               colors={colors}
               styles={styles}
             >
               <PlanFeature
-                text={t('settings.pricingYearlyCredits')}
-                colors={colors}
-                styles={styles}
-                compactBottom
-              />
-              <PlanFeatureSubline
-                text={t('settings.pricingYearlyPerMonth')}
+                text={t('settings.pricingMonthlyCredits')}
                 colors={colors}
                 styles={styles}
               />
               <PlanFeature
                 text={t('settings.pricingMonthlyManual')}
-                colors={colors}
-                styles={styles}
-              />
-              <PlanFeature
-                text={t('settings.pricingYearlyTransfair')}
                 colors={colors}
                 styles={styles}
               />
@@ -1689,16 +1665,13 @@ export default function SettingsScreen() {
   async function handleShareReport() {
     const now = new Date();
     const expenses = await getExpenses();
-    const monthExpenses = getMonthExpenses(expenses, now.getFullYear(), now.getMonth());
-    const total = monthExpenses.reduce((sum, item) => sum + (Number(item.amount) || 0), 0);
-    const label = formatMonthLabel(now.getFullYear(), now.getMonth());
+    const selected = await getHistorySelectedMonth();
+    const year = selected?.year ?? now.getFullYear();
+    const month = selected?.month ?? now.getMonth();
+    const monthExpenses = getMonthExpenses(expenses, year, month);
 
     await Share.share({
-      message: t('settings.shareReportMessage', {
-        month: label,
-        total: formatCurrency(total),
-        count: monthExpenses.length,
-      }),
+      message: buildMonthlyShareReport(monthExpenses, year, month, t),
     });
   }
 
@@ -1791,8 +1764,7 @@ export default function SettingsScreen() {
   async function handleFaqAction(action) {
     if (action === 'onboarding') {
       setShowFaq(false);
-      await clearOnboardingDone();
-      router.replace('/onboarding');
+      router.replace('/onboarding?replay=1');
       return;
     }
 
@@ -1850,7 +1822,7 @@ export default function SettingsScreen() {
         <View style={styles.card}>
           <SettingsRow
             emoji="⚡"
-            title="Abo & Credits"
+            title={t('settings.subscriptionCreditsTitle')}
             onPress={() => setShowPricing(true)}
             last
             colors={colors}

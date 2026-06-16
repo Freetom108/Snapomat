@@ -7,13 +7,16 @@ import {
   PanResponder,
   ActivityIndicator,
 } from 'react-native';
-import { useRouter } from 'expo-router';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Svg, { Circle, Path, Rect, G } from 'react-native-svg';
 import { useFonts, DMSans_400Regular, DMSans_500Medium, DMSans_700Bold, DMSans_900Black } from '@expo-google-fonts/dm-sans';
-import { getCategoryLabel } from '../constants/categories';
+import ExpenseRing, { RING_SIZE } from '../components/ExpenseRing';
+import { getCategory } from '../constants/categories';
 import { useTranslation } from '../hooks/useTranslation';
-import { setOnboardingDone } from '../store/storage';
+
+const ONBOARDING_DONE_KEY = 'snapomat_onboarding_done';
 
 const GOLD = '#E8B84B';
 const GRAY = '#666666';
@@ -44,75 +47,63 @@ function Slide1Illustration() {
   );
 }
 
-function Slide2Illustration() {
-  const size = 180;
-  const strokeWidth = 14;
-  const radius = (size - strokeWidth) / 2;
-  const cx = size / 2;
-  const cy = size / 2;
-  const circumference = 2 * Math.PI * radius;
-  const progress = 0.38;
-  const strokeDashoffset = circumference * (1 - progress);
+const ONBOARDING_RING_COLORS = {
+  accent: GOLD,
+  text: WHITE,
+  muted: GRAY,
+  border: DIM,
+};
 
+const ONBOARDING_RING_STATS = {
+  spent: 953,
+  percent: 38,
+  progress: 0.38,
+  budgetFormatted: '2.500',
+};
+
+function Slide2Illustration() {
   return (
-    <View style={styles.slide2Wrap}>
-      <View style={styles.ringWrap}>
-        <Svg width={size} height={size}>
-          <Circle
-            cx={cx}
-            cy={cy}
-            r={radius}
-            stroke={DIM}
-            strokeWidth={strokeWidth}
-            fill="none"
-          />
-          <Circle
-            cx={cx}
-            cy={cy}
-            r={radius}
-            stroke={GOLD}
-            strokeWidth={strokeWidth}
-            fill="none"
-            strokeDasharray={circumference}
-            strokeDashoffset={strokeDashoffset}
-            strokeLinecap="round"
-            rotation="-90"
-            origin={`${cx}, ${cy}`}
-          />
-        </Svg>
-        <View style={styles.ringCenter}>
-          <Text style={styles.ringAmount}>378</Text>
-          <Text style={styles.ringPercent}>38%</Text>
-        </View>
-      </View>
-    </View>
+    <ExpenseRing
+      stats={ONBOARDING_RING_STATS}
+      colors={ONBOARDING_RING_COLORS}
+      styles={onboardingRingStyles}
+      showMonthLabel={false}
+    />
   );
 }
 
-const CATEGORY_ROWS = [
-  { id: 'home', emoji: '🏠', amount: '89€', percent: '24%' },
-  { id: 'mobility', emoji: '🚗', amount: '82€', percent: '22%' },
-  { id: 'food', emoji: '🛒', amount: '62€', percent: '16%' },
-  { id: 'shopping', emoji: '🛍️', amount: '50€', percent: '13%' },
+const FIXED_COST_CATEGORY = getCategory('fixed');
+
+const FIXED_COST_ROWS = [
+  { id: 'rent', name: 'Miete', amount: '780 €' },
+  { id: 'utilities', name: 'Strom & Gas', amount: '120 €' },
+  { id: 'wifi', name: 'WLAN', amount: '35 €' },
+  { id: 'netflix', name: 'Netflix', amount: '18 €' },
 ];
 
 function Slide3Illustration() {
   return (
-    <View style={styles.categoryCard}>
-      {CATEGORY_ROWS.map((row, index) => (
+    <View style={styles.fixedCostsCard}>
+      {FIXED_COST_ROWS.map((row, index) => (
         <View
           key={row.id}
-          style={[styles.categoryRow, index < CATEGORY_ROWS.length - 1 && styles.categoryRowBorder]}
+          style={[
+            styles.fixedCostRow,
+            index < FIXED_COST_ROWS.length - 1 && styles.fixedCostRowBorder,
+          ]}
         >
-          <Text style={styles.categoryLabel}>
-            {getCategoryLabel(row.id)} {row.emoji}
-          </Text>
-          <View style={styles.categoryRight}>
-            <Text style={styles.categoryAmount}>{row.amount}</Text>
-            <Text style={styles.categoryPercent}>{row.percent}</Text>
+          <View style={styles.fixedCostIcon}>
+            <Text style={styles.fixedCostEmoji}>{FIXED_COST_CATEGORY?.emoji}</Text>
           </View>
+          <Text style={styles.fixedCostName}>{row.name}</Text>
+          <Text style={styles.fixedCostAmount}>{row.amount}</Text>
         </View>
       ))}
+      <View style={styles.fixedCostDivider} />
+      <View style={styles.fixedCostTotalRow}>
+        <Text style={styles.fixedCostTotalLabel}>Gesamt:</Text>
+        <Text style={styles.fixedCostTotalAmount}>953 €</Text>
+      </View>
     </View>
   );
 }
@@ -145,7 +136,9 @@ function getSlides(t) {
 
 export default function OnboardingScreen() {
   const router = useRouter();
+  const { replay } = useLocalSearchParams();
   const { t } = useTranslation();
+  const isReplay = replay === '1' || replay === 'true';
   const [slide, setSlide] = useState(0);
   const slides = useMemo(() => getSlides(t), [t]);
 
@@ -175,8 +168,10 @@ export default function OnboardingScreen() {
   ).current;
 
   async function finishOnboarding() {
-    await setOnboardingDone();
-    router.replace('/(tabs)');
+    if (!isReplay) {
+      await AsyncStorage.setItem(ONBOARDING_DONE_KEY, 'true');
+    }
+    router.replace('/(tabs)/');
   }
 
   if (!fontsLoaded) {
@@ -189,14 +184,17 @@ export default function OnboardingScreen() {
 
   const current = slides[slide];
   const { Illustration } = current;
+  const isLastSlide = slide === slides.length - 1;
 
   return (
     <SafeAreaView style={styles.container}>
-      <Pressable onPress={finishOnboarding} style={styles.skipButton} hitSlop={12}>
-        <Text style={styles.skipText}>{t('onboarding.skip')}</Text>
-      </Pressable>
+      {!isLastSlide ? (
+        <Pressable onPress={finishOnboarding} style={styles.skipButton} hitSlop={12}>
+          <Text style={styles.skipText}>{t('onboarding.skip')}</Text>
+        </Pressable>
+      ) : null}
 
-      <View style={styles.content} {...panResponder.panHandlers}>
+      <View style={styles.content} {...(isLastSlide ? {} : panResponder.panHandlers)}>
         <View style={styles.illustration}>
           <Illustration />
         </View>
@@ -208,16 +206,18 @@ export default function OnboardingScreen() {
       </View>
 
       <View style={styles.footer}>
-        <View style={styles.dots}>
-          {slides.map((_, index) => (
-            <View
-              key={index}
-              style={[styles.dot, index === slide ? styles.dotActive : styles.dotInactive]}
-            />
-          ))}
-        </View>
+        {!isLastSlide ? (
+          <View style={styles.dots}>
+            {slides.map((_, index) => (
+              <View
+                key={index}
+                style={[styles.dot, index === slide ? styles.dotActive : styles.dotInactive]}
+              />
+            ))}
+          </View>
+        ) : null}
 
-        {slide === slides.length - 1 ? (
+        {isLastSlide ? (
           <Pressable
             onPress={finishOnboarding}
             style={({ pressed }) => [styles.startButton, pressed && styles.startButtonPressed]}
@@ -321,6 +321,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     borderRadius: 14,
     alignItems: 'center',
+    marginTop: 24,
   },
   startButtonPressed: {
     opacity: 0.85,
@@ -333,12 +334,84 @@ const styles = StyleSheet.create({
   startButtonPlaceholder: {
     height: 52,
   },
-  slide2Wrap: {
+  fixedCostsCard: {
+    backgroundColor: CARD,
+    borderRadius: 16,
+    width: 300,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: '#2A2A2A',
+  },
+  fixedCostRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 14,
+  },
+  fixedCostRowBorder: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#2A2A2A',
+  },
+  fixedCostIcon: {
+    width: 42,
+    height: 42,
+    borderRadius: 12,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+    backgroundColor: '#252525',
+  },
+  fixedCostEmoji: {
+    fontSize: 20,
+  },
+  fixedCostName: {
+    flex: 1,
+    fontFamily: 'DMSans_700Bold',
+    fontSize: 15,
+    color: WHITE,
+  },
+  fixedCostAmount: {
+    fontFamily: 'DMSans_700Bold',
+    fontSize: 16,
+    color: WHITE,
+  },
+  fixedCostDivider: {
+    height: 1,
+    backgroundColor: '#2A2A2A',
+    marginTop: 4,
+    marginBottom: 12,
+  },
+  fixedCostTotalRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  fixedCostTotalLabel: {
+    fontFamily: 'DMSans_700Bold',
+    fontSize: 15,
+    color: GOLD,
+  },
+  fixedCostTotalAmount: {
+    fontFamily: 'DMSans_700Bold',
+    fontSize: 16,
+    color: GOLD,
+  },
+});
+
+const onboardingRingStyles = StyleSheet.create({
+  ringSection: {
     alignItems: 'center',
   },
+  monthLabel: {
+    fontFamily: 'DMSans_700Bold',
+    fontSize: 12,
+    color: GRAY,
+    letterSpacing: 1.5,
+    textTransform: 'uppercase',
+    marginBottom: 16,
+  },
   ringWrap: {
-    width: 180,
-    height: 180,
+    width: RING_SIZE,
+    height: RING_SIZE,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -346,54 +419,27 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
   },
+  ringLabel: {
+    fontFamily: 'DMSans_400Regular',
+    fontSize: 11,
+    color: GRAY,
+  },
   ringAmount: {
     fontFamily: 'DMSans_900Black',
     fontSize: 36,
     color: WHITE,
+    lineHeight: 42,
   },
   ringPercent: {
     fontFamily: 'DMSans_700Bold',
-    fontSize: 16,
+    fontSize: 13,
     color: GOLD,
     marginTop: 2,
   },
-  categoryCard: {
-    backgroundColor: CARD,
-    borderRadius: 16,
-    width: 280,
-    overflow: 'hidden',
-  },
-  categoryRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: 14,
-    paddingHorizontal: 16,
-  },
-  categoryRowBorder: {
-    borderBottomWidth: 1,
-    borderBottomColor: '#2A2A2A',
-  },
-  categoryLabel: {
-    fontFamily: 'DMSans_500Medium',
-    fontSize: 15,
-    color: WHITE,
-  },
-  categoryRight: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-  },
-  categoryAmount: {
-    fontFamily: 'DMSans_500Medium',
-    fontSize: 15,
-    color: WHITE,
-  },
-  categoryPercent: {
-    fontFamily: 'DMSans_700Bold',
-    fontSize: 15,
-    color: GOLD,
-    minWidth: 36,
-    textAlign: 'right',
+  ringBudget: {
+    fontFamily: 'DMSans_400Regular',
+    fontSize: 11,
+    color: GRAY,
+    marginTop: 2,
   },
 });

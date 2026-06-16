@@ -1,72 +1,50 @@
 import 'react-native-gesture-handler';
-import { useCallback, useEffect, useState } from 'react';
-import { Stack, useRouter, useSegments, usePathname } from 'expo-router';
+import { useEffect } from 'react';
+import { Stack, useRouter } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
-import { View, ActivityIndicator } from 'react-native';
-import AnimatedSplash from '../components/AnimatedSplash';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeProvider, useTheme } from '../hooks/useTheme';
 import { initI18n } from '../i18n';
-import { getOnboardingDoneLive } from '../store/storage';
-import { DEFAULT_THEME_ID, THEMES } from '../constants/colors';
+import { seedAprilMay2026TestExpenses } from '../store/seedTestExpenses';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 function RootLayoutInner() {
-  const { theme, ready: themeReady } = useTheme();
-  const [ready, setReady] = useState(false);
-  const [splashDone, setSplashDone] = useState(false);
+  const { theme } = useTheme();
   const router = useRouter();
-  const segments = useSegments();
-  const pathname = usePathname();
 
   useEffect(() => {
+    initI18n().catch(() => {});
     SplashScreen.hideAsync().catch(() => {});
+    if (__DEV__) {
+      seedAprilMay2026TestExpenses().catch(() => {});
+    }
   }, []);
 
   useEffect(() => {
-    initI18n().then(() => setReady(true));
-  }, []);
-
-  useEffect(() => {
-    if (!ready || !splashDone) return;
-
-    async function syncRoute() {
-      const done = await getOnboardingDoneLive();
-
-      const inOnboarding = segments[0] === 'onboarding';
-
-      if (!done && !inOnboarding) {
+    async function init() {
+      try {
+        const done = await AsyncStorage.getItem('snapomat_onboarding_done');
+        if (done === 'true') {
+          router.replace('/(tabs)/');
+        } else {
+          router.replace('/onboarding');
+        }
+      } catch (e) {
         router.replace('/onboarding');
-      } else if (done && inOnboarding) {
-        router.replace('/(tabs)');
       }
     }
-
-    syncRoute();
-  }, [ready, splashDone, segments, pathname, router]);
-
-  const handleSplashFinish = useCallback(() => {
-    setSplashDone(true);
+    init();
   }, []);
-
-  if (!splashDone) {
-    return <AnimatedSplash onFinish={handleSplashFinish} />;
-  }
-
-  if (!ready || !themeReady) {
-    const fallback = THEMES[DEFAULT_THEME_ID];
-    return (
-      <View style={{ flex: 1, backgroundColor: fallback.bg, alignItems: 'center', justifyContent: 'center' }}>
-        <ActivityIndicator color={fallback.accent} />
-      </View>
-    );
-  }
 
   return (
     <>
       <StatusBar style={theme.id === 'light' ? 'dark' : 'light'} />
-      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: theme.bg } }} />
+      <Stack screenOptions={{ headerShown: false, contentStyle: { backgroundColor: theme.bg } }}>
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen name="onboarding" />
+      </Stack>
     </>
   );
 }
