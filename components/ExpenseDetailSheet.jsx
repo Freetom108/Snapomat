@@ -109,7 +109,7 @@ export default function ExpenseDetailSheet({
       category: categoryId,
     });
     setSaving(false);
-    onChanged?.();
+    await onChanged?.();
     onClose();
   }
 
@@ -118,7 +118,7 @@ export default function ExpenseDetailSheet({
     setDeleting(true);
     await deleteExpense(expense.id);
     setDeleting(false);
-    onChanged?.();
+    await onChanged?.();
     onClose();
   }
 

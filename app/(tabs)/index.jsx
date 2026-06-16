@@ -351,6 +351,11 @@ export default function HomeScreen() {
     setLoading(false);
   }, []);
 
+  const handleExpenseChanged = useCallback(async () => {
+    setSelectedExpense(null);
+    await loadData();
+  }, [loadData]);
+
   useFocusEffect(
     useCallback(() => {
       loadData();
@@ -408,7 +413,7 @@ export default function HomeScreen() {
         visible={!!selectedExpense}
         expense={selectedExpense}
         onClose={() => setSelectedExpense(null)}
-        onChanged={loadData}
+        onChanged={handleExpenseChanged}
       />
     </>
   );

@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const STORAGE_KEY = 'snapomat_data';
+const MERCHANT_LIBRARY_KEY = 'snapomat_merchant_library';
 
 const DEFAULT_DATA = {
   expenses: [],
@@ -48,7 +49,15 @@ async function loadData() {
     const raw = await AsyncStorage.getItem(STORAGE_KEY);
     if (!raw) return { ...DEFAULT_DATA, expenses: [] };
     const parsed = JSON.parse(raw);
-    return normalizeStoredData(parsed);
+    const data = normalizeStoredData(parsed);
+    const dedupedExpenses = deduplicateExpenses(data.expenses);
+
+    if (dedupedExpenses.length !== data.expenses.length) {
+      data.expenses = dedupedExpenses;
+      await saveData(data);
+    }
+
+    return data;
   } catch {
     return { ...DEFAULT_DATA, expenses: [] };
   }
@@ -65,6 +74,40 @@ function parseExpenseDate(date) {
     return new Date(`${year}-${month}-${day}`).getTime();
   }
   return new Date(date).getTime();
+}
+
+function normalizeExpenseId(id) {
+  if (id === null || id === undefined || id === '') return null;
+  return String(id);
+}
+
+function deduplicateExpenses(expenses) {
+  if (!Array.isArray(expenses) || expenses.length === 0) return [];
+
+  const byId = new Map();
+
+  expenses.forEach((expense, index) => {
+    if (!expense || typeof expense !== 'object') return;
+
+    const id = normalizeExpenseId(expense.id);
+    if (!id) return;
+
+    const existing = byId.get(id);
+    if (!existing) {
+      byId.set(id, { expense, index });
+      return;
+    }
+
+    const existingDate = parseExpenseDate(existing.expense.date);
+    const currentDate = parseExpenseDate(expense.date);
+    if (currentDate > existingDate || (currentDate === existingDate && index > existing.index)) {
+      byId.set(id, { expense, index });
+    }
+  });
+
+  return Array.from(byId.values())
+    .sort((a, b) => a.index - b.index)
+    .map((entry) => entry.expense);
 }
 
 export async function saveExpense(expense) {
@@ -89,14 +132,31 @@ export async function getExpenses() {
 }
 
 export async function deleteExpense(id) {
+  const targetId = normalizeExpenseId(id);
+  if (!targetId) return false;
+
   const data = await loadData();
-  data.expenses = data.expenses.filter((expense) => expense.id !== id);
+  const nextExpenses = data.expenses.filter(
+    (expense) => expense && normalizeExpenseId(expense.id) !== targetId,
+  );
+
+  if (nextExpenses.length === data.expenses.length) {
+    return false;
+  }
+
+  data.expenses = nextExpenses;
   await saveData(data);
+  return true;
 }
 
 export async function updateExpense(id, updates) {
+  const targetId = normalizeExpenseId(id);
+  if (!targetId) return null;
+
   const data = await loadData();
-  const index = data.expenses.findIndex((expense) => expense.id === id);
+  const index = data.expenses.findIndex(
+    (expense) => normalizeExpenseId(expense?.id) === targetId,
+  );
   if (index === -1) return null;
   data.expenses[index] = {
     ...data.expenses[index],
@@ -268,12 +328,115 @@ export async function saveHistorySelectedMonth(year, month) {
   await saveData(data);
 }
 
+function normalizeMerchantKey(name) {
+  return String(name ?? '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9äöüß]/gi, '');
+}
+
+function longestCommonSubstringLength(a, b) {
+  const rows = a.length + 1;
+  const cols = b.length + 1;
+  let maxLen = 0;
+  const dp = Array.from({ length: rows }, () => new Array(cols).fill(0));
+
+  for (let i = 1; i < rows; i += 1) {
+    for (let j = 1; j < cols; j += 1) {
+      if (a[i - 1] === b[j - 1]) {
+        dp[i][j] = dp[i - 1][j - 1] + 1;
+        maxLen = Math.max(maxLen, dp[i][j]);
+      }
+    }
+  }
+
+  return maxLen;
+}
+
+function calculateMerchantSimilarity(a, b) {
+  const left = normalizeMerchantKey(a);
+  const right = normalizeMerchantKey(b);
+  if (!left || !right) return 0;
+  if (left === right) return 1;
+
+  const lcs = longestCommonSubstringLength(left, right);
+  return lcs / Math.max(left.length, right.length);
+}
+
+export async function getMerchantLibrary() {
+  try {
+    const raw = await AsyncStorage.getItem(MERCHANT_LIBRARY_KEY);
+    if (!raw) return {};
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' ? parsed : {};
+  } catch {
+    return {};
+  }
+}
+
+export async function saveMerchantToLibrary(recognizedName, confirmedName) {
+  const canonicalName = String(confirmedName ?? '').trim();
+  if (!canonicalName) return;
+
+  const key = normalizeMerchantKey(recognizedName) || normalizeMerchantKey(canonicalName);
+  if (!key) return;
+
+  const library = await getMerchantLibrary();
+  library[key] = canonicalName;
+  await AsyncStorage.setItem(MERCHANT_LIBRARY_KEY, JSON.stringify(library));
+}
+
+export async function findMerchantMatch(recognizedName) {
+  const query = String(recognizedName ?? '').trim();
+  if (!query) {
+    return { match: null, confidence: 'low' };
+  }
+
+  const library = await getMerchantLibrary();
+  let bestScore = 0;
+  let bestMatch = null;
+
+  Object.entries(library).forEach(([key, canonicalName]) => {
+    const score = Math.max(
+      calculateMerchantSimilarity(query, key),
+      calculateMerchantSimilarity(query, canonicalName),
+    );
+    if (score > bestScore) {
+      bestScore = score;
+      bestMatch = canonicalName;
+    }
+  });
+
+  if (bestScore > 0.7) {
+    return { match: bestMatch, confidence: 'high' };
+  }
+  if (bestScore >= 0.4) {
+    return { match: bestMatch, confidence: 'medium' };
+  }
+  return { match: null, confidence: 'low' };
+}
+
 export async function exportData() {
   const raw = await AsyncStorage.getItem(STORAGE_KEY);
+  const merchantLibrary = await getMerchantLibrary();
   if (!raw) {
-    return JSON.stringify(normalizeStoredData({ expenses: [] }), null, 2);
+    return JSON.stringify(
+      {
+        ...normalizeStoredData({ expenses: [] }),
+        snapomat_merchant_library: merchantLibrary,
+      },
+      null,
+      2,
+    );
   }
-  return JSON.stringify(normalizeStoredData(JSON.parse(raw)), null, 2);
+  return JSON.stringify(
+    {
+      ...normalizeStoredData(JSON.parse(raw)),
+      snapomat_merchant_library: merchantLibrary,
+    },
+    null,
+    2,
+  );
 }
 
 export async function importData(jsonString) {
@@ -281,7 +444,14 @@ export async function importData(jsonString) {
     const parsed = JSON.parse(jsonString);
     const payload = parsed?.data && typeof parsed.data === 'object' ? parsed.data : parsed;
     if (!payload || typeof payload !== 'object') return false;
-    await saveData(normalizeStoredData(payload));
+
+    const library = parsed.snapomat_merchant_library ?? payload.snapomat_merchant_library;
+    if (library && typeof library === 'object') {
+      await AsyncStorage.setItem(MERCHANT_LIBRARY_KEY, JSON.stringify(library));
+    }
+
+    const { snapomat_merchant_library: _library, ...dataPayload } = payload;
+    await saveData(normalizeStoredData(dataPayload));
     return true;
   } catch {
     return false;

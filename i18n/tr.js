@@ -63,7 +63,8 @@ export default {
     receiptTitle: 'Fiş',
     receiptSubtitle: 'Fotoğraf çek',
     receiptHint:
-      'İpucu: İyi ışık tanımayı geliştirir. Belirsiz alanlar ⚠️ ile işaretlenir – düzeltmek için dokunun, ücretsizdir.',
+      'İpucu: İyi ışık ve düz çekilmiş fiş tanımayı geliştirir. Bilinen işletmeler otomatik doldurulur. Belirsiz alanlar ⚠️ ile işaretlenir – düzeltmek için dokunun, ücretsizdir.',
+    merchantNotRecognized: 'İş yeri tanınmadı – lütfen manuel girin',
     or: 'veya',
     manualEntry: 'Elle gir',
     cameraPermission: 'Kamera erişimi gerekli',

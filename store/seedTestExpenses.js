@@ -20,20 +20,21 @@ export async function seedAprilMay2026TestExpenses() {
   const raw = await AsyncStorage.getItem(STORAGE_KEY);
   const parsed = raw ? JSON.parse(raw) : {};
   const existing = Array.isArray(parsed.expenses) ? parsed.expenses : [];
-  const seedIds = new Set(APRIL_MAY_2026_TEST_EXPENSES.map((entry) => entry.id));
-  const expenses = [
-    ...existing.filter((entry) => !seedIds.has(entry.id)),
-    ...APRIL_MAY_2026_TEST_EXPENSES,
-  ];
+
+  if (parsed.__devExpensesSeeded) {
+    return 0;
+  }
 
   const latestRaw = await AsyncStorage.getItem(STORAGE_KEY);
   const latest = latestRaw ? JSON.parse(latestRaw) : parsed;
+  const latestExisting = Array.isArray(latest.expenses) ? latest.expenses : [];
 
   await AsyncStorage.setItem(
     STORAGE_KEY,
     JSON.stringify({
       ...latest,
-      expenses,
+      expenses: [...latestExisting, ...APRIL_MAY_2026_TEST_EXPENSES],
+      __devExpensesSeeded: true,
     }),
   );
 

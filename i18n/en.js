@@ -63,7 +63,8 @@ export default {
     receiptTitle: 'Receipt',
     receiptSubtitle: 'Take photo',
     receiptHint:
-      'Tip: Good lighting and a flat receipt improve recognition. Uncertain fields are marked with ⚠️ – just tap to correct for free.',
+      'Tip: Good lighting and a flat receipt improve recognition. Known merchants are filled in automatically. Uncertain fields are marked with ⚠️ – just tap to correct for free.',
+    merchantNotRecognized: 'Merchant not recognized – please enter manually',
     or: 'or',
     manualEntry: 'Enter manually',
     cameraPermission: 'Camera access required',

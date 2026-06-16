@@ -63,7 +63,8 @@ export default {
     receiptTitle: 'Recibo',
     receiptSubtitle: 'Tirar foto',
     receiptHint:
-      'Dica: Boa iluminação melhora o reconhecimento. Campos incertos são marcados com ⚠️ – toque para corrigir gratuitamente.',
+      'Dica: Boa iluminação e um recibo bem plano melhoram o reconhecimento. Comerciantes conhecidos são preenchidos automaticamente. Campos incertos são marcados com ⚠️ – toque para corrigir gratuitamente.',
+    merchantNotRecognized: 'Comerciante não reconhecido – introduz manualmente',
     or: 'ou',
     manualEntry: 'Introduzir manualmente',
     cameraPermission: 'Acesso à câmara necessário',

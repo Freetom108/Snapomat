@@ -63,7 +63,8 @@ export default {
     receiptTitle: 'Paragon',
     receiptSubtitle: 'Zrób zdjęcie',
     receiptHint:
-      'Wskazówka: Dobre oświetlenie poprawia rozpoznawanie. Niepewne pola są oznaczone ⚠️ – dotknij, aby poprawić bezpłatnie.',
+      'Wskazówka: Dobre oświetlenie i płasko sfotografowany paragon poprawiają rozpoznawanie. Znani sprzedawcy są uzupełniani automatycznie. Niepewne pola są oznaczone ⚠️ – dotknij, aby poprawić bezpłatnie.',
+    merchantNotRecognized: 'Sklep nierozpoznany – uzupełnij ręcznie',
     or: 'lub',
     manualEntry: 'Wpisz ręcznie',
     cameraPermission: 'Wymagany dostęp do aparatu',

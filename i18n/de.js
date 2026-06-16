@@ -63,7 +63,8 @@ export default {
     receiptTitle: 'Kassenzettel',
     receiptSubtitle: 'Foto aufnehmen',
     receiptHint:
-      'Tipp: Gutes Licht und ein flach fotografierter Beleg verbessern die Erkennung. Unsichere Felder werden mit ⚠️ markiert – einfach antippen und kostenlos korrigieren.',
+      'Tipp: Gutes Licht und ein flach fotografierter Beleg verbessern die Erkennung. Bekannte Händler werden automatisch ergänzt. Unsichere Felder werden mit ⚠️ markiert – einfach antippen und kostenlos korrigieren.',
+    merchantNotRecognized: 'Händler nicht erkannt – bitte manuell ergänzen',
     or: 'oder',
     manualEntry: 'Manuell eingeben',
     cameraPermission: 'Kamerazugriff erforderlich',

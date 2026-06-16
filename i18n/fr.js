@@ -63,7 +63,8 @@ export default {
     receiptTitle: 'Ticket de caisse',
     receiptSubtitle: 'Prendre une photo',
     receiptHint:
-      'Conseil: Un bon éclairage améliore la reconnaissance. Les champs incertains sont marqués ⚠️ – appuyez pour corriger gratuitement.',
+      'Conseil : Un bon éclairage et un ticket bien à plat améliorent la reconnaissance. Les commerçants connus sont complétés automatiquement. Les champs incertains sont marqués ⚠️ – appuyez pour corriger gratuitement.',
+    merchantNotRecognized: 'Commerçant non reconnu – veuillez saisir manuellement',
     or: 'ou',
     manualEntry: 'Saisir manuellement',
     cameraPermission: 'Accès à la caméra requis',

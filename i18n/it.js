@@ -63,7 +63,8 @@ export default {
     receiptTitle: 'Scontrino',
     receiptSubtitle: 'Scatta foto',
     receiptHint:
-      'Suggerimento: Buona illuminazione migliora il riconoscimento. I campi incerti sono contrassegnati con ⚠️ – tocca per correggere gratuitamente.',
+      'Suggerimento: Buona illuminazione e uno scontrino ben piatto migliorano il riconoscimento. I negozi noti vengono completati automaticamente. I campi incerti sono contrassegnati con ⚠️ – tocca per correggere gratuitamente.',
+    merchantNotRecognized: 'Esercente non riconosciuto – inserisci manualmente',
     or: 'oppure',
     manualEntry: 'Inserisci manualmente',
     cameraPermission: 'Accesso alla fotocamera necessario',

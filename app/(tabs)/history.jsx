@@ -225,6 +225,11 @@ export default function HistoryScreen() {
     setLoading(false);
   }, []);
 
+  const handleExpenseChanged = useCallback(async () => {
+    setSelectedExpense(null);
+    await loadData();
+  }, [loadData]);
+
   useFocusEffect(
     useCallback(() => {
       loadData();
@@ -403,9 +408,9 @@ export default function HistoryScreen() {
               <View key={group.id} style={styles.monthGroup}>
                 <Text style={styles.monthGroupLabel}>{group.label}</Text>
                 <View style={styles.list}>
-                  {group.items.map((item) => (
+                  {group.items.map((item, index) => (
                     <ExpenseRow
-                      key={`${item.id}-${locale}`}
+                      key={`${item.id}-${index}`}
                       expense={toRowExpense(item)}
                       theme={theme}
                       onPress={() => setSelectedExpense(item)}
@@ -419,9 +424,9 @@ export default function HistoryScreen() {
           <EmptyState emoji="📋" title={t('history.noMonthExpenses')} theme={theme} />
         ) : (
           <View style={styles.list}>
-            {monthExpenses.map((item) => (
+            {monthExpenses.map((item, index) => (
               <ExpenseRow
-                key={`${item.id}-${locale}`}
+                key={`${item.id}-${index}`}
                 expense={toRowExpense(item)}
                 theme={theme}
                 onPress={() => setSelectedExpense(item)}
@@ -435,7 +440,7 @@ export default function HistoryScreen() {
         visible={!!selectedExpense}
         expense={selectedExpense}
         onClose={() => setSelectedExpense(null)}
-        onChanged={loadData}
+        onChanged={handleExpenseChanged}
       />
     </>
   );

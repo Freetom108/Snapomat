@@ -25,7 +25,7 @@ import { CATEGORY_LIST, CATEGORIES, getCategory, getCategoryList } from '../../c
 import { useTheme } from '../../hooks/useTheme';
 import { useTranslation } from '../../hooks/useTranslation';
 import { analyzeImage } from '../../services/apiGatekeeper';
-import { getExpenses, saveExpense } from '../../store/storage';
+import { getExpenses, saveExpense, findMerchantMatch, saveMerchantToLibrary } from '../../store/storage';
 
 function withAlpha(hex, alpha) {
   const a = Math.round(alpha * 255)
@@ -55,12 +55,44 @@ const EMPTY_MANUAL = {
   merchantConfidence: 0.9,
   dateConfidence: 0.9,
   amountConfidence: 0.9,
+  recognizedMerchant: '',
+  merchantLibraryConfidence: null,
 };
 
 const UNCERTAIN_GOLD = '#E8B84B';
 
 function isUncertainConfidence(confidence) {
   return Number(confidence) < 0.7;
+}
+
+async function applyMerchantLibraryToForm(form, recognizedMerchant) {
+  const { match, confidence } = await findMerchantMatch(recognizedMerchant);
+
+  const updated = {
+    ...form,
+    recognizedMerchant,
+    merchantLibraryConfidence: confidence,
+  };
+
+  if (confidence === 'high' && match) {
+    updated.merchant = match;
+  } else if (confidence === 'medium' && match) {
+    updated.merchant = match;
+  }
+
+  return updated;
+}
+
+function shouldShowMerchantWarning(form) {
+  if (form.merchantLibraryConfidence === 'high') {
+    return false;
+  }
+
+  if (form.merchantLibraryConfidence === 'medium') {
+    return true;
+  }
+
+  return isUncertainConfidence(form.merchantConfidence);
 }
 
 function formatAmount(amount) {
@@ -201,12 +233,6 @@ function SelectionStep({ colors, styles, onReceipt, onManual }) {
 
       <Text style={styles.receiptHint}>{t('import.receiptHint')}</Text>
 
-      <View style={styles.dividerRow}>
-        <View style={styles.dividerLine} />
-        <Text style={styles.dividerText}>{t('import.or')}</Text>
-        <View style={styles.dividerLine} />
-      </View>
-
       <Pressable
         onPress={onManual}
         style={({ pressed }) => [
@@ -274,21 +300,33 @@ function ReviewField({
   styles,
   keyboardType = 'default',
   uncertain = false,
+  placeholder,
+  smallWarning = false,
 }) {
   return (
     <View style={styles.fieldRow}>
       <Text style={styles.fieldLabel}>{label}</Text>
       <View style={styles.fieldValueWrap}>
-        {uncertain ? <Text style={styles.fieldWarningPrefix}>⚠️ </Text> : null}
+        {uncertain ? (
+          <Text
+            style={[
+              styles.fieldWarningPrefix,
+              smallWarning && styles.fieldWarningPrefixSmall,
+            ]}
+          >
+            ⚠️{' '}
+          </Text>
+        ) : null}
         <TextInput
           value={value}
           onChangeText={onChangeText}
+          placeholder={placeholder}
           style={[
             styles.fieldValue,
             uncertain && styles.fieldValueUncertain,
           ]}
           keyboardType={keyboardType}
-          placeholderTextColor={colors.muted}
+          placeholderTextColor={uncertain ? UNCERTAIN_GOLD : colors.muted}
         />
       </View>
     </View>
@@ -392,8 +430,6 @@ function ReviewStep({
     });
   }
 
-  const activeCategory = getCategory(selectedCategory);
-
   return (
     <View style={styles.reviewContent}>
       <View
@@ -419,7 +455,8 @@ function ReviewStep({
           onChangeText={(merchant) => setForm((prev) => ({ ...prev, merchant }))}
           colors={colors}
           styles={styles}
-          uncertain={isUncertainConfidence(form.merchantConfidence)}
+          uncertain={shouldShowMerchantWarning(form)}
+          smallWarning
         />
         <View style={styles.fieldDivider} />
         <ReviewField
@@ -443,12 +480,6 @@ function ReviewStep({
       </View>
 
       <Text style={styles.sectionLabel}>{t('import.sectionCategory')}</Text>
-
-      {activeCategory ? (
-        <Text style={[styles.selectedCategoryHint, { color: colors.muted }]}>
-          {activeCategory.emoji} {activeCategory.label}
-        </Text>
-      ) : null}
 
       <View style={styles.chipRow}>
         {getCategoryList().map((cat) => (
@@ -720,6 +751,9 @@ function createStyles(colors) {
       fontSize: 17,
       color: UNCERTAIN_GOLD,
     },
+    fieldWarningPrefixSmall: {
+      fontSize: 14,
+    },
     fieldValue: {
       flex: 1,
       fontFamily: 'DMSans_700Bold',
@@ -871,13 +905,14 @@ export default function AddScreen() {
 
       const expenses = await getExpenses();
       const nextForm = apiItemToForm(result[0]);
-      const allowed = await proceedSingleReviewIfAllowed(nextForm, expenses, t);
+      const withLibrary = await applyMerchantLibraryToForm(nextForm, nextForm.merchant);
+      const allowed = await proceedSingleReviewIfAllowed(withLibrary, expenses, t);
       if (!allowed) {
         setPhotoBase64(null);
         return;
       }
-      setForm(nextForm);
-      setSelectedCategory(nextForm.categoryId);
+      setForm(withLibrary);
+      setSelectedCategory(withLibrary.categoryId);
       setStep('review');
     } catch {
       Alert.alert(t('import.analysisFailed'));
@@ -915,6 +950,9 @@ export default function AddScreen() {
         ...formData,
         categoryId: normalizeCategoryId(formData.categoryId ?? selectedCategory),
       };
+      if (formData.recognizedMerchant) {
+        await saveMerchantToLibrary(formData.recognizedMerchant, payload.merchant);
+      }
       await saveExpense(formToExpense(payload));
       handleBack();
       router.replace('/(tabs)');

@@ -63,7 +63,8 @@ export default {
     receiptTitle: 'Ticket',
     receiptSubtitle: 'Hacer foto',
     receiptHint:
-      'Consejo: Buena iluminación mejora el reconocimiento. Los campos inciertos se marcan con ⚠️ – toca para corregir gratis.',
+      'Consejo: Buena iluminación y un ticket bien plano mejoran el reconocimiento. Los comercios conocidos se completan automáticamente. Los campos inciertos se marcan con ⚠️ – toca para corregir gratis.',
+    merchantNotRecognized: 'Comercio no reconocido – introdúcelo manualmente',
     or: 'o',
     manualEntry: 'Introducir manualmente',
     cameraPermission: 'Se necesita acceso a la cámara',
