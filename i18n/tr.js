@@ -144,6 +144,11 @@ export default {
         answer:
           'Verilerin yalnızca cihazında saklanır. YZ analizi için fotoğraf kısa süre sunucumuza gönderilir ve hemen ardından silinir. İznin olmadan hiçbir şey paylaşılmaz veya kalıcı olarak saklanmaz.',
       },
+      trialAfterData: {
+        question: 'Deneme ayından sonra verilerime ne olur?',
+        answer:
+          'Verilerin cihazında güvenle saklanmaya devam eder. Abonelik başlattığında tüm kayıtlarına anında tekrar tam erişim kazanırsın – hiçbir şey kaybolmaz.',
+      },
       ai: {
         question: 'YZ analizi nasıl çalışır?',
         answer:
@@ -201,6 +206,8 @@ export default {
     backupRestore: '📥 Yedeği geri yükle',
     pricingCreditsRemaining: 'Hâlâ {{count}} Kredin var.',
     pricingCreditHint: 'Tarama başına 1 Kredi',
+    pricingFreeDescription:
+      '1 ay boyunca tüm özellikleri sınırsız dene. Süre bitince verilerin güvenle saklanır – istediğin zaman abone ol ve kaldığın yerden devam et.',
     pricingMonth1: 'AY 1',
     pricingFromMonth2: '2. AYDAN İTİBAREN',
     pricingFreeMonth1Credits: '⚡ 20 Kredi',
@@ -239,6 +246,10 @@ export default {
       deleteAllSuccessMessage: 'Tüm uygulama verileri kaldırıldı.',
       userIdCopied: 'Kopyalandı!',
     },
+  },
+  paywall: {
+    message:
+      'Deneme ayın sona erdi. Verilerin güvenle saklandı – bir abonelik seç ve kaldığın yerden devam et.',
   },
   themes: {
     gold: 'Gece altını',

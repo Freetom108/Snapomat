@@ -144,6 +144,11 @@ export default {
         answer:
           'Os teus dados ficam apenas no teu dispositivo. Para a análise IA, a foto é enviada brevemente ao nosso servidor e eliminada de seguida. Nada é partilhado nem guardado sem a tua permissão.',
       },
+      trialAfterData: {
+        question: 'O que acontece aos meus dados após o mês de teste?',
+        answer:
+          'Os teus dados permanecem guardados em segurança no teu dispositivo. Assim que subscreveres um plano, recuperas imediatamente o acesso total a todas as entradas – nada se perde.',
+      },
       ai: {
         question: 'Como funciona a análise IA?',
         answer:
@@ -201,6 +206,8 @@ export default {
     backupRestore: '📥 Restaurar backup',
     pricingCreditsRemaining: 'Ainda tens {{count}} Créditos.',
     pricingCreditHint: '1 Crédito por digitalização',
+    pricingFreeDescription:
+      'Experimenta todas as funcionalidades sem limites durante 1 mês. Após o teste os teus dados ficam guardados em segurança – subscreve um plano quando quiseres e continua à vontade.',
     pricingMonth1: 'MÊS 1',
     pricingFromMonth2: 'A PARTIR DO MÊS 2',
     pricingFreeMonth1Credits: '⚡ 20 Créditos',
@@ -239,6 +246,10 @@ export default {
       deleteAllSuccessMessage: 'Todos os dados da app foram removidos.',
       userIdCopied: 'Copiado!',
     },
+  },
+  paywall: {
+    message:
+      'O teu mês de teste terminou. Os teus dados estão guardados em segurança – escolhe um plano e continua sem complicações.',
   },
   themes: {
     gold: 'Ouro da meia-noite',

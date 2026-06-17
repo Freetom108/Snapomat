@@ -144,6 +144,11 @@ export default {
         answer:
           'Twoje dane są przechowywane wyłącznie na urządzeniu. Do analizy AI zdjęcie jest krótko wysyłane na serwer i natychmiast usuwane. Nic nie jest udostępniane ani zapisywane bez Twojej zgody.',
       },
+      trialAfterData: {
+        question: 'Co dzieje się z moimi danymi po miesiącu próbnym?',
+        answer:
+          'Twoje dane pozostają bezpiecznie zapisane na urządzeniu. Gdy wykupisz subskrypcję, natychmiast odzyskasz pełny dostęp do wszystkich wpisów – nic nie ginie.',
+      },
       ai: {
         question: 'Jak działa analiza AI?',
         answer:
@@ -201,6 +206,8 @@ export default {
     backupRestore: '📥 Przywróć kopię',
     pricingCreditsRemaining: 'Masz jeszcze {{count}} Kredytów.',
     pricingCreditHint: '1 Kredyt na skan',
+    pricingFreeDescription:
+      'Przez 1 miesiąc testuj wszystkie funkcje bez limitu. Po zakończeniu okresu próbnego Twoje dane są bezpiecznie przechowywane – wykup subskrypcję w dowolnym momencie i kontynuuj bez przeszkód.',
     pricingMonth1: 'MIESIĄC 1',
     pricingFromMonth2: 'OD MIESIĄCA 2',
     pricingFreeMonth1Credits: '⚡ 20 Kredytów',
@@ -239,6 +246,10 @@ export default {
       deleteAllSuccessMessage: 'Wszystkie dane aplikacji zostały usunięte.',
       userIdCopied: 'Skopiowano!',
     },
+  },
+  paywall: {
+    message:
+      'Twój miesiąc próbny dobiegł końca. Twoje dane są bezpiecznie zapisane – wybierz subskrypcję i po prostu kontynuuj.',
   },
   themes: {
     gold: 'Złoto północy',

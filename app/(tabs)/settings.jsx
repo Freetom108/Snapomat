@@ -378,6 +378,7 @@ const FAQ_ITEM_META = [
   { id: 'upgrade', action: 'pricing', link: true },
   { id: 'monthlyYearly' },
   { id: 'data' },
+  { id: 'trialAfterData' },
   { id: 'scanCost' },
   { id: 'creditsBuy' },
   { id: 'budget' },
@@ -968,29 +969,8 @@ function CreditsPricingSheet({ visible, credits, onClose, colors, styles }) {
             nestedScrollEnabled
           >
             <PlanCard name="Free" price="0 €" colors={colors} styles={styles}>
-              <Text style={[styles.planSectionLabel, { color: colors.muted }]}>
-                {t('settings.pricingMonth1')}
-              </Text>
               <PlanFeature
-                text={t('settings.pricingFreeMonth1Credits')}
-                colors={colors}
-                styles={styles}
-              />
-              <PlanFeature
-                text={t('settings.pricingFreeMonth1Manual')}
-                colors={colors}
-                styles={styles}
-              />
-              <Text style={[styles.planSectionLabel, styles.planSectionLabelSpaced, { color: colors.muted }]}>
-                {t('settings.pricingFromMonth2')}
-              </Text>
-              <PlanFeature
-                text={t('settings.pricingFreeFromMonth2Ai')}
-                colors={colors}
-                styles={styles}
-              />
-              <PlanFeature
-                text={t('settings.pricingFreeFromMonth2Manual')}
+                text={t('settings.pricingFreeDescription')}
                 colors={colors}
                 styles={styles}
               />

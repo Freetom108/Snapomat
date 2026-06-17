@@ -2,6 +2,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const STORAGE_KEY = 'snapomat_data';
 const MERCHANT_LIBRARY_KEY = 'snapomat_merchant_library';
+const TRIAL_START_KEY = 'snapomat_trial_start';
+const SUBSCRIBED_KEY = 'snapomat_subscribed';
+const TRIAL_DAYS = 30;
 
 const DEFAULT_DATA = {
   expenses: [],
@@ -485,4 +488,37 @@ export async function cancelSubscription() {
   data.credits = 25;
   await saveData(data);
   return data.credits;
+}
+
+export async function initTrialIfNeeded() {
+  const existing = await AsyncStorage.getItem(TRIAL_START_KEY);
+  if (!existing) {
+    await AsyncStorage.setItem(TRIAL_START_KEY, new Date().toISOString());
+  }
+}
+
+export async function isTrialActive() {
+  const startRaw = await AsyncStorage.getItem(TRIAL_START_KEY);
+  if (!startRaw) return false;
+
+  const start = new Date(startRaw);
+  if (Number.isNaN(start.getTime())) return false;
+
+  const elapsedMs = Date.now() - start.getTime();
+  return elapsedMs < TRIAL_DAYS * 24 * 60 * 60 * 1000;
+}
+
+export async function isSubscribed() {
+  const value = await AsyncStorage.getItem(SUBSCRIBED_KEY);
+  return value === 'true';
+}
+
+export async function hasAccess() {
+  await initTrialIfNeeded();
+  const [trialActive, subscribed] = await Promise.all([isTrialActive(), isSubscribed()]);
+  return trialActive || subscribed;
+}
+
+export async function setSubscribed(subscribed = true) {
+  await AsyncStorage.setItem(SUBSCRIBED_KEY, subscribed ? 'true' : 'false');
 }

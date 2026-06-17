@@ -144,6 +144,11 @@ export default {
         answer:
           'Your data is stored exclusively on your device. For AI analysis the photo is briefly sent to our server and deleted immediately afterwards. Nothing is shared or stored permanently without your permission.',
       },
+      trialAfterData: {
+        question: 'What happens to my data after the trial month?',
+        answer:
+          'Your data remains safely stored on your device. As soon as you subscribe, you immediately regain full access to all your entries – nothing is lost.',
+      },
       ai: {
         question: 'How does AI analysis work?',
         answer:
@@ -201,6 +206,8 @@ export default {
     backupRestore: '📥 Restore backup',
     pricingCreditsRemaining: 'You still have {{count}} Credits.',
     pricingCreditHint: '1 Credit per scan',
+    pricingFreeDescription:
+      'Try all features unlimited for 1 month. After it ends your data is safely kept – subscribe anytime and pick up right where you left off.',
     pricingMonth1: 'MONTH 1',
     pricingFromMonth2: 'FROM MONTH 2',
     pricingFreeMonth1Credits: '⚡ 20 Credits',
@@ -239,6 +246,10 @@ export default {
       deleteAllSuccessMessage: 'All app data was removed.',
       userIdCopied: 'Copied!',
     },
+  },
+  paywall: {
+    message:
+      'Your trial month has expired. Your data is safely stored – choose a subscription and continue right away.',
   },
   themes: {
     gold: 'Midnight Gold',

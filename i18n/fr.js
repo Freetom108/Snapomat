@@ -144,6 +144,11 @@ export default {
         answer:
           'Vos données sont stockées uniquement sur votre appareil. Pour l\'analyse IA, la photo est brièvement envoyée à notre serveur puis supprimée immédiatement. Rien n\'est partagé ni conservé sans votre accord.',
       },
+      trialAfterData: {
+        question: 'Que deviennent mes données après le mois d\'essai ?',
+        answer:
+          'Vos données restent en sécurité sur votre appareil. Dès que vous souscrivez un abonnement, vous retrouvez immédiatement l\'accès complet à toutes vos entrées – rien n\'est perdu.',
+      },
       ai: {
         question: 'Comment fonctionne l\'analyse IA ?',
         answer:
@@ -201,6 +206,8 @@ export default {
     backupRestore: '📥 Restaurer une sauvegarde',
     pricingCreditsRemaining: 'Il vous reste {{count}} Crédits.',
     pricingCreditHint: '1 Crédit par scan',
+    pricingFreeDescription:
+      'Testez toutes les fonctionnalités sans limite pendant 1 mois. Après l\'essai, vos données sont conservées en sécurité – souscrivez un abo à tout moment et reprenez simplement.',
     pricingMonth1: 'MOIS 1',
     pricingFromMonth2: 'À PARTIR DU MOIS 2',
     pricingFreeMonth1Credits: '⚡ 20 Crédits',
@@ -239,6 +246,10 @@ export default {
       deleteAllSuccessMessage: 'Toutes les données de l\'app ont été supprimées.',
       userIdCopied: 'Copié !',
     },
+  },
+  paywall: {
+    message:
+      'Votre mois d\'essai est terminé. Vos données sont en sécurité – choisissez un abonnement et continuez tout simplement.',
   },
   themes: {
     gold: 'Or de minuit',

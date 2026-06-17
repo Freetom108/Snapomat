@@ -144,6 +144,11 @@ export default {
         answer:
           'Deine Daten werden ausschließlich lokal auf deinem Gerät gespeichert. Für die KI-Analyse wird das Foto kurz an unseren Server gesendet und danach sofort gelöscht. Nichts wird ohne deine Erlaubnis weitergegeben oder dauerhaft gespeichert.',
       },
+      trialAfterData: {
+        question: 'Was passiert mit meinen Daten nach dem Probemonat?',
+        answer:
+          'Deine Daten bleiben sicher auf deinem Gerät gespeichert. Sobald du ein Abo abschließt, hast du sofort wieder vollen Zugriff auf alle deine Einträge – nichts geht verloren.',
+      },
       ai: {
         question: 'Wie funktioniert die KI-Analyse?',
         answer:
@@ -201,6 +206,8 @@ export default {
     backupRestore: '📥 Backup wiederherstellen',
     pricingCreditsRemaining: 'Du hast noch {{count}} Credits.',
     pricingCreditHint: '1 Credit pro Scan',
+    pricingFreeDescription:
+      '1 Monat alle Features unbegrenzt testen. Nach Ablauf werden deine Daten sicher aufbewahrt – schließe jederzeit ein Abo ab und mach einfach weiter.',
     pricingMonth1: 'MONAT 1',
     pricingFromMonth2: 'AB MONAT 2',
     pricingFreeMonth1Credits: '⚡ 20 Credits',
@@ -239,6 +246,10 @@ export default {
       deleteAllSuccessMessage: 'Alle App-Daten wurden entfernt.',
       userIdCopied: 'Kopiert!',
     },
+  },
+  paywall: {
+    message:
+      'Dein Probemonat ist abgelaufen. Deine Daten sind sicher gespeichert – wähle ein Abo und mach einfach weiter.',
   },
   themes: {
     gold: 'Midnight Gold',
