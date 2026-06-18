@@ -51,6 +51,7 @@ import {
   buildMonthlyShareReport,
   getMonthExpenses,
 } from '../../utils/expenseHelpers';
+import CreditsPricingSheet from '../../components/CreditsPricingSheet';
 
 const LOCALE_OPTIONS = [
   { code: 'auto', flag: '🌍' },
@@ -736,7 +737,7 @@ function SupportFeedbackModal({ visible, onClose, userId, onCopyUserId, colors, 
     >
       <InfoSheetRow
         label={t('settings.supportContactLabel')}
-        value={t('settings.supportContactAction')}
+        value={t('common.open')}
         valueColor={colors.accent}
         onPress={() => Linking.openURL('https://freetom108.github.io/Snapomat/support')}
         colors={colors}
@@ -744,7 +745,7 @@ function SupportFeedbackModal({ visible, onClose, userId, onCopyUserId, colors, 
       />
       <InfoSheetRow
         label={t('settings.supportRateLabel')}
-        value={t('settings.supportRateAction')}
+        value={t('common.open')}
         valueColor={colors.accent}
         onPress={() => Alert.alert(t('settings.alerts.thanksRating'))}
         colors={colors}
@@ -876,167 +877,6 @@ function BackupRestoreModal({ visible, onClose, onCreateBackup, onRestoreBackup,
 
 function resolveImportThemeId(stored) {
   return resolveThemeId(stored);
-}
-
-function PlanFeature({ text, colors, styles, compactBottom = false }) {
-  return (
-    <Text
-      style={[
-        styles.planFeature,
-        compactBottom && styles.planFeatureCompactBottom,
-        { color: colors.muted },
-      ]}
-    >
-      {text}
-    </Text>
-  );
-}
-
-function PlanFeatureSubline({ text, colors, styles }) {
-  return <Text style={[styles.planFeatureSub, { color: colors.muted }]}>{text}</Text>;
-}
-
-function PlanCard({ name, price, featured, badge, children, colors, styles }) {
-  return (
-    <View
-      style={[
-        styles.planCard,
-        { backgroundColor: colors.background, borderColor: colors.border },
-        featured && { borderColor: withAlpha(colors.accent, 0.35) },
-      ]}
-    >
-      <View style={styles.planHeader}>
-        <View style={styles.planNameRow}>
-          <Text style={[styles.planName, { color: colors.text }]}>{name}</Text>
-          {badge ? (
-            <View style={[styles.planBadge, { backgroundColor: withAlpha(colors.accent, 0.18) }]}>
-              <Text style={[styles.planBadgeText, { color: colors.accent }]}>{badge}</Text>
-            </View>
-          ) : null}
-        </View>
-        <Text style={[styles.planPrice, { color: colors.text }]}>{price}</Text>
-      </View>
-      {children}
-    </View>
-  );
-}
-
-function CreditsPricingSheet({ visible, credits, onClose, colors, styles }) {
-  const { t } = useTranslation();
-  const packs = [
-    { credits: t('settings.pricingPack50'), price: t('settings.pricingPack50Price') },
-    { credits: t('settings.pricingPack200'), price: t('settings.pricingPack200Price') },
-    { credits: t('settings.pricingPack500'), price: t('settings.pricingPack500Price') },
-  ];
-
-  return (
-    <Modal
-      visible={visible}
-      animationType="slide"
-      transparent
-      onRequestClose={() => {}}
-    >
-      <View style={styles.pricingOverlay}>
-        <View style={[styles.bottomSheet, { backgroundColor: colors.card }]}>
-          <View style={styles.pricingSheetHeader}>
-            <View style={styles.pricingHeaderText}>
-              <Text style={[styles.pricingHeaderTitle, { color: colors.text }]}>
-                ⚡ {t('settings.subscriptionCreditsTitle')}
-              </Text>
-              <Text style={[styles.pricingHeaderSubtitle, { color: colors.muted }]}>
-                {t('settings.pricingCreditsRemaining', { count: credits })}
-              </Text>
-            </View>
-            <Pressable
-              onPress={onClose}
-              hitSlop={12}
-              style={({ pressed }) => [
-                styles.pricingCloseButton,
-                pressed && { opacity: 0.7 },
-              ]}
-              accessibilityRole="button"
-              accessibilityLabel={t('common.close')}
-            >
-              <Text style={[styles.pricingCloseText, { color: colors.muted }]}>✕</Text>
-            </Pressable>
-          </View>
-
-          <ScrollView
-            style={styles.bottomSheetScroll}
-            contentContainerStyle={styles.pricingScroll}
-            showsVerticalScrollIndicator
-            bounces
-            nestedScrollEnabled
-          >
-            <PlanCard name="Free" price="0 €" colors={colors} styles={styles}>
-              <PlanFeature
-                text={t('settings.pricingFreeDescription')}
-                colors={colors}
-                styles={styles}
-              />
-            </PlanCard>
-
-            <PlanCard name="Monthly" price={t('settings.pricingMonthlyPrice')} colors={colors} styles={styles}>
-              <PlanFeature
-                text={t('settings.pricingMonthlyCredits')}
-                colors={colors}
-                styles={styles}
-              />
-              <PlanFeature
-                text={t('settings.pricingMonthlyManual')}
-                colors={colors}
-                styles={styles}
-              />
-              <Text style={[styles.planFootnote, { color: colors.muted }]}>
-                {t('settings.pricingCancelAnytime')}
-              </Text>
-            </PlanCard>
-
-            <PlanCard
-              name="Yearly"
-              price={t('settings.pricingYearlyPrice')}
-              featured
-              colors={colors}
-              styles={styles}
-            >
-              <PlanFeature
-                text={t('settings.pricingMonthlyCredits')}
-                colors={colors}
-                styles={styles}
-              />
-              <PlanFeature
-                text={t('settings.pricingMonthlyManual')}
-                colors={colors}
-                styles={styles}
-              />
-            </PlanCard>
-
-            <Text style={[styles.packsSectionLabel, { color: colors.muted }]}>
-              {t('settings.pricingAddonPacks')}
-            </Text>
-            <View style={[styles.packsCard, { backgroundColor: colors.background, borderColor: colors.border }]}>
-              {packs.map((pack, index) => (
-                <View
-                  key={pack.credits}
-                  style={[
-                    styles.packRow,
-                    index < packs.length - 1 && { borderBottomColor: colors.border, borderBottomWidth: 1 },
-                  ]}
-                >
-                  <Text style={[styles.packCredits, { color: colors.text }]}>{pack.credits}</Text>
-                  <Text style={[styles.packPrice, { color: colors.text }]}>{pack.price}</Text>
-                </View>
-              ))}
-            </View>
-
-            <Text style={[styles.pricingFooter, { color: colors.muted }]}>
-              {t('settings.pricingAddonFooter')}
-            </Text>
-          </ScrollView>
-        </View>
-      </View>
-    </Modal>
-  );
 }
 
 function createStyles(colors) {
@@ -1922,10 +1762,7 @@ export default function SettingsScreen() {
 
       <CreditsPricingSheet
         visible={showPricing}
-        credits={credits}
         onClose={() => setShowPricing(false)}
-        colors={colors}
-        styles={styles}
       />
 
       <BackupRestoreModal

@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, useEffect } from 'react';
+import { useMemo, useRef, useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -14,6 +14,7 @@ import {
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import * as ImageManipulator from 'expo-image-manipulator';
 import { useRouter } from 'expo-router';
+import { useFocusEffect } from '@react-navigation/native';
 import {
   useFonts,
   DMSans_400Regular,
@@ -25,7 +26,8 @@ import { CATEGORY_LIST, CATEGORIES, getCategory, getCategoryList } from '../../c
 import { useTheme } from '../../hooks/useTheme';
 import { useTranslation } from '../../hooks/useTranslation';
 import { analyzeImage } from '../../services/apiGatekeeper';
-import { getExpenses, saveExpense, findMerchantMatch, saveMerchantToLibrary } from '../../store/storage';
+import { getExpenses, saveExpense, findMerchantMatch, saveMerchantToLibrary, getCredits, deductCredit } from '../../store/storage';
+import CreditsPricingSheet from '../../components/CreditsPricingSheet';
 
 function withAlpha(hex, alpha) {
   const a = Math.round(alpha * 255)
@@ -204,11 +206,17 @@ async function proceedSingleReviewIfAllowed(formItem, expenses, t) {
   return confirmDuplicateAdd(t);
 }
 
-function ScreenHeader({ styles }) {
+function ScreenHeader({ styles, credits = 0 }) {
+  const { t } = useTranslation();
   return (
     <View style={styles.header}>
       <Text style={styles.brand}>SNAPOMAT</Text>
-      <Text style={styles.screenTitle}>Import</Text>
+      <View style={styles.headerTitleRow}>
+        <Text style={styles.screenTitle}>Import</Text>
+        {credits < 10 ? (
+          <Text style={styles.headerCredits}>{t('import.creditsShort', { count: credits })}</Text>
+        ) : null}
+      </View>
     </View>
   );
 }
@@ -420,6 +428,7 @@ function ReviewStep({
   onSave,
   onCancel,
   saving,
+  isScanned,
 }) {
   const { t } = useTranslation();
 
@@ -432,19 +441,21 @@ function ReviewStep({
 
   return (
     <View style={styles.reviewContent}>
-      <View
-        style={[
-          styles.successBadge,
-          {
-            backgroundColor: withAlpha(colors.green, 0.1),
-            borderColor: withAlpha(colors.green, 0.2),
-          },
-        ]}
-      >
-        <Text style={[styles.successBadgeText, { color: colors.green }]}>
-          {t('import.reviewDetected')}
-        </Text>
-      </View>
+      {isScanned ? (
+        <View
+          style={[
+            styles.successBadge,
+            {
+              backgroundColor: withAlpha(colors.green, 0.1),
+              borderColor: withAlpha(colors.green, 0.2),
+            },
+          ]}
+        >
+          <Text style={[styles.successBadgeText, { color: colors.green }]}>
+            {t('import.reviewDetected')}
+          </Text>
+        </View>
+      ) : null}
 
       <Text style={styles.sectionLabel}>{t('import.reviewSection')}</Text>
 
@@ -538,6 +549,17 @@ function createStyles(colors) {
       right: 0,
       paddingHorizontal: 20,
       paddingTop: 50,
+    },
+    headerTitleRow: {
+      flexDirection: 'row',
+      alignItems: 'flex-end',
+      justifyContent: 'space-between',
+    },
+    headerCredits: {
+      fontFamily: 'DMSans_700Bold',
+      fontSize: 13,
+      color: colors.accent,
+      marginBottom: 4,
     },
     selectCentered: {
       flex: 1,
@@ -877,6 +899,20 @@ export default function AddScreen() {
   const [form, setForm] = useState(EMPTY_MANUAL);
   const [selectedCategory, setSelectedCategory] = useState(EMPTY_MANUAL.categoryId);
   const [saving, setSaving] = useState(false);
+  const [credits, setCredits] = useState(0);
+  const [showPricing, setShowPricing] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      let active = true;
+      getCredits().then((value) => {
+        if (active) setCredits(value);
+      });
+      return () => {
+        active = false;
+      };
+    }, []),
+  );
 
   const [fontsLoaded] = useFonts({
     DMSans_400Regular,
@@ -885,7 +921,14 @@ export default function AddScreen() {
     DMSans_900Black,
   });
 
-  function openCamera() {
+  async function openCamera() {
+    const current = await getCredits();
+    setCredits(current);
+    if (current <= 0) {
+      Alert.alert(t('import.noCreditsMessage'));
+      setShowPricing(true);
+      return;
+    }
     setShowCamera(true);
   }
 
@@ -911,6 +954,8 @@ export default function AddScreen() {
         setPhotoBase64(null);
         return;
       }
+      const remaining = await deductCredit();
+      setCredits(remaining);
       setForm(withLibrary);
       setSelectedCategory(withLibrary.categoryId);
       setStep('review');
@@ -982,12 +1027,12 @@ export default function AddScreen() {
             />
           </View>
           <View style={styles.selectHeader}>
-            <ScreenHeader styles={styles} />
+            <ScreenHeader styles={styles} credits={credits} />
           </View>
         </View>
       ) : (
         <ScrollView contentContainerStyle={styles.scrollContent}>
-          <ScreenHeader styles={styles} />
+          <ScreenHeader styles={styles} credits={credits} />
           <ReviewStep
             colors={colors}
             styles={styles}
@@ -998,6 +1043,7 @@ export default function AddScreen() {
             onSave={handleSave}
             onCancel={handleBack}
             saving={saving}
+            isScanned={!!photoBase64}
           />
         </ScrollView>
       )}
@@ -1010,6 +1056,11 @@ export default function AddScreen() {
         styles={styles}
         onCancel={() => setShowCamera(false)}
         onCapture={handleCapture}
+      />
+
+      <CreditsPricingSheet
+        visible={showPricing}
+        onClose={() => setShowPricing(false)}
       />
     </View>
   );

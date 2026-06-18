@@ -202,6 +202,14 @@ export async function saveCredits(amount) {
   await saveData(data);
 }
 
+export async function deductCredit() {
+  const data = await loadData();
+  const current = data.credits ?? DEFAULT_DATA.credits;
+  data.credits = Math.max(0, current - 1);
+  await saveData(data);
+  return data.credits;
+}
+
 export async function clearAllData() {
   await AsyncStorage.removeItem(STORAGE_KEY);
 }
