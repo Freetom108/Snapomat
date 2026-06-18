@@ -738,7 +738,7 @@ function SupportFeedbackModal({ visible, onClose, userId, onCopyUserId, colors, 
         label={t('settings.supportContactLabel')}
         value={t('settings.supportContactAction')}
         valueColor={colors.accent}
-        onPress={() => Linking.openURL('mailto:support@snapomat.app')}
+        onPress={() => Linking.openURL('https://freetom108.github.io/Snapomat/support')}
         colors={colors}
         styles={styles}
       />
@@ -776,7 +776,7 @@ function LegalModal({ visible, onClose, colors, styles }) {
         label={t('settings.legalPrivacy')}
         value={t('common.open')}
         valueColor={colors.accent}
-        onPress={() => Linking.openURL('https://freetom108.github.io/privacy-policy')}
+        onPress={() => Linking.openURL('https://freetom108.github.io/Snapomat/privacy')}
         colors={colors}
         styles={styles}
       />
@@ -784,7 +784,7 @@ function LegalModal({ visible, onClose, colors, styles }) {
         label={t('settings.legalTerms')}
         value={t('common.open')}
         valueColor={colors.accent}
-        onPress={() => Alert.alert(t('common.comingSoon'))}
+        onPress={() => Linking.openURL('https://freetom108.github.io/Snapomat/terms')}
         colors={colors}
         styles={styles}
       />
@@ -792,7 +792,7 @@ function LegalModal({ visible, onClose, colors, styles }) {
         label={t('settings.legalImprint')}
         value={t('common.open')}
         valueColor={colors.accent}
-        onPress={() => Alert.alert(t('common.comingSoon'))}
+        onPress={() => Linking.openURL('https://freetom108.github.io/Snapomat/impressum')}
         isLast
         colors={colors}
         styles={styles}
