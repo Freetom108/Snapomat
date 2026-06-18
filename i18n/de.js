@@ -62,6 +62,7 @@ export default {
   import: {
     receiptTitle: 'Kassenzettel',
     receiptSubtitle: 'Foto aufnehmen',
+    receiptCreditCost: '1 Foto = 1 Credit',
     receiptHint:
       'Tipp: Gutes Licht und ein flach fotografierter Beleg verbessern die Erkennung. Bekannte Händler werden automatisch ergänzt. Unsichere Felder werden mit ⚠️ markiert – einfach antippen und kostenlos korrigieren.',
     merchantNotRecognized: 'Händler nicht erkannt – bitte manuell ergänzen',
@@ -207,10 +208,9 @@ export default {
     backupCreate: '📤 Backup erstellen',
     backupRestore: '📥 Backup wiederherstellen',
     pricingCreditsRemaining: 'Du hast noch {{count}} Credits.',
-    pricingSubtitle: 'Ein Kassenzettel-Foto = 1 Credit',
     pricingCreditHint: '1 Credit pro Scan',
     pricingFreeDescription:
-      'Deine Daten bleiben auf deinem Gerät – schließe jederzeit ein Abo ab und mach einfach weiter.',
+      'Alle Features einen Monat lang testen. Wenn dir die App gefällt, kannst du jederzeit ein Abo abschließen – deine Daten bleiben auf deinem Gerät gespeichert.',
     pricingMonth1: 'MONAT 1',
     pricingFromMonth2: 'AB MONAT 2',
     pricingFreeMonth1Credits: '⚡ 20 Credits',
@@ -218,18 +218,10 @@ export default {
     pricingFreeFromMonth2Ai: '⚡ 10 Credits pro Monat',
     pricingFreeFromMonth2Manual: '✏️ 10 manuelle Einträge pro Monat',
     pricingMonthlyPrice: '3,99 € / Monat',
-    pricingMonthlyCredits: '⚡ 100 Credits pro Monat',
+    pricingMonthlyCredits: '⚡ 250 Credits pro Monat',
+    pricingMonthlyCreditsNote: 'Das sind über 8 Fotos pro Tag',
     pricingMonthlyManual: '✏️ Unbegrenzte manuelle Einträge',
-    pricingCancelAnytime: 'Jederzeit kündbar',
     pricingYearlyPrice: '19,99 € / Jahr',
-    pricingAddonPacks: 'ZUSATZPAKETE',
-    pricingAddonFooter: 'Einmalige Zahlung · Kein Abo',
-    pricingPack50: '100 Credits',
-    pricingPack50Price: '1,99 €',
-    pricingPack200: '400 Credits',
-    pricingPack200Price: '5,99 €',
-    pricingPack500: '1.000 Credits',
-    pricingPack500Price: '12,99 €',
     shareReportMessage:
       'Snapomat Monatsbericht – {{month}}\nAusgaben: {{total}} | Buchungen: {{count}}',
     alerts: {

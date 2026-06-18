@@ -46,23 +46,14 @@ export default function CreditsPricingSheet({ visible, onClose }) {
   const { t } = useTranslation();
   const styles = createStyles(colors);
 
-  const packs = [
-    { credits: t('settings.pricingPack50'), price: t('settings.pricingPack50Price') },
-    { credits: t('settings.pricingPack200'), price: t('settings.pricingPack200Price') },
-    { credits: t('settings.pricingPack500'), price: t('settings.pricingPack500Price') },
-  ];
-
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={() => {}}>
       <View style={styles.pricingOverlay}>
         <View style={[styles.bottomSheet, { backgroundColor: colors.card }]}>
           <View style={styles.pricingSheetHeader}>
             <View style={styles.pricingHeaderText}>
-              <Text style={[styles.pricingHeaderTitle, { color: colors.text }]}>
+              <Text style={[styles.pricingHeaderTitle, { color: colors.accent }]}>
                 ⚡ {t('settings.subscriptionCreditsTitle')}
-              </Text>
-              <Text style={[styles.pricingHeaderSubtitle, { color: colors.muted }]}>
-                {t('settings.pricingSubtitle')}
               </Text>
             </View>
             <Pressable
@@ -89,10 +80,10 @@ export default function CreditsPricingSheet({ visible, onClose }) {
 
             <PlanCard name="Monthly" price={t('settings.pricingMonthlyPrice')} colors={colors} styles={styles}>
               <PlanFeature text={t('settings.pricingMonthlyCredits')} colors={colors} styles={styles} />
-              <PlanFeature text={t('settings.pricingMonthlyManual')} colors={colors} styles={styles} />
-              <Text style={[styles.planFootnote, { color: colors.muted }]}>
-                {t('settings.pricingCancelAnytime')}
+              <Text style={[styles.planFeatureNote, { color: colors.muted }]}>
+                {t('settings.pricingMonthlyCreditsNote')}
               </Text>
+              <PlanFeature text={t('settings.pricingMonthlyManual')} colors={colors} styles={styles} />
             </PlanCard>
 
             <PlanCard
@@ -103,30 +94,11 @@ export default function CreditsPricingSheet({ visible, onClose }) {
               styles={styles}
             >
               <PlanFeature text={t('settings.pricingMonthlyCredits')} colors={colors} styles={styles} />
+              <Text style={[styles.planFeatureNote, { color: colors.muted }]}>
+                {t('settings.pricingMonthlyCreditsNote')}
+              </Text>
               <PlanFeature text={t('settings.pricingMonthlyManual')} colors={colors} styles={styles} />
             </PlanCard>
-
-            <Text style={[styles.packsSectionLabel, { color: colors.muted }]}>
-              {t('settings.pricingAddonPacks')}
-            </Text>
-            <View style={[styles.packsCard, { backgroundColor: colors.background, borderColor: colors.border }]}>
-              {packs.map((pack, index) => (
-                <View
-                  key={pack.credits}
-                  style={[
-                    styles.packRow,
-                    index < packs.length - 1 && { borderBottomColor: colors.border, borderBottomWidth: 1 },
-                  ]}
-                >
-                  <Text style={[styles.packCredits, { color: colors.text }]}>{pack.credits}</Text>
-                  <Text style={[styles.packPrice, { color: colors.text }]}>{pack.price}</Text>
-                </View>
-              ))}
-            </View>
-
-            <Text style={[styles.pricingFooter, { color: colors.muted }]}>
-              {t('settings.pricingAddonFooter')}
-            </Text>
           </ScrollView>
         </View>
       </View>
@@ -231,43 +203,17 @@ function createStyles() {
       lineHeight: 19,
       marginBottom: 4,
     },
+    planFeatureNote: {
+      fontFamily: 'DMSans_400Regular',
+      fontSize: 11,
+      lineHeight: 15,
+      marginTop: -2,
+      marginBottom: 6,
+    },
     planFootnote: {
       fontFamily: 'DMSans_400Regular',
       fontSize: 12,
       marginTop: 8,
-    },
-    packsSectionLabel: {
-      fontFamily: 'DMSans_700Bold',
-      fontSize: 11,
-      letterSpacing: 1.5,
-      textTransform: 'uppercase',
-      marginBottom: 8,
-    },
-    packsCard: {
-      borderRadius: 16,
-      borderWidth: 1,
-      overflow: 'hidden',
-      marginBottom: 16,
-    },
-    packRow: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingHorizontal: 16,
-      paddingVertical: 14,
-    },
-    packCredits: {
-      fontFamily: 'DMSans_700Bold',
-      fontSize: 15,
-    },
-    packPrice: {
-      fontFamily: 'DMSans_700Bold',
-      fontSize: 15,
-    },
-    pricingFooter: {
-      fontFamily: 'DMSans_400Regular',
-      fontSize: 12,
-      textAlign: 'center',
     },
   });
 }

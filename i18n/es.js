@@ -62,6 +62,7 @@ export default {
   import: {
     receiptTitle: 'Ticket',
     receiptSubtitle: 'Hacer foto',
+    receiptCreditCost: '1 foto = 1 crédito',
     receiptHint:
       'Consejo: Buena iluminación y un ticket bien plano mejoran el reconocimiento. Los comercios conocidos se completan automáticamente. Los campos inciertos se marcan con ⚠️ – toca para corregir gratis.',
     merchantNotRecognized: 'Comercio no reconocido – introdúcelo manualmente',
@@ -207,10 +208,9 @@ export default {
     backupCreate: '📤 Crear copia de seguridad',
     backupRestore: '📥 Restaurar copia',
     pricingCreditsRemaining: 'Te quedan {{count}} Créditos.',
-    pricingSubtitle: 'Una foto de ticket = 1 Crédito',
     pricingCreditHint: '1 Crédito por escaneo',
     pricingFreeDescription:
-      'Tus datos permanecen en tu dispositivo – contrata un plan cuando quieras y simplemente continúa.',
+      'Prueba todas las funciones durante un mes. Si te gusta la app, puedes suscribirte cuando quieras – tus datos se quedan en tu dispositivo.',
     pricingMonth1: 'MES 1',
     pricingFromMonth2: 'DESDE EL MES 2',
     pricingFreeMonth1Credits: '⚡ 20 Créditos',
@@ -218,18 +218,10 @@ export default {
     pricingFreeFromMonth2Ai: '⚡ 10 Créditos al mes',
     pricingFreeFromMonth2Manual: '✏️ 10 entradas manuales al mes',
     pricingMonthlyPrice: '3,99 € / mes',
-    pricingMonthlyCredits: '⚡ 100 Créditos al mes',
+    pricingMonthlyCredits: '⚡ 250 Créditos al mes',
+    pricingMonthlyCreditsNote: 'Eso es más de 8 fotos al día',
     pricingMonthlyManual: '✏️ Entradas manuales ilimitadas',
-    pricingCancelAnytime: 'Cancela cuando quieras',
     pricingYearlyPrice: '19,99 € / año',
-    pricingAddonPacks: 'PACKS ADICIONALES',
-    pricingAddonFooter: 'Pago único · Sin suscripción',
-    pricingPack50: '100 Créditos',
-    pricingPack50Price: '1,99 €',
-    pricingPack200: '400 Créditos',
-    pricingPack200Price: '5,99 €',
-    pricingPack500: '1.000 Créditos',
-    pricingPack500Price: '12,99 €',
     shareReportMessage:
       'Informe mensual Snapomat – {{month}}\nGastos: {{total}} | Movimientos: {{count}}',
     alerts: {

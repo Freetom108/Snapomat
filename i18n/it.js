@@ -62,6 +62,7 @@ export default {
   import: {
     receiptTitle: 'Scontrino',
     receiptSubtitle: 'Scatta foto',
+    receiptCreditCost: '1 foto = 1 credito',
     receiptHint:
       'Suggerimento: Buona illuminazione e uno scontrino ben piatto migliorano il riconoscimento. I negozi noti vengono completati automaticamente. I campi incerti sono contrassegnati con ⚠️ – tocca per correggere gratuitamente.',
     merchantNotRecognized: 'Esercente non riconosciuto – inserisci manualmente',
@@ -207,10 +208,9 @@ export default {
     backupCreate: '📤 Crea backup',
     backupRestore: '📥 Ripristina backup',
     pricingCreditsRemaining: 'Hai ancora {{count}} Crediti.',
-    pricingSubtitle: 'Una foto dello scontrino = 1 Credito',
     pricingCreditHint: '1 Credito per scansione',
     pricingFreeDescription:
-      'I tuoi dati restano sul tuo dispositivo – sottoscrivi un abbonamento quando vuoi e continua semplicemente.',
+      'Prova tutte le funzioni per un mese. Se l\'app ti piace, puoi abbonarti in qualsiasi momento – i tuoi dati rimangono sul tuo dispositivo.',
     pricingMonth1: 'MESE 1',
     pricingFromMonth2: 'DAL MESE 2',
     pricingFreeMonth1Credits: '⚡ 20 Crediti',
@@ -218,18 +218,10 @@ export default {
     pricingFreeFromMonth2Ai: '⚡ 10 Crediti al mese',
     pricingFreeFromMonth2Manual: '✏️ 10 inserimenti manuali al mese',
     pricingMonthlyPrice: '3,99 € / mese',
-    pricingMonthlyCredits: '⚡ 100 Crediti al mese',
+    pricingMonthlyCredits: '⚡ 250 Crediti al mese',
+    pricingMonthlyCreditsNote: 'Sono oltre 8 foto al giorno',
     pricingMonthlyManual: '✏️ Inserimenti manuali illimitati',
-    pricingCancelAnytime: 'Disdici quando vuoi',
     pricingYearlyPrice: '19,99 € / anno',
-    pricingAddonPacks: 'PACCHETTI EXTRA',
-    pricingAddonFooter: 'Pagamento unico · Nessun abbonamento',
-    pricingPack50: '100 Crediti',
-    pricingPack50Price: '1,99 €',
-    pricingPack200: '400 Crediti',
-    pricingPack200Price: '5,99 €',
-    pricingPack500: '1.000 Crediti',
-    pricingPack500Price: '12,99 €',
     shareReportMessage:
       'Report mensile Snapomat – {{month}}\nSpese: {{total}} | Voci: {{count}}',
     alerts: {

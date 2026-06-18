@@ -62,6 +62,7 @@ export default {
   import: {
     receiptTitle: 'Fiş',
     receiptSubtitle: 'Fotoğraf çek',
+    receiptCreditCost: '1 fotoğraf = 1 kredi',
     receiptHint:
       'İpucu: İyi ışık ve düz çekilmiş fiş tanımayı geliştirir. Bilinen işletmeler otomatik doldurulur. Belirsiz alanlar ⚠️ ile işaretlenir – düzeltmek için dokunun, ücretsizdir.',
     merchantNotRecognized: 'İş yeri tanınmadı – lütfen manuel girin',
@@ -207,10 +208,9 @@ export default {
     backupCreate: '📤 Yedek oluştur',
     backupRestore: '📥 Yedeği geri yükle',
     pricingCreditsRemaining: 'Hâlâ {{count}} Kredin var.',
-    pricingSubtitle: 'Bir fiş fotoğrafı = 1 Kredi',
     pricingCreditHint: 'Tarama başına 1 Kredi',
     pricingFreeDescription:
-      'Verilerin cihazında kalır – istediğin zaman abone ol ve kaldığın yerden devam et.',
+      'Tüm özellikleri bir ay boyunca dene. Uygulamayı beğenirsen istediğin zaman abone olabilirsin – verilerın cihazında kalır.',
     pricingMonth1: 'AY 1',
     pricingFromMonth2: '2. AYDAN İTİBAREN',
     pricingFreeMonth1Credits: '⚡ 20 Kredi',
@@ -218,18 +218,10 @@ export default {
     pricingFreeFromMonth2Ai: '⚡ Ayda 10 Kredi',
     pricingFreeFromMonth2Manual: '✏️ Ayda 10 manuel giriş',
     pricingMonthlyPrice: '3,99 € / ay',
-    pricingMonthlyCredits: '⚡ Ayda 100 Kredi',
+    pricingMonthlyCredits: '⚡ Ayda 250 Kredi',
+    pricingMonthlyCreditsNote: 'Bu, günde 8\'den fazla fotoğraf demek',
     pricingMonthlyManual: '✏️ Sınırsız manuel giriş',
-    pricingCancelAnytime: 'İstediğin zaman iptal et',
     pricingYearlyPrice: '19,99 € / yıl',
-    pricingAddonPacks: 'EK PAKETLER',
-    pricingAddonFooter: 'Tek seferlik ödeme · Abonelik yok',
-    pricingPack50: '100 Kredi',
-    pricingPack50Price: '1,99 €',
-    pricingPack200: '400 Kredi',
-    pricingPack200Price: '5,99 €',
-    pricingPack500: '1.000 Kredi',
-    pricingPack500Price: '12,99 €',
     shareReportMessage:
       'Snapomat aylık rapor – {{month}}\nHarcamalar: {{total}} | Kayıtlar: {{count}}',
     alerts: {

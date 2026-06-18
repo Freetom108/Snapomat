@@ -62,6 +62,7 @@ export default {
   import: {
     receiptTitle: 'Receipt',
     receiptSubtitle: 'Take photo',
+    receiptCreditCost: '1 photo = 1 credit',
     receiptHint:
       'Tip: Good lighting and a flat receipt improve recognition. Known merchants are filled in automatically. Uncertain fields are marked with ⚠️ – just tap to correct for free.',
     merchantNotRecognized: 'Merchant not recognized – please enter manually',
@@ -207,10 +208,9 @@ export default {
     backupCreate: '📤 Create backup',
     backupRestore: '📥 Restore backup',
     pricingCreditsRemaining: 'You still have {{count}} Credits.',
-    pricingSubtitle: 'One receipt photo = 1 Credit',
     pricingCreditHint: '1 Credit per scan',
     pricingFreeDescription:
-      'Your data stays on your device – subscribe anytime and simply keep going.',
+      'Try all features free for one month. If you like the app, you can subscribe at any time – your data stays on your device.',
     pricingMonth1: 'MONTH 1',
     pricingFromMonth2: 'FROM MONTH 2',
     pricingFreeMonth1Credits: '⚡ 20 Credits',
@@ -218,18 +218,10 @@ export default {
     pricingFreeFromMonth2Ai: '⚡ 10 Credits per month',
     pricingFreeFromMonth2Manual: '✏️ 10 manual entries per month',
     pricingMonthlyPrice: '€3.99 / month',
-    pricingMonthlyCredits: '⚡ 100 Credits per month',
+    pricingMonthlyCredits: '⚡ 250 Credits per month',
+    pricingMonthlyCreditsNote: 'That\'s over 8 photos per day',
     pricingMonthlyManual: '✏️ Unlimited manual entries',
-    pricingCancelAnytime: 'Cancel anytime',
     pricingYearlyPrice: '€19.99 / year',
-    pricingAddonPacks: 'ADD-ON PACKS',
-    pricingAddonFooter: 'One-time payment · No subscription',
-    pricingPack50: '100 Credits',
-    pricingPack50Price: '€1.99',
-    pricingPack200: '400 Credits',
-    pricingPack200Price: '€5.99',
-    pricingPack500: '1,000 Credits',
-    pricingPack500Price: '€12.99',
     shareReportMessage:
       'Snapomat monthly report – {{month}}\nExpenses: {{total}} | Entries: {{count}}',
     alerts: {

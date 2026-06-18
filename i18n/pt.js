@@ -62,6 +62,7 @@ export default {
   import: {
     receiptTitle: 'Recibo',
     receiptSubtitle: 'Tirar foto',
+    receiptCreditCost: '1 foto = 1 crédito',
     receiptHint:
       'Dica: Boa iluminação e um recibo bem plano melhoram o reconhecimento. Comerciantes conhecidos são preenchidos automaticamente. Campos incertos são marcados com ⚠️ – toque para corrigir gratuitamente.',
     merchantNotRecognized: 'Comerciante não reconhecido – introduz manualmente',
@@ -207,10 +208,9 @@ export default {
     backupCreate: '📤 Criar backup',
     backupRestore: '📥 Restaurar backup',
     pricingCreditsRemaining: 'Ainda tens {{count}} Créditos.',
-    pricingSubtitle: 'Uma foto de recibo = 1 Crédito',
     pricingCreditHint: '1 Crédito por digitalização',
     pricingFreeDescription:
-      'Os teus dados ficam no teu dispositivo – subscreve um plano quando quiseres e continua simplesmente.',
+      'Experimenta todas as funcionalidades durante um mês. Se gostares da app, podes subscrever a qualquer momento – os teus dados ficam no teu dispositivo.',
     pricingMonth1: 'MÊS 1',
     pricingFromMonth2: 'A PARTIR DO MÊS 2',
     pricingFreeMonth1Credits: '⚡ 20 Créditos',
@@ -218,18 +218,10 @@ export default {
     pricingFreeFromMonth2Ai: '⚡ 10 Créditos por mês',
     pricingFreeFromMonth2Manual: '✏️ 10 entradas manuais por mês',
     pricingMonthlyPrice: '3,99 € / mês',
-    pricingMonthlyCredits: '⚡ 100 Créditos por mês',
+    pricingMonthlyCredits: '⚡ 250 Créditos por mês',
+    pricingMonthlyCreditsNote: 'São mais de 8 fotos por dia',
     pricingMonthlyManual: '✏️ Entradas manuais ilimitadas',
-    pricingCancelAnytime: 'Cancela quando quiseres',
     pricingYearlyPrice: '19,99 € / ano',
-    pricingAddonPacks: 'PACKS EXTRA',
-    pricingAddonFooter: 'Pagamento único · Sem subscrição',
-    pricingPack50: '100 Créditos',
-    pricingPack50Price: '1,99 €',
-    pricingPack200: '400 Créditos',
-    pricingPack200Price: '5,99 €',
-    pricingPack500: '1.000 Créditos',
-    pricingPack500Price: '12,99 €',
     shareReportMessage:
       'Relatório mensal Snapomat – {{month}}\nDespesas: {{total}} | Movimentos: {{count}}',
     alerts: {

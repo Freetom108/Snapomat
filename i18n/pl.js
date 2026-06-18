@@ -62,6 +62,7 @@ export default {
   import: {
     receiptTitle: 'Paragon',
     receiptSubtitle: 'Zrób zdjęcie',
+    receiptCreditCost: '1 zdjęcie = 1 kredyt',
     receiptHint:
       'Wskazówka: Dobre oświetlenie i płasko sfotografowany paragon poprawiają rozpoznawanie. Znani sprzedawcy są uzupełniani automatycznie. Niepewne pola są oznaczone ⚠️ – dotknij, aby poprawić bezpłatnie.',
     merchantNotRecognized: 'Sklep nierozpoznany – uzupełnij ręcznie',
@@ -207,10 +208,9 @@ export default {
     backupCreate: '📤 Utwórz kopię',
     backupRestore: '📥 Przywróć kopię',
     pricingCreditsRemaining: 'Masz jeszcze {{count}} Kredytów.',
-    pricingSubtitle: 'Jedno zdjęcie paragonu = 1 Kredyt',
     pricingCreditHint: '1 Kredyt na skan',
     pricingFreeDescription:
-      'Twoje dane pozostają na urządzeniu – wykup subskrypcję w dowolnym momencie i po prostu kontynuuj.',
+      'Testuj wszystkie funkcje przez miesiąc. Jeśli spodoba ci się aplikacja, możesz w każdej chwili wykupić subskrypcję – twoje dane pozostają na urządzeniu.',
     pricingMonth1: 'MIESIĄC 1',
     pricingFromMonth2: 'OD MIESIĄCA 2',
     pricingFreeMonth1Credits: '⚡ 20 Kredytów',
@@ -218,18 +218,10 @@ export default {
     pricingFreeFromMonth2Ai: '⚡ 10 Kredytów miesięcznie',
     pricingFreeFromMonth2Manual: '✏️ 10 wpisów ręcznych miesięcznie',
     pricingMonthlyPrice: '3,99 € / miesiąc',
-    pricingMonthlyCredits: '⚡ 100 Kredytów miesięcznie',
+    pricingMonthlyCredits: '⚡ 250 Kredytów miesięcznie',
+    pricingMonthlyCreditsNote: 'To ponad 8 zdjęć dziennie',
     pricingMonthlyManual: '✏️ Nielimitowane wpisy ręczne',
-    pricingCancelAnytime: 'Anuluj w dowolnym momencie',
     pricingYearlyPrice: '19,99 € / rok',
-    pricingAddonPacks: 'PAKIETY DODATKOWE',
-    pricingAddonFooter: 'Jednorazowa płatność · Bez subskrypcji',
-    pricingPack50: '100 Kredytów',
-    pricingPack50Price: '1,99 €',
-    pricingPack200: '400 Kredytów',
-    pricingPack200Price: '5,99 €',
-    pricingPack500: '1.000 Kredytów',
-    pricingPack500Price: '12,99 €',
     shareReportMessage:
       'Miesięczny raport Snapomat – {{month}}\nWydatki: {{total}} | Wpisy: {{count}}',
     alerts: {

@@ -213,9 +213,7 @@ function ScreenHeader({ styles, credits = 0 }) {
       <Text style={styles.brand}>SNAPOMAT</Text>
       <View style={styles.headerTitleRow}>
         <Text style={styles.screenTitle}>Import</Text>
-        {credits < 10 ? (
-          <Text style={styles.headerCredits}>{t('import.creditsShort', { count: credits })}</Text>
-        ) : null}
+        <Text style={styles.headerCredits}>{t('import.creditsShort', { count: credits })}</Text>
       </View>
     </View>
   );
@@ -236,6 +234,7 @@ function SelectionStep({ colors, styles, onReceipt, onManual }) {
         <View style={styles.optionText}>
           <Text style={styles.optionTitle}>{t('import.receiptTitle')}</Text>
           <Text style={styles.optionSubtitle}>{t('import.receiptSubtitle')}</Text>
+          <Text style={styles.optionCreditNote}>{t('import.receiptCreditCost')}</Text>
         </View>
       </Pressable>
 
@@ -618,6 +617,12 @@ function createStyles(colors) {
       fontSize: 15,
       color: colors.muted,
     },
+    optionCreditNote: {
+      fontFamily: 'DMSans_400Regular',
+      fontSize: 11,
+      color: withAlpha(colors.muted, 0.6),
+      marginTop: 2,
+    },
     receiptHint: {
       fontFamily: 'DMSans_400Regular',
       fontSize: 12,
@@ -937,6 +942,9 @@ export default function AddScreen() {
     setIsScanning(true);
 
     try {
+      const remaining = await deductCredit();
+      setCredits(remaining);
+
       const { base64, result } = await analyzeReceipt(photo.uri);
 
       if (!base64 || !result || result.length === 0) {
@@ -954,8 +962,6 @@ export default function AddScreen() {
         setPhotoBase64(null);
         return;
       }
-      const remaining = await deductCredit();
-      setCredits(remaining);
       setForm(withLibrary);
       setSelectedCategory(withLibrary.categoryId);
       setStep('review');

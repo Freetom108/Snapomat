@@ -62,6 +62,7 @@ export default {
   import: {
     receiptTitle: 'Ticket de caisse',
     receiptSubtitle: 'Prendre une photo',
+    receiptCreditCost: '1 photo = 1 crédit',
     receiptHint:
       'Conseil : Un bon éclairage et un ticket bien à plat améliorent la reconnaissance. Les commerçants connus sont complétés automatiquement. Les champs incertains sont marqués ⚠️ – appuyez pour corriger gratuitement.',
     merchantNotRecognized: 'Commerçant non reconnu – veuillez saisir manuellement',
@@ -207,10 +208,9 @@ export default {
     backupCreate: '📤 Créer une sauvegarde',
     backupRestore: '📥 Restaurer une sauvegarde',
     pricingCreditsRemaining: 'Il vous reste {{count}} Crédits.',
-    pricingSubtitle: 'Une photo de ticket = 1 Crédit',
     pricingCreditHint: '1 Crédit par scan',
     pricingFreeDescription:
-      'Vos données restent sur votre appareil – souscrivez un abonnement à tout moment et continuez simplement.',
+      'Testez toutes les fonctionnalités pendant un mois. Si l\'application vous plaît, vous pouvez vous abonner à tout moment – vos données restent sur votre appareil.',
     pricingMonth1: 'MOIS 1',
     pricingFromMonth2: 'À PARTIR DU MOIS 2',
     pricingFreeMonth1Credits: '⚡ 20 Crédits',
@@ -218,18 +218,10 @@ export default {
     pricingFreeFromMonth2Ai: '⚡ 10 Crédits par mois',
     pricingFreeFromMonth2Manual: '✏️ 10 saisies manuelles par mois',
     pricingMonthlyPrice: '3,99 € / mois',
-    pricingMonthlyCredits: '⚡ 100 Crédits par mois',
+    pricingMonthlyCredits: '⚡ 250 Crédits par mois',
+    pricingMonthlyCreditsNote: 'Soit plus de 8 photos par jour',
     pricingMonthlyManual: '✏️ Saisies manuelles illimitées',
-    pricingCancelAnytime: 'Résiliable à tout moment',
     pricingYearlyPrice: '19,99 € / an',
-    pricingAddonPacks: 'PACKS SUPPLÉMENTAIRES',
-    pricingAddonFooter: 'Paiement unique · Sans abonnement',
-    pricingPack50: '100 Crédits',
-    pricingPack50Price: '1,99 €',
-    pricingPack200: '400 Crédits',
-    pricingPack200Price: '5,99 €',
-    pricingPack500: '1.000 Crédits',
-    pricingPack500Price: '12,99 €',
     shareReportMessage:
       'Rapport mensuel Snapomat – {{month}}\nDépenses : {{total}} | Entrées : {{count}}',
     alerts: {
