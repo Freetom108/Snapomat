@@ -63,6 +63,8 @@ const LOCALE_OPTIONS = [
   { code: 'pt', flag: '🇵🇹' },
   { code: 'tr', flag: '🇹🇷' },
   { code: 'pl', flag: '🇵🇱' },
+  { code: 'nl', flag: '🇳🇱' },
+  { code: 'ja', flag: '🇯🇵' },
 ];
 
 function getLocaleLabel(code, t) {

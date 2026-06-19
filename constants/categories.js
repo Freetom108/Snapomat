@@ -18,7 +18,7 @@ export const CATEGORIES = {
   },
   'going-out': {
     id: 'going-out',
-    emoji: '🍽️',
+    emoji: '🎬',
     color: '#FF9500',
   },
   mobility: {

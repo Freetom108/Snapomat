@@ -17,7 +17,9 @@ import {
   DMSans_800ExtraBold,
   DMSans_900Black,
 } from '@expo-google-fonts/dm-sans';
-import { CATEGORY_LIST, getCategory, getCategoryLabel } from '../../constants/categories';
+import { getCategory, getCategoryLabel } from '../../constants/categories';
+
+const HISTORY_CATEGORY_ORDER = ['home', 'food', 'fixed', 'mobility', 'shopping', 'going-out', 'health'];
 import { useTheme } from '../../hooks/useTheme';
 import { useTranslation } from '../../hooks/useTranslation';
 import { getExpenses, saveHistorySelectedMonth, getHistorySelectedMonth } from '../../store/storage';
@@ -354,7 +356,8 @@ export default function HistoryScreen() {
                 {t('common.all')}
               </Text>
             </Pressable>
-            {CATEGORY_LIST.map((cat) => {
+            {HISTORY_CATEGORY_ORDER.map((catId) => {
+              const cat = getCategory(catId);
               const isSelected = selectedCategory === cat.id;
               return (
                 <Pressable

@@ -10,8 +10,10 @@ import it from './it';
 import pt from './pt';
 import tr from './tr';
 import pl from './pl';
+import nl from './nl';
+import ja from './ja';
 
-const translations = { de, en, fr, es, it, pt, tr, pl };
+const translations = { de, en, fr, es, it, pt, tr, pl, nl, ja };
 
 export const SUPPORTED_LOCALES = Object.keys(translations);
 export const FALLBACK_LOCALE = 'en';
