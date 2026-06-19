@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Snapomat",
-    "slug": "Snapomat",
+    "slug": "snapomat",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,14 +14,20 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.tommi07051967.snapomat"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "edgeToEdgeEnabled": true,
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ],
+      "package": "com.tommi07051967.snapomat"
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -36,6 +42,13 @@
           "cameraPermission": "Snapomat benötigt Zugriff auf die Kamera zum Scannen von Belegen."
         }
       ]
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "eea90e38-6264-4308-a3ec-443549834752"
+      }
+    },
+    "owner": "tommi07051967"
   }
 }
