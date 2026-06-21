@@ -56,6 +56,7 @@ export default {
   },
   history: {
     searchPlaceholder: 'Buscar comercio...',
+    summary: '{{count}} entradas · {{total}}',
     allResults: 'Todos los resultados',
     noSearchResults: 'Sin resultados',
     noMonthExpenses: 'Sin movimientos este mes',
@@ -121,6 +122,9 @@ export default {
     budgetModalTitle: '🎯 Presupuesto mensual',
     budgetModalLine1: '¿Cuánto quieres gastar al mes?',
     budgetModalLine2: 'Te avisaremos cuando tus gastos lleguen al {{percent}} %.',
+    budgetWarningToggle: 'Activar aviso de presupuesto',
+    budgetModalSubtitleWarning:
+      'Activa el aviso de presupuesto – el anillo se vuelve rojo oscuro al alcanzar el umbral.',
     budgetPlaceholder: '1.000',
     savingsGoalToggle: 'Definir objetivo de ahorro',
     savingsGoalLabel: 'Objetivo de ahorro',
@@ -180,6 +184,11 @@ export default {
         question: '¿Cómo fijo mi presupuesto mensual?',
         answer:
           'En Settings → Budget & Reports → Establecer límite de gasto introduces la cantidad deseada. El anillo en Today muestra cuánto has gastado y cuánto te queda al día. También puedes elegir el porcentaje de aviso – del 50 % al 90 %.',
+      },
+      warningRing: {
+        question: '¿Qué significa el anillo rojo?',
+        answer:
+          'Si has activado el aviso de presupuesto y tus gastos superan el umbral definido, el anillo de gastos se vuelve rojo oscuro.',
       },
       backup: {
         question: '¿Qué es Backup & Restore?',

@@ -56,6 +56,7 @@ export default {
   },
   history: {
     searchPlaceholder: '店舗を検索...',
+    summary: '{{count}}件 · {{total}}',
     allResults: 'すべての結果',
     noSearchResults: '結果が見つかりません',
     noMonthExpenses: '今月の記録はありません',
@@ -121,6 +122,9 @@ export default {
     budgetModalTitle: '🎯 月の予算',
     budgetModalLine1: '1か月にいくら使いたいですか？',
     budgetModalLine2: '支出が {{percent}}% に達すると通知します。',
+    budgetWarningToggle: '予算警告を有効にする',
+    budgetModalSubtitleWarning:
+      '予算警告を有効にする – しきい値に達するとリングが暗赤色に変わります。',
     budgetPlaceholder: '1,000',
     savingsGoalToggle: '貯金目標を設定',
     savingsGoalLabel: '貯金目標',
@@ -180,6 +184,11 @@ export default {
         question: '月の予算はどう設定しますか？',
         answer:
           '「設定 → 予算とレポート → 支出の上限を設定」から希望の金額を入力できます。Todayページのリングが、すでに使った金額と1日あたりあといくら使えるかを常に表示します。さらに、50%から90%の範囲で、どの割合で通知を受け取るかも設定できます。',
+      },
+      warningRing: {
+        question: '赤いリングは何を意味しますか？',
+        answer:
+          '予算警告を有効にしていて、支出が設定したしきい値を超えると、支出リングが暗赤色に変わります。',
       },
       backup: {
         question: 'バックアップと復元とは何ですか？',

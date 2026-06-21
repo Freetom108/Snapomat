@@ -63,13 +63,10 @@ export function formatRelativeDate(dateStr, now = new Date()) {
 
   if (diffDays === 0) return getT('dates.today');
   if (diffDays === 1) return getT('dates.yesterday');
-  if (diffDays >= 2 && diffDays < 7) return getT('dates.daysAgo', { count: diffDays });
 
-  return date.toLocaleDateString(getDateLocaleTag(), {
-    day: '2-digit',
-    month: '2-digit',
-    year: 'numeric',
-  });
+  const dd = String(date.getDate()).padStart(2, '0');
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  return `${dd}.${mm}.${date.getFullYear()}`;
 }
 
 export function formatMonthLabel(year, month) {
@@ -81,13 +78,10 @@ export function getDayLabel(date, now = new Date()) {
 
   if (diffDays === 0) return getT('dates.today');
   if (diffDays === 1) return getT('dates.yesterday');
-  if (diffDays >= 2 && diffDays < 7) return getT('dates.daysAgo', { count: diffDays });
 
-  return date.toLocaleDateString(getDateLocaleTag(), {
-    weekday: 'short',
-    day: '2-digit',
-    month: '2-digit',
-  }).toUpperCase();
+  const dd = String(date.getDate()).padStart(2, '0');
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  return `${dd}.${mm}.${date.getFullYear()}`;
 }
 
 export function groupExpensesByDay(expenses, now = new Date()) {
@@ -100,7 +94,7 @@ export function groupExpensesByDay(expenses, now = new Date()) {
 
   sorted.forEach((expense) => {
     const date = parseExpenseDate(expense.date);
-    const key = date.toDateString();
+    const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
     if (!map.has(key)) {
       const group = {
         id: key,

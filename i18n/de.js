@@ -56,6 +56,7 @@ export default {
   },
   history: {
     searchPlaceholder: 'Händler suchen...',
+    summary: '{{count}} Einträge · {{total}}',
     allResults: 'Alle Ergebnisse',
     noSearchResults: 'Keine Ergebnisse gefunden',
     noMonthExpenses: 'Keine Buchungen in diesem Monat',
@@ -121,6 +122,9 @@ export default {
     budgetModalTitle: '🎯 Monatsbudget',
     budgetModalLine1: 'Wie viel möchtest du pro Monat ausgeben?',
     budgetModalLine2: 'Du wirst benachrichtigt wenn deine Ausgaben {{percent}}% erreichen.',
+    budgetWarningToggle: 'Budgetwarnung aktivieren',
+    budgetModalSubtitleWarning:
+      'Aktiviere die Budgetwarnung – der Ring färbt sich dunkelrot wenn du den Warnwert erreichst.',
     budgetPlaceholder: '1.000',
     savingsGoalToggle: 'Sparziel festlegen',
     savingsGoalLabel: 'Sparziel',
@@ -180,6 +184,11 @@ export default {
         question: 'Wie setze ich mein Monatsbudget?',
         answer:
           'Unter Settings → Budget & Berichte → Ausgabenlimit einstellen kannst du deinen gewünschten Betrag eingeben. Der Ring auf der Today-Seite zeigt dir dann immer wie viel du bereits verbraucht hast und wie viel du noch pro Tag ausgeben kannst. Du kannst außerdem festlegen bei welchem Prozentsatz du gewarnt werden möchtest – von 50% bis 90%.',
+      },
+      warningRing: {
+        question: 'Was bedeutet der rote Ring?',
+        answer:
+          'Wenn du die Budgetwarnung aktiviert hast und deine Ausgaben den eingestellten Warnwert überschreiten, färbt sich der Ausgabenring dunkelrot.',
       },
       backup: {
         question: 'Was ist Backup & Restore?',

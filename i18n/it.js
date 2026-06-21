@@ -56,6 +56,7 @@ export default {
   },
   history: {
     searchPlaceholder: 'Cerca esercente...',
+    summary: '{{count}} voci · {{total}}',
     allResults: 'Tutti i risultati',
     noSearchResults: 'Nessun risultato',
     noMonthExpenses: 'Nessuna voce questo mese',
@@ -121,6 +122,9 @@ export default {
     budgetModalTitle: '🎯 Budget mensile',
     budgetModalLine1: 'Quanto vuoi spendere al mese?',
     budgetModalLine2: 'Riceverai una notifica quando le spese raggiungono il {{percent}} %.',
+    budgetWarningToggle: 'Attiva avviso budget',
+    budgetModalSubtitleWarning:
+      'Attiva l\'avviso budget – l\'anello diventa rosso scuro quando raggiungi la soglia.',
     budgetPlaceholder: '1.000',
     savingsGoalToggle: 'Imposta obiettivo di risparmio',
     savingsGoalLabel: 'Obiettivo di risparmio',
@@ -180,6 +184,11 @@ export default {
         question: 'Come imposto il budget mensile?',
         answer:
           'In Settings → Budget & Reports → Definisci limite di spesa inserisci l\'importo desiderato. L\'anello in Today mostra quanto hai speso e quanto ti resta al giorno. Puoi anche scegliere la percentuale di avviso – dal 50 % al 90 %.',
+      },
+      warningRing: {
+        question: 'Cosa significa l\'anello rosso?',
+        answer:
+          'Se hai attivato l\'avviso budget e le tue spese superano la soglia impostata, l\'anello delle spese diventa rosso scuro.',
       },
       backup: {
         question: 'Cos\'è Backup & Restore?',

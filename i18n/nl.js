@@ -56,6 +56,7 @@ export default {
   },
   history: {
     searchPlaceholder: 'Winkel zoeken...',
+    summary: '{{count}} items · {{total}}',
     allResults: 'Alle resultaten',
     noSearchResults: 'Geen resultaten gevonden',
     noMonthExpenses: 'Geen boekingen deze maand',
@@ -121,6 +122,9 @@ export default {
     budgetModalTitle: '🎯 Maandbudget',
     budgetModalLine1: 'Hoeveel wil je per maand uitgeven?',
     budgetModalLine2: 'Je krijgt een melding zodra je uitgaven {{percent}}% bereiken.',
+    budgetWarningToggle: 'Budgetwaarschuwing inschakelen',
+    budgetModalSubtitleWarning:
+      'Schakel de budgetwaarschuwing in – de ring wordt donkerrood als je de drempel bereikt.',
     budgetPlaceholder: '1.000',
     savingsGoalToggle: 'Spaardoel instellen',
     savingsGoalLabel: 'Spaardoel',
@@ -180,6 +184,11 @@ export default {
         question: 'Hoe stel ik mijn maandbudget in?',
         answer:
           'Onder Settings → Budget & Rapporten → Uitgavenlimiet instellen kun je je gewenste bedrag invoeren. De ring op de Today-pagina laat je dan altijd zien hoeveel je al hebt uitgegeven en hoeveel je nog per dag kunt uitgeven. Je kunt ook instellen bij welk percentage je gewaarschuwd wilt worden – van 50% tot 90%.',
+      },
+      warningRing: {
+        question: 'Wat betekent de rode ring?',
+        answer:
+          'Als je de budgetwaarschuwing hebt ingeschakeld en je uitgaven de ingestelde drempel overschrijden, wordt de uitgavenring donkerrood.',
       },
       backup: {
         question: 'Wat is Backup & Restore?',

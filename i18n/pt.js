@@ -56,6 +56,7 @@ export default {
   },
   history: {
     searchPlaceholder: 'Procurar comerciante...',
+    summary: '{{count}} entradas · {{total}}',
     allResults: 'Todos os resultados',
     noSearchResults: 'Sem resultados',
     noMonthExpenses: 'Sem movimentos este mês',
@@ -121,6 +122,9 @@ export default {
     budgetModalTitle: '🎯 Orçamento mensal',
     budgetModalLine1: 'Quanto queres gastar por mês?',
     budgetModalLine2: 'Serás notificado quando os teus gastos atingirem {{percent}} %.',
+    budgetWarningToggle: 'Ativar aviso de orçamento',
+    budgetModalSubtitleWarning:
+      'Ativa o aviso de orçamento – o anel fica vermelho escuro ao atingir o limite.',
     budgetPlaceholder: '1.000',
     savingsGoalToggle: 'Definir meta de poupança',
     savingsGoalLabel: 'Meta de poupança',
@@ -180,6 +184,11 @@ export default {
         question: 'Como defino o meu orçamento mensal?',
         answer:
           'Em Settings → Budget & Reports → Definir limite de gastos introduces o valor desejado. O anel na página Today mostra quanto gastaste e quanto te resta por dia. Também podes escolher a percentagem de aviso – de 50 % a 90 %.',
+      },
+      warningRing: {
+        question: 'O que significa o anel vermelho?',
+        answer:
+          'Se ativaste o aviso de orçamento e as tuas despesas ultrapassam o limite definido, o anel de despesas fica vermelho escuro.',
       },
       backup: {
         question: 'O que é Backup & Restore?',

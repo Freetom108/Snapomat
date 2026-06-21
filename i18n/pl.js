@@ -56,6 +56,7 @@ export default {
   },
   history: {
     searchPlaceholder: 'Szukaj sklepu...',
+    summary: '{{count}} pozycji · {{total}}',
     allResults: 'Wszystkie wyniki',
     noSearchResults: 'Brak wyników',
     noMonthExpenses: 'Brak wpisów w tym miesiącu',
@@ -121,6 +122,9 @@ export default {
     budgetModalTitle: '🎯 Budżet miesięczny',
     budgetModalLine1: 'Ile chcesz wydawać miesięcznie?',
     budgetModalLine2: 'Dostaniesz powiadomienie, gdy wydatki osiągną {{percent}} %.',
+    budgetWarningToggle: 'Włącz ostrzeżenie budżetowe',
+    budgetModalSubtitleWarning:
+      'Włącz ostrzeżenie budżetowe – pierścień staje się ciemnoczerwony po osiągnięciu progu.',
     budgetPlaceholder: '1 000',
     savingsGoalToggle: 'Ustaw cel oszczędzania',
     savingsGoalLabel: 'Cel oszczędzania',
@@ -180,6 +184,11 @@ export default {
         question: 'Jak ustawić budżet miesięczny?',
         answer:
           'W Settings → Budget & Reports → Ustaw limit wydatków wpisz kwotę. Pierścień na stronie Today pokazuje, ile wydałeś i ile możesz jeszcze wydać dziennie. Możesz też ustawić procent ostrzeżenia – od 50 % do 90 %.',
+      },
+      warningRing: {
+        question: 'Co oznacza czerwony pierścień?',
+        answer:
+          'Jeśli włączyłeś ostrzeżenie budżetowe i Twoje wydatki przekroczą ustawiony próg, pierścień wydatków staje się ciemnoczerwony.',
       },
       backup: {
         question: 'Czym jest Backup & Restore?',

@@ -6,7 +6,10 @@ import * as SplashScreen from 'expo-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { ThemeProvider, useTheme } from '../hooks/useTheme';
 import { initI18n } from '../i18n';
-import { seedAprilMay2026TestExpenses } from '../store/seedTestExpenses';
+import {
+  seedAprilMay2026TestExpenses,
+  seedMayJune2026TestExpenses,
+} from '../store/seedTestExpenses';
 import { hasAccess } from '../store/storage';
 import PaywallOverlay from '../components/PaywallOverlay';
 
@@ -21,7 +24,9 @@ function RootLayoutInner() {
     initI18n().catch(() => {});
     SplashScreen.hideAsync().catch(() => {});
     if (__DEV__) {
-      seedAprilMay2026TestExpenses().catch(() => {});
+      seedAprilMay2026TestExpenses()
+        .then(() => seedMayJune2026TestExpenses())
+        .catch(() => {});
     }
   }, []);
 

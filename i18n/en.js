@@ -56,6 +56,7 @@ export default {
   },
   history: {
     searchPlaceholder: 'Search merchant...',
+    summary: '{{count}} entries · {{total}}',
     allResults: 'All results',
     noSearchResults: 'No results found',
     noMonthExpenses: 'No entries this month',
@@ -121,6 +122,9 @@ export default {
     budgetModalTitle: '🎯 Monthly budget',
     budgetModalLine1: 'How much do you want to spend per month?',
     budgetModalLine2: 'You will be notified when your spending reaches {{percent}}%.',
+    budgetWarningToggle: 'Enable budget warning',
+    budgetModalSubtitleWarning:
+      'Enable the budget warning – the ring turns dark red when you reach the threshold.',
     budgetPlaceholder: '1,000',
     savingsGoalToggle: 'Set savings goal',
     savingsGoalLabel: 'Savings goal',
@@ -180,6 +184,11 @@ export default {
         question: 'How do I set my monthly budget?',
         answer:
           'Under Settings → Budget & Reports → Set spending limit you can enter your desired amount. The ring on the Today page always shows how much you have spent and how much you can still spend per day. You can also set at which percentage you want to be warned – from 50% to 90%.',
+      },
+      warningRing: {
+        question: 'What does the red ring mean?',
+        answer:
+          'If you have enabled the budget warning and your expenses exceed the set threshold, the expense ring turns dark red.',
       },
       backup: {
         question: 'What is Backup & Restore?',

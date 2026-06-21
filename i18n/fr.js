@@ -56,6 +56,7 @@ export default {
   },
   history: {
     searchPlaceholder: 'Rechercher un commerçant...',
+    summary: '{{count}} entrées · {{total}}',
     allResults: 'Tous les résultats',
     noSearchResults: 'Aucun résultat',
     noMonthExpenses: 'Aucune entrée ce mois-ci',
@@ -121,6 +122,9 @@ export default {
     budgetModalTitle: '🎯 Budget mensuel',
     budgetModalLine1: 'Combien souhaitez-vous dépenser par mois ?',
     budgetModalLine2: 'Vous serez averti lorsque vos dépenses atteindront {{percent}} %.',
+    budgetWarningToggle: 'Activer l\'alerte budget',
+    budgetModalSubtitleWarning:
+      'Active l\'alerte budget – l\'anneau devient rouge foncé quand tu atteins le seuil.',
     budgetPlaceholder: '1 000',
     savingsGoalToggle: 'Définir un objectif d\'épargne',
     savingsGoalLabel: 'Objectif d\'épargne',
@@ -180,6 +184,11 @@ export default {
         question: 'Comment définir mon budget mensuel ?',
         answer:
           'Dans Settings → Budget & Reports → Fixer la limite de dépenses, saisissez le montant souhaité. L\'anneau sur la page Today indique combien vous avez dépensé et combien il vous reste par jour. Vous pouvez aussi choisir à quel pourcentage être averti – de 50 % à 90 %.',
+      },
+      warningRing: {
+        question: 'Que signifie l\'anneau rouge ?',
+        answer:
+          'Si tu as activé l\'alerte budget et que tes dépenses dépassent le seuil défini, l\'anneau de dépenses devient rouge foncé.',
       },
       backup: {
         question: 'Qu\'est-ce que Backup & Restore ?',

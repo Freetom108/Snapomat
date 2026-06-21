@@ -1,6 +1,10 @@
+import { useCallback, useState } from 'react';
 import { View, Text } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
+import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useTranslation } from '../hooks/useTranslation';
+import { getBudgetWarning } from '../store/storage';
 import { formatAmountNumber } from '../utils/expenseHelpers';
 
 export const RING_RADIUS = 95;
@@ -9,12 +13,36 @@ export const RING_SIZE = RING_RADIUS * 2 + RING_STROKE;
 
 export default function ExpenseRing({ stats, colors, styles, showMonthLabel = true }) {
   const { t } = useTranslation();
+  const [warningActive, setWarningActive] = useState(true);
+  const [budgetWarning, setBudgetWarning] = useState(80);
+
+  useFocusEffect(
+    useCallback(() => {
+      let active = true;
+      async function loadWarning() {
+        const [storedActive, storedThreshold] = await Promise.all([
+          AsyncStorage.getItem('budget_warning_active'),
+          getBudgetWarning(),
+        ]);
+        if (!active) return;
+        setWarningActive(storedActive === null ? true : storedActive === 'true');
+        setBudgetWarning(storedThreshold);
+      }
+      loadWarning();
+      return () => {
+        active = false;
+      };
+    }, []),
+  );
+
   const cx = RING_SIZE / 2;
   const cy = RING_SIZE / 2;
   const circumference = 2 * Math.PI * RING_RADIUS;
   const strokeDashoffset = circumference * (1 - stats.progress);
   const isNippon = colors.id === 'nippon';
   const nipponTextStyle = isNippon ? { color: '#FFFFFF' } : null;
+  const isWarning = warningActive && stats.percent >= budgetWarning;
+  const arcColor = isWarning ? '#8B0000' : colors.accent;
 
   return (
     <View style={styles.ringSection}>
@@ -36,7 +64,7 @@ export default function ExpenseRing({ stats, colors, styles, showMonthLabel = tr
             cx={cx}
             cy={cy}
             r={RING_RADIUS}
-            stroke={colors.accent}
+            stroke={arcColor}
             strokeWidth={RING_STROKE}
             fill="none"
             strokeDasharray={circumference}

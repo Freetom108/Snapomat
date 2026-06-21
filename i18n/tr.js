@@ -56,6 +56,7 @@ export default {
   },
   history: {
     searchPlaceholder: 'İş yeri ara...',
+    summary: '{{count}} kayıt · {{total}}',
     allResults: 'Tüm sonuçlar',
     noSearchResults: 'Sonuç bulunamadı',
     noMonthExpenses: 'Bu ay kayıt yok',
@@ -121,6 +122,9 @@ export default {
     budgetModalTitle: '🎯 Aylık bütçe',
     budgetModalLine1: 'Ayda ne kadar harcamak istiyorsun?',
     budgetModalLine2: 'Harcamaların %{{percent}} seviyesine ulaştığında bildirim alırsın.',
+    budgetWarningToggle: 'Bütçe uyarısını etkinleştir',
+    budgetModalSubtitleWarning:
+      'Bütçe uyarısını etkinleştir – eşiğe ulaşınca halka koyu kırmızıya döner.',
     budgetPlaceholder: '1.000',
     savingsGoalToggle: 'Tasarruf hedefi belirle',
     savingsGoalLabel: 'Tasarruf hedefi',
@@ -180,6 +184,11 @@ export default {
         question: 'Aylık bütçemi nasıl ayarlarım?',
         answer:
           'Settings → Budget & Reports → Harcama limiti ayarla bölümünden istediğin tutarı girebilirsin. Today sayfasındaki halka ne kadar harcadığını ve günlük ne kadarın kaldığını gösterir. Ayrıca %50 ile %90 arasında uyarı yüzdesi belirleyebilirsin.',
+      },
+      warningRing: {
+        question: 'Kırmızı halka ne anlama geliyor?',
+        answer:
+          'Bütçe uyarısını etkinleştirdiysen ve harcamaların belirlenen eşiği aşarsa, harcama halkası koyu kırmızıya döner.',
       },
       backup: {
         question: 'Backup & Restore nedir?',

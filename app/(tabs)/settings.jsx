@@ -15,6 +15,7 @@ import {
   Clipboard,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 import * as DocumentPicker from 'expo-document-picker';
 import * as FileSystem from 'expo-file-system/legacy';
@@ -319,6 +320,8 @@ function BudgetModal({
   setBudgetInput,
   warningValue,
   onWarningChange,
+  warningActive,
+  onToggleWarningActive,
   savingsActive,
   onToggleSavingsActive,
   savingsAmount,
@@ -344,8 +347,7 @@ function BudgetModal({
                 {t('settings.budgetModalTitle')}
               </Text>
               <Text style={[styles.budgetModalSubtitle, { color: colors.muted }]}>
-                {t('settings.budgetModalLine1')}{'\n'}
-                {t('settings.budgetModalLine2', { percent: warningValue })}
+                {t('settings.budgetModalSubtitleWarning')}
               </Text>
             </View>
             <Pressable
@@ -426,12 +428,38 @@ function BudgetModal({
               </Pressable>
             </View>
 
-            <BudgetModalSlider
-              value={warningValue}
-              onChange={onWarningChange}
-              colors={colors}
-              styles={styles}
-            />
+            <Pressable
+              onPress={onToggleWarningActive}
+              style={({ pressed }) => [styles.savingsToggleRow, pressed && { opacity: 0.7 }]}
+              accessibilityRole="checkbox"
+              accessibilityState={{ checked: warningActive }}
+            >
+              <View
+                style={[
+                  styles.savingsCheckbox,
+                  {
+                    borderColor: colors.accent,
+                    backgroundColor: warningActive ? colors.accent : 'transparent',
+                  },
+                ]}
+              >
+                {warningActive ? (
+                  <Text style={[styles.savingsCheckboxMark, { color: checkMarkColor }]}>✓</Text>
+                ) : null}
+              </View>
+              <Text style={[styles.savingsToggleLabel, { color: colors.text }]}>
+                {t('settings.budgetWarningToggle')}
+              </Text>
+            </Pressable>
+
+            {warningActive ? (
+              <BudgetModalSlider
+                value={warningValue}
+                onChange={onWarningChange}
+                colors={colors}
+                styles={styles}
+              />
+            ) : null}
 
             <Pressable
               onPress={onToggleSavingsActive}
@@ -564,6 +592,7 @@ const FAQ_ITEM_META = [
   { id: 'scanCost' },
   { id: 'creditsBuy' },
   { id: 'budget' },
+  { id: 'warningRing' },
   { id: 'backup' },
   { id: 'fixedCosts' },
   { id: 'entryLimit' },
@@ -1657,6 +1686,7 @@ export default function SettingsScreen() {
   const [showLegal, setShowLegal] = useState(false);
   const [showBudget, setShowBudget] = useState(false);
   const [budgetWarningDraft, setBudgetWarningDraft] = useState(80);
+  const [warningActive, setWarningActive] = useState(true);
   const [showBackup, setShowBackup] = useState(false);
   const [backupBusy, setBackupBusy] = useState(false);
   const [budgetInput, setBudgetInput] = useState('1000');
@@ -1675,15 +1705,23 @@ export default function SettingsScreen() {
   });
 
   const loadSettings = useCallback(async () => {
-    const [storedBudget, storedWarning, storedCredits, storedLocale, storedUserId, storedSavings] =
-      await Promise.all([
-        getBudget(),
-        getBudgetWarning(),
-        getCredits(),
-        getLocale(),
-        getUserId(),
-        getSavingsGoal(),
-      ]);
+    const [
+      storedBudget,
+      storedWarning,
+      storedCredits,
+      storedLocale,
+      storedUserId,
+      storedSavings,
+      storedWarningActive,
+    ] = await Promise.all([
+      getBudget(),
+      getBudgetWarning(),
+      getCredits(),
+      getLocale(),
+      getUserId(),
+      getSavingsGoal(),
+      AsyncStorage.getItem('budget_warning_active'),
+    ]);
     setBudgetState(storedBudget);
     setBudgetWarningState(snapWarning(storedWarning));
     setCreditsState(storedCredits);
@@ -1693,6 +1731,7 @@ export default function SettingsScreen() {
     setSavingsActive(storedSavings.active);
     setSavingsAmount(storedSavings.amount ? String(storedSavings.amount) : '');
     setSavingsShow(storedSavings.show);
+    setWarningActive(storedWarningActive === null ? true : storedWarningActive === 'true');
     setLoading(false);
   }, []);
 
@@ -1712,6 +1751,7 @@ export default function SettingsScreen() {
     const savingsAmountValue = savingsActive ? parseBudgetInput(savingsAmount) || 0 : 0;
     await saveBudget(amount);
     await saveBudgetWarning(warning);
+    await AsyncStorage.setItem('budget_warning_active', String(warningActive));
     await saveSavingsGoal({
       active: savingsActive,
       amount: savingsAmountValue,
@@ -2116,6 +2156,8 @@ export default function SettingsScreen() {
         setBudgetInput={setBudgetInput}
         warningValue={budgetWarningDraft}
         onWarningChange={handleBudgetWarningDraftChange}
+        warningActive={warningActive}
+        onToggleWarningActive={() => setWarningActive((prev) => !prev)}
         savingsActive={savingsActive}
         onToggleSavingsActive={handleToggleSavingsActive}
         savingsAmount={savingsAmount}

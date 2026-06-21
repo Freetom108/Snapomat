@@ -27,6 +27,7 @@ import ExpenseRow from '../../components/ExpenseRow';
 import ExpenseDetailSheet from '../../components/ExpenseDetailSheet';
 import EmptyState from '../../components/EmptyState';
 import {
+  formatCurrency,
   formatMonthLabel,
   getMonthExpenses,
   parseExpenseDate,
@@ -162,7 +163,12 @@ function createStyles(colors) {
       gap: 12,
     },
     monthButton: {
-      padding: 4,
+      width: 40,
+      height: 40,
+      borderRadius: 20,
+      backgroundColor: colors.card,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     monthChevron: {
       fontFamily: 'DMSans_400Regular',
@@ -195,6 +201,13 @@ function createStyles(colors) {
     },
     monthNavDisabled: {
       opacity: 0.35,
+    },
+    summaryLine: {
+      fontFamily: 'DMSans_400Regular',
+      fontSize: 12,
+      color: colors.muted,
+      textAlign: 'center',
+      paddingVertical: 8,
     },
   });
 }
@@ -283,6 +296,13 @@ export default function HistoryScreen() {
     if (!isSearching) return [];
     return groupExpensesByMonth(filteredExpenses);
   }, [filteredExpenses, isSearching]);
+
+  const displayedExpenses = isSearching ? filteredExpenses : monthExpenses;
+  const displayedCount = displayedExpenses.length;
+  const displayedTotal = useMemo(
+    () => displayedExpenses.reduce((sum, e) => sum + (Number(e.amount) || 0), 0),
+    [displayedExpenses],
+  );
 
   function handleSearchChange(value) {
     setSearch(value);
@@ -402,6 +422,10 @@ export default function HistoryScreen() {
             </Pressable>
           </View>
         </View>
+
+        <Text style={styles.summaryLine}>
+          {t('history.summary', { count: displayedCount, total: formatCurrency(displayedTotal) })}
+        </Text>
 
         {isSearching ? (
           searchGroups.length === 0 ? (
