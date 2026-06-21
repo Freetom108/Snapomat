@@ -52,6 +52,7 @@ export default {
     dayToday: 'VANDAAG',
     dayYesterday: 'GISTEREN',
     emptyMonth: 'Nog geen uitgaven deze maand',
+    savingsGoal: 'Spaardoel: {{amount}} €',
   },
   history: {
     searchPlaceholder: 'Winkel zoeken...',
@@ -98,6 +99,8 @@ export default {
     rows: {
       monthlyBudgetTitle: 'Maandbudget instellen',
       monthlyBudgetSubtitle: 'Uitgavenlimiet instellen',
+      monthlyNoteTitle: 'Maandelijkse notitie',
+      monthlyNoteSubtitle: 'Maandelijkse notities en reflecties',
       shareReportTitle: 'Maandrapport delen',
       shareReportSubtitle: 'Kies een maand in History en deel via WhatsApp, mail & meer',
       backupRestoreSubtitle: 'Gegevens back-uppen & herstellen',
@@ -119,6 +122,10 @@ export default {
     budgetModalLine1: 'Hoeveel wil je per maand uitgeven?',
     budgetModalLine2: 'Je krijgt een melding zodra je uitgaven {{percent}}% bereiken.',
     budgetPlaceholder: '1.000',
+    savingsGoalToggle: 'Spaardoel instellen',
+    savingsGoalLabel: 'Spaardoel',
+    savingsGoalShowToggle: 'Spaardoel tonen op Today-scherm',
+    notePlaceholder: 'Hoe was je maand? Noteer gedachten, successen en doelen …',
     languageModalTitle: '🌍 Taal',
     languageModalHint:
       'Automatisch herkent de taal van je toestel. Je kunt deze hier handmatig overschrijven.',
@@ -254,6 +261,7 @@ export default {
     burgundy: 'Burgundy',
     blue: 'Midnight Blue',
     light: 'Light',
+    nippon: 'Nippon',
   },
   onboarding: {
     title1: 'Bon fotograferen –',

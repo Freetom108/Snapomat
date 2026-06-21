@@ -1,4 +1,4 @@
-import { Modal, View, Text, Pressable, ScrollView, StyleSheet, Dimensions } from 'react-native';
+import { Modal, View, Text, Pressable, ScrollView, StyleSheet, Dimensions, Alert } from 'react-native';
 import { useTheme } from '../hooks/useTheme';
 import { useTranslation } from '../hooks/useTranslation';
 
@@ -99,6 +99,16 @@ export default function CreditsPricingSheet({ visible, onClose }) {
               </Text>
               <PlanFeature text={t('settings.pricingMonthlyManual')} colors={colors} styles={styles} />
             </PlanCard>
+
+            <Pressable
+              onPress={() => Alert.alert(t('settings.alerts.restoringPurchases'))}
+              style={({ pressed }) => [styles.restoreLink, pressed && { opacity: 0.7 }]}
+              accessibilityRole="button"
+            >
+              <Text style={[styles.restoreLinkText, { color: colors.accent }]}>
+                {t('settings.restorePurchases')}
+              </Text>
+            </Pressable>
           </ScrollView>
         </View>
       </View>
@@ -214,6 +224,16 @@ function createStyles() {
       fontFamily: 'DMSans_400Regular',
       fontSize: 12,
       marginTop: 8,
+    },
+    restoreLink: {
+      paddingTop: 16,
+      paddingBottom: 4,
+      alignItems: 'center',
+    },
+    restoreLinkText: {
+      fontFamily: 'DMSans_700Bold',
+      fontSize: 14,
+      textAlign: 'center',
     },
   });
 }

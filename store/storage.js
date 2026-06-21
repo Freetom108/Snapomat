@@ -5,6 +5,9 @@ const MERCHANT_LIBRARY_KEY = 'snapomat_merchant_library';
 const TRIAL_START_KEY = 'snapomat_trial_start';
 const SUBSCRIBED_KEY = 'snapomat_subscribed';
 const TRIAL_DAYS = 30;
+const SAVINGS_GOAL_ACTIVE_KEY = 'snapomat_savings_goal_active';
+const SAVINGS_GOAL_AMOUNT_KEY = 'snapomat_savings_goal_amount';
+const SAVINGS_GOAL_SHOW_KEY = 'snapomat_savings_goal_show';
 
 const DEFAULT_DATA = {
   expenses: [],
@@ -189,6 +192,35 @@ export async function saveBudgetWarning(value) {
   const data = await loadData();
   data.budgetWarning = Number(value) || DEFAULT_DATA.budgetWarning;
   await saveData(data);
+}
+
+export async function getSavingsGoal() {
+  try {
+    const [active, amount, show] = await Promise.all([
+      AsyncStorage.getItem(SAVINGS_GOAL_ACTIVE_KEY),
+      AsyncStorage.getItem(SAVINGS_GOAL_AMOUNT_KEY),
+      AsyncStorage.getItem(SAVINGS_GOAL_SHOW_KEY),
+    ]);
+    return {
+      active: active === 'true',
+      amount: Number(amount) || 0,
+      show: show === 'true',
+    };
+  } catch {
+    return { active: false, amount: 0, show: false };
+  }
+}
+
+export async function saveSavingsGoal({ active, amount, show }) {
+  try {
+    await AsyncStorage.multiSet([
+      [SAVINGS_GOAL_ACTIVE_KEY, active ? 'true' : 'false'],
+      [SAVINGS_GOAL_AMOUNT_KEY, String(Number(amount) || 0)],
+      [SAVINGS_GOAL_SHOW_KEY, active && show ? 'true' : 'false'],
+    ]);
+  } catch {
+    // ignore write errors
+  }
 }
 
 export async function getCredits() {
@@ -427,23 +459,84 @@ export async function findMerchantMatch(recognizedName) {
   return { match: null, confidence: 'low' };
 }
 
+const MONTHLY_NOTE_PREFIX = 'snapomat_note_';
+
+function monthlyNoteKey(year, month) {
+  const mm = String(Number(month) + 1).padStart(2, '0');
+  return `${MONTHLY_NOTE_PREFIX}${year}_${mm}`;
+}
+
+export async function saveMonthlyNote(year, month, text) {
+  const key = monthlyNoteKey(year, month);
+  const value = String(text ?? '');
+  try {
+    if (value.trim() === '') {
+      await AsyncStorage.removeItem(key);
+    } else {
+      await AsyncStorage.setItem(key, value);
+    }
+  } catch {
+    // ignore write errors
+  }
+}
+
+export async function getMonthlyNote(year, month) {
+  try {
+    const value = await AsyncStorage.getItem(monthlyNoteKey(year, month));
+    return value ?? '';
+  } catch {
+    return '';
+  }
+}
+
+export async function getAllMonthlyNotes() {
+  try {
+    const keys = await AsyncStorage.getAllKeys();
+    const noteKeys = keys.filter((k) => k.startsWith(MONTHLY_NOTE_PREFIX));
+    if (noteKeys.length === 0) return [];
+    const pairs = await AsyncStorage.multiGet(noteKeys);
+    const notes = pairs
+      .map(([key, value]) => {
+        const match = key.slice(MONTHLY_NOTE_PREFIX.length).match(/^(\d{4})_(\d{2})$/);
+        if (!match) return null;
+        const text = value ?? '';
+        if (!text.trim()) return null;
+        return { year: Number(match[1]), month: Number(match[2]) - 1, text };
+      })
+      .filter(Boolean);
+    notes.sort((a, b) => b.year - a.year || b.month - a.month);
+    return notes;
+  } catch {
+    return [];
+  }
+}
+
+async function getMonthlyNotesMap() {
+  try {
+    const keys = await AsyncStorage.getAllKeys();
+    const noteKeys = keys.filter((k) => k.startsWith(MONTHLY_NOTE_PREFIX));
+    if (noteKeys.length === 0) return {};
+    const pairs = await AsyncStorage.multiGet(noteKeys);
+    const map = {};
+    pairs.forEach(([key, value]) => {
+      if (value != null) map[key.slice(MONTHLY_NOTE_PREFIX.length)] = value;
+    });
+    return map;
+  } catch {
+    return {};
+  }
+}
+
 export async function exportData() {
   const raw = await AsyncStorage.getItem(STORAGE_KEY);
   const merchantLibrary = await getMerchantLibrary();
-  if (!raw) {
-    return JSON.stringify(
-      {
-        ...normalizeStoredData({ expenses: [] }),
-        snapomat_merchant_library: merchantLibrary,
-      },
-      null,
-      2,
-    );
-  }
+  const monthlyNotes = await getMonthlyNotesMap();
+  const base = raw ? normalizeStoredData(JSON.parse(raw)) : normalizeStoredData({ expenses: [] });
   return JSON.stringify(
     {
-      ...normalizeStoredData(JSON.parse(raw)),
+      ...base,
       snapomat_merchant_library: merchantLibrary,
+      snapomat_monthly_notes: monthlyNotes,
     },
     null,
     2,
@@ -461,7 +554,21 @@ export async function importData(jsonString) {
       await AsyncStorage.setItem(MERCHANT_LIBRARY_KEY, JSON.stringify(library));
     }
 
-    const { snapomat_merchant_library: _library, ...dataPayload } = payload;
+    const notes = parsed.snapomat_monthly_notes ?? payload.snapomat_monthly_notes;
+    if (notes && typeof notes === 'object') {
+      const entries = Object.entries(notes).filter(
+        ([k, v]) => /^\d{4}_\d{2}$/.test(k) && typeof v === 'string',
+      );
+      if (entries.length) {
+        await AsyncStorage.multiSet(entries.map(([k, v]) => [`${MONTHLY_NOTE_PREFIX}${k}`, v]));
+      }
+    }
+
+    const {
+      snapomat_merchant_library: _library,
+      snapomat_monthly_notes: _notes,
+      ...dataPayload
+    } = payload;
     await saveData(normalizeStoredData(dataPayload));
     return true;
   } catch {

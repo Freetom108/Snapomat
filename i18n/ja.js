@@ -52,6 +52,7 @@ export default {
     dayToday: '今日',
     dayYesterday: '昨日',
     emptyMonth: '今月はまだ支出がありません',
+    savingsGoal: '貯金目標：{{amount}} €',
   },
   history: {
     searchPlaceholder: '店舗を検索...',
@@ -98,6 +99,8 @@ export default {
     rows: {
       monthlyBudgetTitle: '月の予算を設定',
       monthlyBudgetSubtitle: '支出の上限を設定',
+      monthlyNoteTitle: '振り返り',
+      monthlyNoteSubtitle: '毎月の振り返りとメモ',
       shareReportTitle: '月次レポートを共有',
       shareReportSubtitle: 'Historyで月を選び、WhatsAppやメールなどで共有',
       backupRestoreSubtitle: 'データのバックアップと復元',
@@ -119,6 +122,10 @@ export default {
     budgetModalLine1: '1か月にいくら使いたいですか？',
     budgetModalLine2: '支出が {{percent}}% に達すると通知します。',
     budgetPlaceholder: '1,000',
+    savingsGoalToggle: '貯金目標を設定',
+    savingsGoalLabel: '貯金目標',
+    savingsGoalShowToggle: 'Today画面に貯金目標を表示',
+    notePlaceholder: '今月はどうだった？気づきや達成、目標をメモしよう …',
     languageModalTitle: '🌍 言語',
     languageModalHint:
       '「自動」では端末の言語を検出します。ここで手動で変更することもできます。',
@@ -254,6 +261,7 @@ export default {
     burgundy: 'Burgundy',
     blue: 'Midnight Blue',
     light: 'Light',
+    nippon: 'Nippon',
   },
   onboarding: {
     title1: 'レシートを撮るだけ －',

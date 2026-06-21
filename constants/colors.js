@@ -54,6 +54,16 @@ export const THEMES = {
     border: '#E0DFD8',
     ...SHARED,
   },
+  nippon: {
+    id: 'nippon',
+    name: 'Nippon',
+    bg: '#FAE8EC',
+    card: '#FFFFFF',
+    text: '#111111',
+    border: '#EAEAEA',
+    ...SHARED,
+    muted: '#888888',
+  },
 };
 
 export const DEFAULT_THEME_ID = 'gold';

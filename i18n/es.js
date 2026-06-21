@@ -52,6 +52,7 @@ export default {
     dayToday: 'HOY',
     dayYesterday: 'AYER',
     emptyMonth: 'Sin gastos este mes',
+    savingsGoal: 'Objetivo de ahorro: {{amount}} €',
   },
   history: {
     searchPlaceholder: 'Buscar comercio...',
@@ -98,6 +99,8 @@ export default {
     rows: {
       monthlyBudgetTitle: 'Fijar presupuesto mensual',
       monthlyBudgetSubtitle: 'Establecer límite de gasto',
+      monthlyNoteTitle: 'Nota mensual',
+      monthlyNoteSubtitle: 'Notas y reflexiones mensuales',
       shareReportTitle: 'Compartir informe mensual',
       shareReportSubtitle: 'Elige el mes en History y comparte por WhatsApp, correo y más',
       backupRestoreSubtitle: 'Guardar y restaurar datos',
@@ -119,6 +122,10 @@ export default {
     budgetModalLine1: '¿Cuánto quieres gastar al mes?',
     budgetModalLine2: 'Te avisaremos cuando tus gastos lleguen al {{percent}} %.',
     budgetPlaceholder: '1.000',
+    savingsGoalToggle: 'Definir objetivo de ahorro',
+    savingsGoalLabel: 'Objetivo de ahorro',
+    savingsGoalShowToggle: 'Mostrar objetivo de ahorro en la pantalla Today',
+    notePlaceholder: '¿Cómo fue tu mes? Anota pensamientos, logros y objetivos …',
     languageModalTitle: '🌍 Idioma',
     languageModalHint:
       'Automático detecta el idioma de tu dispositivo. Puedes cambiarlo manualmente aquí.',
@@ -254,6 +261,7 @@ export default {
     burgundy: 'Burdeos',
     blue: 'Azul medianoche',
     light: 'Claro',
+    nippon: 'Nippon',
   },
   onboarding: {
     title1: 'Fotografía el ticket –',

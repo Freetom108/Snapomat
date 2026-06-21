@@ -52,6 +52,7 @@ export default {
     dayToday: 'OGGI',
     dayYesterday: 'IERI',
     emptyMonth: 'Nessuna spesa questo mese',
+    savingsGoal: 'Obiettivo di risparmio: {{amount}} €',
   },
   history: {
     searchPlaceholder: 'Cerca esercente...',
@@ -98,6 +99,8 @@ export default {
     rows: {
       monthlyBudgetTitle: 'Imposta budget mensile',
       monthlyBudgetSubtitle: 'Definisci limite di spesa',
+      monthlyNoteTitle: 'Nota mensile',
+      monthlyNoteSubtitle: 'Note e riflessioni mensili',
       shareReportTitle: 'Condividi report mensile',
       shareReportSubtitle: 'Scegli il mese in History e condividi via WhatsApp, email e altro',
       backupRestoreSubtitle: 'Salva e ripristina dati',
@@ -119,6 +122,10 @@ export default {
     budgetModalLine1: 'Quanto vuoi spendere al mese?',
     budgetModalLine2: 'Riceverai una notifica quando le spese raggiungono il {{percent}} %.',
     budgetPlaceholder: '1.000',
+    savingsGoalToggle: 'Imposta obiettivo di risparmio',
+    savingsGoalLabel: 'Obiettivo di risparmio',
+    savingsGoalShowToggle: 'Mostra obiettivo di risparmio nella schermata Today',
+    notePlaceholder: 'Com\'è andato il tuo mese? Annota pensieri, traguardi e obiettivi …',
     languageModalTitle: '🌍 Lingua',
     languageModalHint:
       'Automatico rileva la lingua del dispositivo. Puoi cambiarla manualmente qui.',
@@ -254,6 +261,7 @@ export default {
     burgundy: 'Bordeaux',
     blue: 'Blu notte',
     light: 'Chiaro',
+    nippon: 'Nippon',
   },
   onboarding: {
     title1: 'Fotografa lo scontrino –',

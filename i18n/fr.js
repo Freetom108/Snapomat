@@ -52,6 +52,7 @@ export default {
     dayToday: "AUJOURD'HUI",
     dayYesterday: 'HIER',
     emptyMonth: 'Aucune dépense ce mois-ci',
+    savingsGoal: 'Objectif d\'épargne : {{amount}} €',
   },
   history: {
     searchPlaceholder: 'Rechercher un commerçant...',
@@ -98,6 +99,8 @@ export default {
     rows: {
       monthlyBudgetTitle: 'Définir le budget mensuel',
       monthlyBudgetSubtitle: 'Fixer la limite de dépenses',
+      monthlyNoteTitle: 'Note mensuelle',
+      monthlyNoteSubtitle: 'Notes et réflexions mensuelles',
       shareReportTitle: 'Partager le rapport mensuel',
       shareReportSubtitle: 'Choisir le mois dans History et partager via WhatsApp, e-mail & plus',
       backupRestoreSubtitle: 'Sauvegarder et restaurer les données',
@@ -119,6 +122,10 @@ export default {
     budgetModalLine1: 'Combien souhaitez-vous dépenser par mois ?',
     budgetModalLine2: 'Vous serez averti lorsque vos dépenses atteindront {{percent}} %.',
     budgetPlaceholder: '1 000',
+    savingsGoalToggle: 'Définir un objectif d\'épargne',
+    savingsGoalLabel: 'Objectif d\'épargne',
+    savingsGoalShowToggle: 'Afficher l\'objectif d\'épargne sur l\'écran Today',
+    notePlaceholder: 'Comment s\'est passé ton mois ? Note tes pensées, réussites et objectifs …',
     languageModalTitle: '🌍 Langue',
     languageModalHint:
       'Automatique détecte la langue de votre appareil. Vous pouvez la modifier manuellement ici.',
@@ -254,6 +261,7 @@ export default {
     burgundy: 'Bordeaux',
     blue: 'Bleu de minuit',
     light: 'Clair',
+    nippon: 'Nippon',
   },
   onboarding: {
     title1: 'Photographiez un ticket –',

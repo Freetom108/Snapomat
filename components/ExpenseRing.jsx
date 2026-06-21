@@ -13,12 +13,17 @@ export default function ExpenseRing({ stats, colors, styles, showMonthLabel = tr
   const cy = RING_SIZE / 2;
   const circumference = 2 * Math.PI * RING_RADIUS;
   const strokeDashoffset = circumference * (1 - stats.progress);
+  const isNippon = colors.id === 'nippon';
+  const nipponTextStyle = isNippon ? { color: '#FFFFFF' } : null;
 
   return (
     <View style={styles.ringSection}>
       {showMonthLabel ? <Text style={styles.monthLabel}>{stats.monthLabel}</Text> : null}
       <View style={styles.ringWrap}>
         <Svg width={RING_SIZE} height={RING_SIZE}>
+          {isNippon ? (
+            <Circle cx={cx} cy={cy} r={RING_RADIUS - RING_STROKE / 2} fill="#BC002D" />
+          ) : null}
           <Circle
             cx={cx}
             cy={cy}
@@ -42,10 +47,10 @@ export default function ExpenseRing({ stats, colors, styles, showMonthLabel = tr
           />
         </Svg>
         <View style={styles.ringCenter}>
-          <Text style={styles.ringLabel}>{t('home.ringExpenses')}</Text>
-          <Text style={styles.ringAmount}>{formatAmountNumber(stats.spent)}</Text>
-          <Text style={styles.ringPercent}>{stats.percent}%</Text>
-          <Text style={styles.ringBudget}>{t('home.ringBudgetOf', { amount: stats.budgetFormatted })}</Text>
+          <Text style={[styles.ringLabel, nipponTextStyle]}>{t('home.ringExpenses')}</Text>
+          <Text style={[styles.ringAmount, nipponTextStyle]}>{formatAmountNumber(stats.spent)}</Text>
+          <Text style={[styles.ringPercent, nipponTextStyle]}>{stats.percent}%</Text>
+          <Text style={[styles.ringBudget, nipponTextStyle]}>{t('home.ringBudgetOf', { amount: stats.budgetFormatted })}</Text>
         </View>
       </View>
     </View>

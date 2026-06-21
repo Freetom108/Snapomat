@@ -52,6 +52,7 @@ export default {
     dayToday: 'BUGÜN',
     dayYesterday: 'DÜN',
     emptyMonth: 'Bu ay henüz harcama yok',
+    savingsGoal: 'Tasarruf hedefi: {{amount}} €',
   },
   history: {
     searchPlaceholder: 'İş yeri ara...',
@@ -98,6 +99,8 @@ export default {
     rows: {
       monthlyBudgetTitle: 'Aylık bütçe belirle',
       monthlyBudgetSubtitle: 'Harcama limiti ayarla',
+      monthlyNoteTitle: 'Aylık Not',
+      monthlyNoteSubtitle: 'Aylık notlar ve yansımalar',
       shareReportTitle: 'Aylık raporu paylaş',
       shareReportSubtitle: 'History\'de ay seç ve WhatsApp, e-posta ve daha fazlasıyla paylaş',
       backupRestoreSubtitle: 'Verileri yedekle ve geri yükle',
@@ -119,6 +122,10 @@ export default {
     budgetModalLine1: 'Ayda ne kadar harcamak istiyorsun?',
     budgetModalLine2: 'Harcamaların %{{percent}} seviyesine ulaştığında bildirim alırsın.',
     budgetPlaceholder: '1.000',
+    savingsGoalToggle: 'Tasarruf hedefi belirle',
+    savingsGoalLabel: 'Tasarruf hedefi',
+    savingsGoalShowToggle: 'Tasarruf hedefini Today ekranında göster',
+    notePlaceholder: 'Ayın nasıldı? Düşüncelerini, başarılarını ve hedeflerini not et …',
     languageModalTitle: '🌍 Dil',
     languageModalHint:
       'Otomatik cihaz dilini algılar. Buradan manuel olarak değiştirebilirsin.',
@@ -254,6 +261,7 @@ export default {
     burgundy: 'Bordo',
     blue: 'Gece mavisi',
     light: 'Açık',
+    nippon: 'Nippon',
   },
   onboarding: {
     title1: 'Fişini fotoğrafla –',

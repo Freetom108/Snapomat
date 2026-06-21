@@ -52,6 +52,7 @@ export default {
     dayToday: 'TODAY',
     dayYesterday: 'YESTERDAY',
     emptyMonth: 'No expenses this month yet',
+    savingsGoal: 'Savings goal: {{amount}} €',
   },
   history: {
     searchPlaceholder: 'Search merchant...',
@@ -98,6 +99,8 @@ export default {
     rows: {
       monthlyBudgetTitle: 'Set monthly budget',
       monthlyBudgetSubtitle: 'Set spending limit',
+      monthlyNoteTitle: 'Monthly Note',
+      monthlyNoteSubtitle: 'Monthly notes & reflections',
       shareReportTitle: 'Share monthly report',
       shareReportSubtitle: 'Choose month in History and share via WhatsApp, email & more',
       backupRestoreSubtitle: 'Back up & restore data',
@@ -119,6 +122,10 @@ export default {
     budgetModalLine1: 'How much do you want to spend per month?',
     budgetModalLine2: 'You will be notified when your spending reaches {{percent}}%.',
     budgetPlaceholder: '1,000',
+    savingsGoalToggle: 'Set savings goal',
+    savingsGoalLabel: 'Savings goal',
+    savingsGoalShowToggle: 'Show savings goal on Today screen',
+    notePlaceholder: 'How was your month? Jot down thoughts, wins and goals …',
     languageModalTitle: '🌍 Language',
     languageModalHint:
       'Automatic detects your device language. You can override it here manually.',
@@ -254,6 +261,7 @@ export default {
     burgundy: 'Burgundy',
     blue: 'Midnight Blue',
     light: 'Light',
+    nippon: 'Nippon',
   },
   onboarding: {
     title1: 'Photograph a receipt –',

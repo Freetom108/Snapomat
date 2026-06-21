@@ -52,6 +52,7 @@ export default {
     dayToday: 'HOJE',
     dayYesterday: 'ONTEM',
     emptyMonth: 'Sem despesas este mês',
+    savingsGoal: 'Meta de poupança: {{amount}} €',
   },
   history: {
     searchPlaceholder: 'Procurar comerciante...',
@@ -98,6 +99,8 @@ export default {
     rows: {
       monthlyBudgetTitle: 'Definir orçamento mensal',
       monthlyBudgetSubtitle: 'Definir limite de gastos',
+      monthlyNoteTitle: 'Nota mensal',
+      monthlyNoteSubtitle: 'Notas e reflexões mensais',
       shareReportTitle: 'Partilhar relatório mensal',
       shareReportSubtitle: 'Escolhe o mês em History e partilha via WhatsApp, email e mais',
       backupRestoreSubtitle: 'Guardar e restaurar dados',
@@ -119,6 +122,10 @@ export default {
     budgetModalLine1: 'Quanto queres gastar por mês?',
     budgetModalLine2: 'Serás notificado quando os teus gastos atingirem {{percent}} %.',
     budgetPlaceholder: '1.000',
+    savingsGoalToggle: 'Definir meta de poupança',
+    savingsGoalLabel: 'Meta de poupança',
+    savingsGoalShowToggle: 'Mostrar meta de poupança no ecrã Today',
+    notePlaceholder: 'Como foi o teu mês? Anota pensamentos, conquistas e objetivos …',
     languageModalTitle: '🌍 Idioma',
     languageModalHint:
       'Automático deteta o idioma do teu dispositivo. Podes alterá-lo manualmente aqui.',
@@ -254,6 +261,7 @@ export default {
     burgundy: 'Bordeaux',
     blue: 'Azul da meia-noite',
     light: 'Claro',
+    nippon: 'Nippon',
   },
   onboarding: {
     title1: 'Fotografa o recibo –',

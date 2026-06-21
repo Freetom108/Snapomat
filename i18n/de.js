@@ -52,6 +52,7 @@ export default {
     dayToday: 'HEUTE',
     dayYesterday: 'GESTERN',
     emptyMonth: 'Noch keine Ausgaben in diesem Monat',
+    savingsGoal: 'Sparziel: {{amount}} €',
   },
   history: {
     searchPlaceholder: 'Händler suchen...',
@@ -98,6 +99,8 @@ export default {
     rows: {
       monthlyBudgetTitle: 'Monatsbudget festlegen',
       monthlyBudgetSubtitle: 'Ausgabenlimit einstellen',
+      monthlyNoteTitle: 'Monatsnotiz',
+      monthlyNoteSubtitle: 'Monatliche Notizen & Reflexionen',
       shareReportTitle: 'Monatsbericht teilen',
       shareReportSubtitle: 'Monat in History wählen und per WhatsApp, Mail & mehr teilen',
       backupRestoreSubtitle: 'Daten sichern & wiederherstellen',
@@ -119,6 +122,10 @@ export default {
     budgetModalLine1: 'Wie viel möchtest du pro Monat ausgeben?',
     budgetModalLine2: 'Du wirst benachrichtigt wenn deine Ausgaben {{percent}}% erreichen.',
     budgetPlaceholder: '1.000',
+    savingsGoalToggle: 'Sparziel festlegen',
+    savingsGoalLabel: 'Sparziel',
+    savingsGoalShowToggle: 'Sparziel auf Today anzeigen',
+    notePlaceholder: 'Wie war dein Monat? Notiere Gedanken, Erfolge und Ziele …',
     languageModalTitle: '🌍 Sprache',
     languageModalHint:
       'Automatisch erkennt die Sprache deines Geräts. Du kannst sie hier manuell überschreiben.',
@@ -254,6 +261,7 @@ export default {
     burgundy: 'Burgundy',
     blue: 'Midnight Blue',
     light: 'Light',
+    nippon: 'Nippon',
   },
   onboarding: {
     title1: 'Beleg fotografieren –',

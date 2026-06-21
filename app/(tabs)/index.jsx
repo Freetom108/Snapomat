@@ -13,7 +13,7 @@ import ExpenseDetailSheet from '../../components/ExpenseDetailSheet';
 import ExpenseRing, { RING_SIZE } from '../../components/ExpenseRing';
 import { useTheme } from '../../hooks/useTheme';
 import { useTranslation } from '../../hooks/useTranslation';
-import { getExpenses, getBudget } from '../../store/storage';
+import { getExpenses, getBudget, getSavingsGoal } from '../../store/storage';
 import {
   formatCurrency,
   formatAmountNumber,
@@ -29,9 +29,10 @@ function withOpacity(hex, opacity) {
   return `${hex}${alpha}`;
 }
 
-function StatsRow({ stats, budget, colors, styles }) {
+function StatsRow({ stats, budget, savingsGoal, colors, styles }) {
   const { t } = useTranslation();
   const remainingDisplay = formatAmountNumber(Math.max(stats.remaining, 0));
+  const showSavings = savingsGoal?.active && savingsGoal?.show;
 
   return (
     <View style={styles.statsRow}>
@@ -59,6 +60,11 @@ function StatsRow({ stats, budget, colors, styles }) {
         </Text>
         <Text style={styles.statLabel}>{t('home.statsAvailable')}</Text>
         <Text style={styles.statLabel}>{t('home.statsBudget')}</Text>
+        {showSavings ? (
+          <Text style={styles.statSavings}>
+            {t('home.savingsGoal', { amount: formatAmountNumber(savingsGoal.amount) })}
+          </Text>
+        ) : null}
       </View>
       <View style={styles.statDivider} />
       <View style={styles.statCell}>
@@ -255,6 +261,14 @@ function createStyles(colors) {
       textAlign: 'center',
       lineHeight: 14,
     },
+    statSavings: {
+      fontFamily: 'DMSans_400Regular',
+      fontSize: 10,
+      color: colors.muted,
+      textAlign: 'center',
+      lineHeight: 14,
+      marginTop: 2,
+    },
     dayCard: {
       backgroundColor: colors.card,
       borderRadius: 16,
@@ -334,6 +348,7 @@ export default function HomeScreen() {
 
   const [expenses, setExpenses] = useState([]);
   const [budget, setBudget] = useState(1000);
+  const [savingsGoal, setSavingsGoal] = useState({ active: false, amount: 0, show: false });
   const [loading, setLoading] = useState(true);
   const [selectedExpense, setSelectedExpense] = useState(null);
 
@@ -345,9 +360,14 @@ export default function HomeScreen() {
   });
 
   const loadData = useCallback(async () => {
-    const [storedExpenses, storedBudget] = await Promise.all([getExpenses(), getBudget()]);
+    const [storedExpenses, storedBudget, storedSavings] = await Promise.all([
+      getExpenses(),
+      getBudget(),
+      getSavingsGoal(),
+    ]);
     setExpenses(storedExpenses);
     setBudget(storedBudget);
+    setSavingsGoal(storedSavings);
     setLoading(false);
   }, []);
 
@@ -392,7 +412,7 @@ export default function HomeScreen() {
         </View>
 
         <ExpenseRing stats={stats} colors={colors} styles={styles} />
-        <StatsRow stats={stats} budget={budget} colors={colors} styles={styles} />
+        <StatsRow stats={stats} budget={budget} savingsGoal={savingsGoal} colors={colors} styles={styles} />
 
         {dayGroups.length === 0 ? (
           <Text style={styles.emptyText}>{t('home.emptyMonth')}</Text>

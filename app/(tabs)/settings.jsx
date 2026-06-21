@@ -35,6 +35,11 @@ import {
   saveBudget,
   getBudgetWarning,
   saveBudgetWarning,
+  getSavingsGoal,
+  saveSavingsGoal,
+  saveMonthlyNote,
+  getMonthlyNote,
+  getAllMonthlyNotes,
   getCredits,
   getExpenses,
   getLocale,
@@ -50,6 +55,7 @@ import {
 import {
   buildMonthlyShareReport,
   getMonthExpenses,
+  formatMonthLabel,
 } from '../../utils/expenseHelpers';
 import CreditsPricingSheet from '../../components/CreditsPricingSheet';
 
@@ -92,6 +98,7 @@ const THEME_OPTIONS = [
   { id: 'burgundy', color: '#7a1c1c' },
   { id: 'blue', color: '#1a3a6a' },
   { id: 'light', color: '#F2F1EC', borderColor: '#666666' },
+  { id: 'nippon', color: '#F7D1D8', borderColor: '#BC002D' },
 ];
 
 function snapWarning(value) {
@@ -211,12 +218,12 @@ function BudgetModalSlider({ value, onChange, colors, styles }) {
   );
 }
 
-function BudgetModal({
+function MonthlyNoteModal({
   visible,
-  budgetInput,
-  setBudgetInput,
-  warningValue,
-  onWarningChange,
+  monthLabel,
+  noteText,
+  setNoteText,
+  pastNotes,
   onSave,
   onClose,
   colors,
@@ -224,6 +231,108 @@ function BudgetModal({
   themeId,
 }) {
   const { t } = useTranslation();
+
+  return (
+    <Modal visible={visible} animationType="slide" transparent onRequestClose={() => {}}>
+      <View style={styles.pricingOverlay}>
+        <View style={[styles.bottomSheet, { backgroundColor: colors.card }]}>
+          <View style={styles.pricingSheetHeader}>
+            <View style={styles.pricingHeaderText}>
+              <Text style={[styles.pricingHeaderTitle, { color: colors.text }]}>
+                📝 {t('settings.rows.monthlyNoteTitle')}
+              </Text>
+              <Text style={[styles.budgetModalSubtitle, { color: colors.muted }]}>{monthLabel}</Text>
+            </View>
+            <Pressable
+              onPress={onClose}
+              hitSlop={12}
+              style={({ pressed }) => [styles.pricingCloseButton, pressed && { opacity: 0.7 }]}
+              accessibilityRole="button"
+              accessibilityLabel={t('common.close')}
+            >
+              <Text style={[styles.pricingCloseText, { color: colors.muted }]}>✕</Text>
+            </Pressable>
+          </View>
+
+          <ScrollView
+            style={styles.bottomSheetScroll}
+            showsVerticalScrollIndicator
+            contentContainerStyle={styles.budgetModalScroll}
+            keyboardShouldPersistTaps="handled"
+            bounces
+          >
+            <TextInput
+              value={noteText}
+              onChangeText={setNoteText}
+              multiline
+              textAlignVertical="top"
+              placeholder={t('settings.notePlaceholder')}
+              placeholderTextColor={colors.muted}
+              style={[
+                styles.noteInput,
+                { color: colors.text, borderColor: colors.border, backgroundColor: colors.background },
+              ]}
+            />
+
+            <Pressable
+              onPress={onSave}
+              style={({ pressed }) => [
+                styles.budgetSaveButton,
+                { backgroundColor: colors.accent, opacity: pressed ? 0.85 : 1 },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.modalButtonText,
+                  { color: themeId === 'light' ? colors.text : colors.background },
+                ]}
+              >
+                {t('common.save')}
+              </Text>
+            </Pressable>
+
+            {pastNotes.length > 0 ? (
+              <View style={styles.notePastWrap}>
+                {pastNotes.map((note) => (
+                  <View
+                    key={`${note.year}-${note.month}`}
+                    style={[styles.notePastItem, { borderTopColor: colors.border }]}
+                  >
+                    <Text style={[styles.notePastHeader, { color: colors.accent }]}>
+                      {formatMonthLabel(note.year, note.month)}
+                    </Text>
+                    <Text style={[styles.notePastText, { color: colors.muted }]}>{note.text}</Text>
+                  </View>
+                ))}
+              </View>
+            ) : null}
+          </ScrollView>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+function BudgetModal({
+  visible,
+  budgetInput,
+  setBudgetInput,
+  warningValue,
+  onWarningChange,
+  savingsActive,
+  onToggleSavingsActive,
+  savingsAmount,
+  setSavingsAmount,
+  savingsShow,
+  onToggleSavingsShow,
+  onSave,
+  onClose,
+  colors,
+  styles,
+  themeId,
+}) {
+  const { t } = useTranslation();
+  const checkMarkColor = themeId === 'light' ? colors.text : colors.background;
 
   return (
     <Modal visible={visible} animationType="slide" transparent onRequestClose={() => {}}>
@@ -323,6 +432,76 @@ function BudgetModal({
               colors={colors}
               styles={styles}
             />
+
+            <Pressable
+              onPress={onToggleSavingsActive}
+              style={({ pressed }) => [styles.savingsToggleRow, pressed && { opacity: 0.7 }]}
+              accessibilityRole="checkbox"
+              accessibilityState={{ checked: savingsActive }}
+            >
+              <View
+                style={[
+                  styles.savingsCheckbox,
+                  {
+                    borderColor: colors.accent,
+                    backgroundColor: savingsActive ? colors.accent : 'transparent',
+                  },
+                ]}
+              >
+                {savingsActive ? (
+                  <Text style={[styles.savingsCheckboxMark, { color: checkMarkColor }]}>✓</Text>
+                ) : null}
+              </View>
+              <Text style={[styles.savingsToggleLabel, { color: colors.text }]}>
+                {t('settings.savingsGoalToggle')}
+              </Text>
+            </Pressable>
+
+            {savingsActive ? (
+              <>
+                <View
+                  style={[
+                    styles.budgetInputWrap,
+                    styles.savingsInputWrap,
+                    { borderColor: colors.accent, backgroundColor: colors.background },
+                  ]}
+                >
+                  <Text style={[styles.budgetEuro, { color: colors.muted }]}>€</Text>
+                  <TextInput
+                    value={savingsAmount}
+                    onChangeText={setSavingsAmount}
+                    keyboardType="decimal-pad"
+                    placeholder={t('settings.savingsGoalLabel')}
+                    placeholderTextColor={colors.muted}
+                    style={[styles.budgetAmountInput, { color: colors.text }]}
+                  />
+                </View>
+
+                <Pressable
+                  onPress={onToggleSavingsShow}
+                  style={({ pressed }) => [styles.savingsToggleRow, pressed && { opacity: 0.7 }]}
+                  accessibilityRole="checkbox"
+                  accessibilityState={{ checked: savingsShow }}
+                >
+                  <View
+                    style={[
+                      styles.savingsCheckbox,
+                      {
+                        borderColor: colors.accent,
+                        backgroundColor: savingsShow ? colors.accent : 'transparent',
+                      },
+                    ]}
+                  >
+                    {savingsShow ? (
+                      <Text style={[styles.savingsCheckboxMark, { color: checkMarkColor }]}>✓</Text>
+                    ) : null}
+                  </View>
+                  <Text style={[styles.savingsToggleLabel, { color: colors.text }]}>
+                    {t('settings.savingsGoalShowToggle')}
+                  </Text>
+                </Pressable>
+              </>
+            ) : null}
 
             <Pressable
               onPress={onSave}
@@ -1078,6 +1257,61 @@ function createStyles(colors) {
       paddingVertical: 16,
       alignItems: 'center',
     },
+    noteInput: {
+      borderWidth: 1,
+      borderRadius: 14,
+      padding: 14,
+      fontFamily: 'DMSans_400Regular',
+      fontSize: 15,
+      lineHeight: 22,
+      minHeight: 130,
+      marginBottom: 16,
+    },
+    notePastWrap: {
+      marginTop: 24,
+    },
+    notePastItem: {
+      borderTopWidth: 1,
+      paddingTop: 14,
+      marginTop: 14,
+    },
+    notePastHeader: {
+      fontFamily: 'DMSans_700Bold',
+      fontSize: 14,
+      marginBottom: 6,
+    },
+    notePastText: {
+      fontFamily: 'DMSans_400Regular',
+      fontSize: 14,
+      lineHeight: 21,
+    },
+    savingsToggleRow: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingVertical: 10,
+      gap: 12,
+    },
+    savingsCheckbox: {
+      width: 22,
+      height: 22,
+      borderRadius: 6,
+      borderWidth: 2,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
+    savingsCheckboxMark: {
+      fontFamily: 'DMSans_800ExtraBold',
+      fontSize: 14,
+      lineHeight: 16,
+    },
+    savingsToggleLabel: {
+      flex: 1,
+      fontFamily: 'DMSans_700Bold',
+      fontSize: 15,
+    },
+    savingsInputWrap: {
+      marginTop: 6,
+    },
     themeDotsWrap: {
       borderTopWidth: 1,
       paddingHorizontal: 16,
@@ -1086,12 +1320,12 @@ function createStyles(colors) {
     themeDots: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: 14,
+      justifyContent: 'space-between',
     },
     themeDot: {
-      width: 48,
-      height: 48,
-      borderRadius: 24,
+      width: 44,
+      height: 44,
+      borderRadius: 22,
     },
     dangerButton: {
       marginHorizontal: 16,
@@ -1426,6 +1660,12 @@ export default function SettingsScreen() {
   const [showBackup, setShowBackup] = useState(false);
   const [backupBusy, setBackupBusy] = useState(false);
   const [budgetInput, setBudgetInput] = useState('1000');
+  const [savingsActive, setSavingsActive] = useState(false);
+  const [savingsAmount, setSavingsAmount] = useState('');
+  const [savingsShow, setSavingsShow] = useState(false);
+  const [showNote, setShowNote] = useState(false);
+  const [noteText, setNoteText] = useState('');
+  const [pastNotes, setPastNotes] = useState([]);
 
   const [fontsLoaded] = useFonts({
     DMSans_400Regular,
@@ -1435,19 +1675,24 @@ export default function SettingsScreen() {
   });
 
   const loadSettings = useCallback(async () => {
-    const [storedBudget, storedWarning, storedCredits, storedLocale, storedUserId] = await Promise.all([
-      getBudget(),
-      getBudgetWarning(),
-      getCredits(),
-      getLocale(),
-      getUserId(),
-    ]);
+    const [storedBudget, storedWarning, storedCredits, storedLocale, storedUserId, storedSavings] =
+      await Promise.all([
+        getBudget(),
+        getBudgetWarning(),
+        getCredits(),
+        getLocale(),
+        getUserId(),
+        getSavingsGoal(),
+      ]);
     setBudgetState(storedBudget);
     setBudgetWarningState(snapWarning(storedWarning));
     setCreditsState(storedCredits);
     setLocaleState(storedLocale);
     setUserIdState(storedUserId);
     setBudgetInput(String(storedBudget));
+    setSavingsActive(storedSavings.active);
+    setSavingsAmount(storedSavings.amount ? String(storedSavings.amount) : '');
+    setSavingsShow(storedSavings.show);
     setLoading(false);
   }, []);
 
@@ -1464,11 +1709,47 @@ export default function SettingsScreen() {
   async function handleSaveBudget() {
     const amount = parseBudgetInput(budgetInput) || 1000;
     const warning = snapWarning(budgetWarningDraft);
+    const savingsAmountValue = savingsActive ? parseBudgetInput(savingsAmount) || 0 : 0;
     await saveBudget(amount);
     await saveBudgetWarning(warning);
+    await saveSavingsGoal({
+      active: savingsActive,
+      amount: savingsAmountValue,
+      show: savingsActive ? savingsShow : false,
+    });
     setBudgetState(amount);
     setBudgetWarningState(warning);
     setShowBudget(false);
+  }
+
+  function handleToggleSavingsActive() {
+    setSavingsActive((prev) => {
+      const next = !prev;
+      if (!next) {
+        setSavingsAmount('');
+        setSavingsShow(false);
+      }
+      return next;
+    });
+  }
+
+  async function openNoteModal() {
+    const now = new Date();
+    const [current, all] = await Promise.all([
+      getMonthlyNote(now.getFullYear(), now.getMonth()),
+      getAllMonthlyNotes(),
+    ]);
+    setNoteText(current);
+    setPastNotes(all.filter((n) => !(n.year === now.getFullYear() && n.month === now.getMonth())));
+    setShowNote(true);
+  }
+
+  async function handleSaveNote() {
+    const now = new Date();
+    await saveMonthlyNote(now.getFullYear(), now.getMonth(), noteText);
+    const all = await getAllMonthlyNotes();
+    setPastNotes(all.filter((n) => !(n.year === now.getFullYear() && n.month === now.getMonth())));
+    setShowNote(false);
   }
 
   function openBudgetModal() {
@@ -1492,9 +1773,13 @@ export default function SettingsScreen() {
     const month = selected?.month ?? now.getMonth();
     const monthExpenses = getMonthExpenses(expenses, year, month);
 
-    await Share.share({
-      message: buildMonthlyShareReport(monthExpenses, year, month, t),
-    });
+    let message = buildMonthlyShareReport(monthExpenses, year, month, t);
+    const note = await getMonthlyNote(year, month);
+    if (note.trim()) {
+      message += `\n\n📝 ${t('settings.rows.monthlyNoteTitle')}\n${note.trim()}`;
+    }
+
+    await Share.share({ message });
   }
 
   async function handleCreateBackup() {
@@ -1663,6 +1948,14 @@ export default function SettingsScreen() {
             styles={styles}
           />
           <SettingsRow
+            emoji="📝"
+            title={t('settings.rows.monthlyNoteTitle')}
+            subtitle={t('settings.rows.monthlyNoteSubtitle')}
+            onPress={openNoteModal}
+            colors={colors}
+            styles={styles}
+          />
+          <SettingsRow
             emoji="📤"
             title={t('settings.rows.shareReportTitle')}
             subtitle={t('settings.rows.shareReportSubtitle')}
@@ -1823,8 +2116,27 @@ export default function SettingsScreen() {
         setBudgetInput={setBudgetInput}
         warningValue={budgetWarningDraft}
         onWarningChange={handleBudgetWarningDraftChange}
+        savingsActive={savingsActive}
+        onToggleSavingsActive={handleToggleSavingsActive}
+        savingsAmount={savingsAmount}
+        setSavingsAmount={setSavingsAmount}
+        savingsShow={savingsShow}
+        onToggleSavingsShow={() => setSavingsShow((prev) => !prev)}
         onSave={handleSaveBudget}
         onClose={() => setShowBudget(false)}
+        colors={colors}
+        styles={styles}
+        themeId={themeId}
+      />
+
+      <MonthlyNoteModal
+        visible={showNote}
+        monthLabel={formatMonthLabel(new Date().getFullYear(), new Date().getMonth())}
+        noteText={noteText}
+        setNoteText={setNoteText}
+        pastNotes={pastNotes}
+        onSave={handleSaveNote}
+        onClose={() => setShowNote(false)}
         colors={colors}
         styles={styles}
         themeId={themeId}

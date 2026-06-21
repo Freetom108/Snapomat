@@ -52,6 +52,7 @@ export default {
     dayToday: 'DZIŚ',
     dayYesterday: 'WCZORAJ',
     emptyMonth: 'Brak wydatków w tym miesiącu',
+    savingsGoal: 'Cel oszczędzania: {{amount}} €',
   },
   history: {
     searchPlaceholder: 'Szukaj sklepu...',
@@ -98,6 +99,8 @@ export default {
     rows: {
       monthlyBudgetTitle: 'Ustaw budżet miesięczny',
       monthlyBudgetSubtitle: 'Ustaw limit wydatków',
+      monthlyNoteTitle: 'Notatka miesięczna',
+      monthlyNoteSubtitle: 'Miesięczne notatki i refleksje',
       shareReportTitle: 'Udostępnij raport miesięczny',
       shareReportSubtitle: 'Wybierz miesiąc w History i udostępnij przez WhatsApp, e-mail i więcej',
       backupRestoreSubtitle: 'Kopia zapasowa i przywracanie',
@@ -119,6 +122,10 @@ export default {
     budgetModalLine1: 'Ile chcesz wydawać miesięcznie?',
     budgetModalLine2: 'Dostaniesz powiadomienie, gdy wydatki osiągną {{percent}} %.',
     budgetPlaceholder: '1 000',
+    savingsGoalToggle: 'Ustaw cel oszczędzania',
+    savingsGoalLabel: 'Cel oszczędzania',
+    savingsGoalShowToggle: 'Pokaż cel oszczędzania na ekranie Today',
+    notePlaceholder: 'Jak minął twój miesiąc? Zapisz myśli, sukcesy i cele …',
     languageModalTitle: '🌍 Język',
     languageModalHint:
       'Automatyczny wykrywa język urządzenia. Możesz go tu zmienić ręcznie.',
@@ -254,6 +261,7 @@ export default {
     burgundy: 'Bordowy',
     blue: 'Granatowy',
     light: 'Jasny',
+    nippon: 'Nippon',
   },
   onboarding: {
     title1: 'Sfotografuj paragon –',

@@ -20,6 +20,7 @@ function withAlpha(hex, alpha) {
 
 function buildColors(theme) {
   return {
+    id: theme.id,
     background: theme.bg,
     card: theme.card,
     border: theme.border,
