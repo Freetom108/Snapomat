@@ -69,6 +69,7 @@ export default {
       'Wskazówka: Dobre oświetlenie i płasko sfotografowany paragon poprawiają rozpoznawanie. Znani sprzedawcy są uzupełniani automatycznie. Niepewne pola są oznaczone ⚠️ – dotknij, aby poprawić bezpłatnie.',
     merchantNotRecognized: 'Sklep nierozpoznany – uzupełnij ręcznie',
     creditsShort: '⚡ {{count}} Kredytów',
+    creditsShortSingular: '⚡ {{count}} Kredyt',
     noCreditsMessage: 'Brak dostępnych kredytów. Wykup subskrypcję lub dokup kredyty.',
     or: 'lub',
     manualEntry: 'Wpisz ręcznie',
@@ -106,6 +107,7 @@ export default {
       shareReportSubtitle: 'Wybierz miesiąc w History i udostępnij przez WhatsApp, e-mail i więcej',
       backupRestoreSubtitle: 'Kopia zapasowa i przywracanie',
       languageTitle: 'Język',
+      currencyTitle: 'Waluta',
       colorSchemeTitle: 'Schemat kolorów',
       aboutAppTitle: 'O aplikacji',
       aboutAppSubtitle: 'Wersja 1.0.0 · Free',
@@ -133,6 +135,8 @@ export default {
     languageModalTitle: '🌍 Język',
     languageModalHint:
       'Automatyczny wykrywa język urządzenia. Możesz go tu zmienić ręcznie.',
+    currencyAuto: 'Automatyczny',
+    currencyModalTitle: 'Wybierz walutę',
     locales: {
       auto: 'Automatyczny',
       de: 'Deutsch',
@@ -189,6 +193,11 @@ export default {
         question: 'Co oznacza czerwony pierścień?',
         answer:
           'Jeśli włączyłeś ostrzeżenie budżetowe i Twoje wydatki przekroczą ustawiony próg, pierścień wydatków staje się ciemnoczerwony.',
+      },
+      currency: {
+        question: 'Jakiej waluty używa aplikacja?',
+        answer:
+          'Domyślnie aplikacja automatycznie wykrywa odpowiednią walutę na podstawie języka urządzenia. Możesz ręcznie zmienić walutę w ustawieniach w dowolnym momencie.',
       },
       backup: {
         question: 'Czym jest Backup & Restore?',

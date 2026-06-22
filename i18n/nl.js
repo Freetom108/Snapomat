@@ -69,6 +69,7 @@ export default {
       'Tip: Goed licht en een plat gefotografeerde bon verbeteren de herkenning. Bekende winkels worden automatisch aangevuld. Onzekere velden worden gemarkeerd met ⚠️ – gewoon aantikken en gratis corrigeren.',
     merchantNotRecognized: 'Winkel niet herkend – vul handmatig aan',
     creditsShort: '⚡ {{count}} credits',
+    creditsShortSingular: '⚡ {{count}} credit',
     noCreditsMessage: 'Geen credits meer beschikbaar. Sluit een abonnement af of koop credits bij.',
     or: 'of',
     manualEntry: 'Handmatig invoeren',
@@ -106,6 +107,7 @@ export default {
       shareReportSubtitle: 'Kies een maand in History en deel via WhatsApp, mail & meer',
       backupRestoreSubtitle: 'Gegevens back-uppen & herstellen',
       languageTitle: 'Taal',
+      currencyTitle: 'Valuta',
       colorSchemeTitle: 'Kleurenschema',
       aboutAppTitle: 'Over de app',
       aboutAppSubtitle: 'Versie 1.0.0 · Free',
@@ -133,6 +135,8 @@ export default {
     languageModalTitle: '🌍 Taal',
     languageModalHint:
       'Automatisch herkent de taal van je toestel. Je kunt deze hier handmatig overschrijven.',
+    currencyAuto: 'Automatisch',
+    currencyModalTitle: 'Valuta kiezen',
     locales: {
       auto: 'Automatisch',
       de: 'Deutsch',
@@ -189,6 +193,11 @@ export default {
         question: 'Wat betekent de rode ring?',
         answer:
           'Als je de budgetwaarschuwing hebt ingeschakeld en je uitgaven de ingestelde drempel overschrijden, wordt de uitgavenring donkerrood.',
+      },
+      currency: {
+        question: 'Welke valuta gebruikt de app?',
+        answer:
+          'Standaard detecteert de app automatisch de juiste valuta op basis van je apparaattaal. Je kunt de valuta op elk moment handmatig wijzigen in de instellingen.',
       },
       backup: {
         question: 'Wat is Backup & Restore?',

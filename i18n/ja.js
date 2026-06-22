@@ -69,6 +69,7 @@ export default {
       'ヒント：明るい場所でレシートを平らにして撮ると認識精度が上がります。登録済みの店舗は自動で補完されます。あいまいな項目は ⚠️ で表示されます。タップすれば無料で修正できます。',
     merchantNotRecognized: '店舗を認識できませんでした。手動で入力してください',
     creditsShort: '⚡ {{count}} クレジット',
+    creditsShortSingular: '⚡ {{count}} クレジット',
     noCreditsMessage: 'クレジットがありません。プランに登録するか、クレジットを購入してください。',
     or: 'または',
     manualEntry: '手動で入力',
@@ -106,6 +107,7 @@ export default {
       shareReportSubtitle: 'Historyで月を選び、WhatsAppやメールなどで共有',
       backupRestoreSubtitle: 'データのバックアップと復元',
       languageTitle: '言語',
+      currencyTitle: '通貨',
       colorSchemeTitle: 'カラーテーマ',
       aboutAppTitle: 'アプリについて',
       aboutAppSubtitle: 'バージョン 1.0.0 · Free',
@@ -133,6 +135,8 @@ export default {
     languageModalTitle: '🌍 言語',
     languageModalHint:
       '「自動」では端末の言語を検出します。ここで手動で変更することもできます。',
+    currencyAuto: '自動',
+    currencyModalTitle: '通貨を選択',
     locales: {
       auto: '自動',
       de: 'Deutsch',
@@ -189,6 +193,11 @@ export default {
         question: '赤いリングは何を意味しますか？',
         answer:
           '予算警告を有効にしていて、支出が設定したしきい値を超えると、支出リングが暗赤色に変わります。',
+      },
+      currency: {
+        question: 'アプリはどの通貨を使用していますか？',
+        answer:
+          'デフォルトでは、アプリはデバイスの言語に基づいて適切な通貨を自動的に検出します。通貨はいつでも設定で手動で変更できます。',
       },
       backup: {
         question: 'バックアップと復元とは何ですか？',

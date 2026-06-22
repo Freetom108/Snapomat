@@ -57,7 +57,9 @@ import {
   buildMonthlyShareReport,
   getMonthExpenses,
   formatMonthLabel,
+  initCurrency,
 } from '../../utils/expenseHelpers';
+import { SUPPORTED_CURRENCIES } from '../../utils/currency';
 import CreditsPricingSheet from '../../components/CreditsPricingSheet';
 
 const LOCALE_OPTIONS = [
@@ -593,6 +595,7 @@ const FAQ_ITEM_META = [
   { id: 'creditsBuy' },
   { id: 'budget' },
   { id: 'warningRing' },
+  { id: 'currency' },
   { id: 'backup' },
   { id: 'fixedCosts' },
   { id: 'entryLimit' },
@@ -658,6 +661,79 @@ function LanguageModal({ visible, locale, onSelect, onClose, colors, styles }) {
                 >
                   <Text style={[styles.languageRowText, { color: colors.text }]}>
                     {option.flag} {getLocaleLabel(option.code, t)}
+                  </Text>
+                  {isActive ? (
+                    <Text style={[styles.languageCheck, { color: colors.accent }]}>✓</Text>
+                  ) : null}
+                </Pressable>
+              );
+            })}
+          </ScrollView>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+function CurrencyModal({ visible, currencyCode, onSelect, onClose, colors, styles }) {
+  const { t } = useTranslation();
+
+  return (
+    <Modal visible={visible} animationType="slide" transparent onRequestClose={() => {}}>
+      <View style={styles.pricingOverlay}>
+        <View style={[styles.bottomSheet, { backgroundColor: colors.card }]}>
+          <View style={styles.pricingSheetHeader}>
+            <View style={styles.pricingHeaderText}>
+              <Text style={[styles.pricingHeaderTitle, { color: colors.text }]}>
+                {t('settings.currencyModalTitle')}
+              </Text>
+            </View>
+            <Pressable
+              onPress={onClose}
+              hitSlop={12}
+              style={({ pressed }) => [
+                styles.pricingCloseButton,
+                pressed && { opacity: 0.7 },
+              ]}
+              accessibilityRole="button"
+              accessibilityLabel={t('common.close')}
+            >
+              <Text style={[styles.pricingCloseText, { color: colors.muted }]}>✕</Text>
+            </Pressable>
+          </View>
+
+          <ScrollView
+            style={styles.bottomSheetScroll}
+            showsVerticalScrollIndicator
+            contentContainerStyle={styles.languageList}
+            bounces
+          >
+            {SUPPORTED_CURRENCIES.map((option, index) => {
+              const isActive = currencyCode === option.code;
+              const label =
+                option.code === 'AUTO'
+                  ? t('settings.currencyAuto')
+                  : `${option.code} ${option.symbol}`;
+              return (
+                <Pressable
+                  key={option.code}
+                  onPress={() => onSelect(option.code)}
+                  style={({ pressed }) => [
+                    styles.languageRow,
+                    {
+                      borderBottomColor: colors.border,
+                      borderBottomWidth: index < SUPPORTED_CURRENCIES.length - 1 ? 1 : 0,
+                      opacity: pressed ? 0.75 : 1,
+                    },
+                  ]}
+                >
+                  <Text
+                    style={[
+                      styles.languageRowText,
+                      { color: isActive ? colors.accent : colors.text },
+                    ]}
+                  >
+                    {label}
                   </Text>
                   {isActive ? (
                     <Text style={[styles.languageCheck, { color: colors.accent }]}>✓</Text>
@@ -1675,11 +1751,13 @@ export default function SettingsScreen() {
   const [budgetWarning, setBudgetWarningState] = useState(80);
   const [credits, setCreditsState] = useState(5);
   const [locale, setLocaleState] = useState('de');
+  const [currencyCode, setCurrencyCode] = useState('AUTO');
   const [userId, setUserIdState] = useState('');
   const [loading, setLoading] = useState(true);
 
   const [showPricing, setShowPricing] = useState(false);
   const [showLanguage, setShowLanguage] = useState(false);
+  const [showCurrency, setShowCurrency] = useState(false);
   const [showFaq, setShowFaq] = useState(false);
   const [showAbout, setShowAbout] = useState(false);
   const [showSupport, setShowSupport] = useState(false);
@@ -1713,6 +1791,7 @@ export default function SettingsScreen() {
       storedUserId,
       storedSavings,
       storedWarningActive,
+      storedCurrency,
     ] = await Promise.all([
       getBudget(),
       getBudgetWarning(),
@@ -1721,6 +1800,7 @@ export default function SettingsScreen() {
       getUserId(),
       getSavingsGoal(),
       AsyncStorage.getItem('budget_warning_active'),
+      AsyncStorage.getItem('app_currency'),
     ]);
     setBudgetState(storedBudget);
     setBudgetWarningState(snapWarning(storedWarning));
@@ -1732,6 +1812,7 @@ export default function SettingsScreen() {
     setSavingsAmount(storedSavings.amount ? String(storedSavings.amount) : '');
     setSavingsShow(storedSavings.show);
     setWarningActive(storedWarningActive === null ? true : storedWarningActive === 'true');
+    setCurrencyCode(storedCurrency ?? 'AUTO');
     setLoading(false);
   }, []);
 
@@ -1803,6 +1884,13 @@ export default function SettingsScreen() {
     await saveLocale(code);
     setLocaleState(code);
     setShowLanguage(false);
+  }
+
+  async function handleCurrencySelect(code) {
+    await AsyncStorage.setItem('app_currency', code);
+    setCurrencyCode(code);
+    await initCurrency();
+    setShowCurrency(false);
   }
 
   async function handleShareReport() {
@@ -2025,6 +2113,14 @@ export default function SettingsScreen() {
             styles={styles}
           />
           <SettingsRow
+            emoji="💱"
+            title={t('settings.rows.currencyTitle')}
+            subtitle={currencyCode === 'AUTO' ? t('settings.currencyAuto') : currencyCode}
+            onPress={() => setShowCurrency(true)}
+            colors={colors}
+            styles={styles}
+          />
+          <SettingsRow
             emoji="🎨"
             title={t('settings.rows.colorSchemeTitle')}
             subtitle={t(`themes.${themeId}`) ?? 'Theme'}
@@ -2146,6 +2242,15 @@ export default function SettingsScreen() {
         locale={locale}
         onSelect={handleLanguageSelect}
         onClose={() => setShowLanguage(false)}
+        colors={colors}
+        styles={styles}
+      />
+
+      <CurrencyModal
+        visible={showCurrency}
+        currencyCode={currencyCode}
+        onSelect={handleCurrencySelect}
+        onClose={() => setShowCurrency(false)}
         colors={colors}
         styles={styles}
       />

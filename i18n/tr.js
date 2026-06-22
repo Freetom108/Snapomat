@@ -69,6 +69,7 @@ export default {
       'İpucu: İyi ışık ve düz çekilmiş fiş tanımayı geliştirir. Bilinen işletmeler otomatik doldurulur. Belirsiz alanlar ⚠️ ile işaretlenir – düzeltmek için dokunun, ücretsizdir.',
     merchantNotRecognized: 'İş yeri tanınmadı – lütfen manuel girin',
     creditsShort: '⚡ {{count}} Kredi',
+    creditsShortSingular: '⚡ {{count}} Kredi',
     noCreditsMessage: 'Kredi kalmadı. Lütfen abone ol veya kredi satın al.',
     or: 'veya',
     manualEntry: 'Elle gir',
@@ -106,6 +107,7 @@ export default {
       shareReportSubtitle: 'History\'de ay seç ve WhatsApp, e-posta ve daha fazlasıyla paylaş',
       backupRestoreSubtitle: 'Verileri yedekle ve geri yükle',
       languageTitle: 'Dil',
+      currencyTitle: 'Para Birimi',
       colorSchemeTitle: 'Renk şeması',
       aboutAppTitle: 'Uygulama hakkında',
       aboutAppSubtitle: 'Sürüm 1.0.0 · Free',
@@ -133,6 +135,8 @@ export default {
     languageModalTitle: '🌍 Dil',
     languageModalHint:
       'Otomatik cihaz dilini algılar. Buradan manuel olarak değiştirebilirsin.',
+    currencyAuto: 'Otomatik',
+    currencyModalTitle: 'Para birimi seç',
     locales: {
       auto: 'Otomatik',
       de: 'Deutsch',
@@ -189,6 +193,11 @@ export default {
         question: 'Kırmızı halka ne anlama geliyor?',
         answer:
           'Bütçe uyarısını etkinleştirdiysen ve harcamaların belirlenen eşiği aşarsa, harcama halkası koyu kırmızıya döner.',
+      },
+      currency: {
+        question: 'Uygulama hangi para birimini kullanıyor?',
+        answer:
+          'Varsayılan olarak uygulama, cihaz diline göre uygun para birimini otomatik olarak algılar. Para birimini istediğin zaman ayarlardan manuel olarak değiştirebilirsin.',
       },
       backup: {
         question: 'Backup & Restore nedir?',

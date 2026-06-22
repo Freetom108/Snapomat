@@ -213,7 +213,7 @@ function ScreenHeader({ styles, credits = 0 }) {
       <Text style={styles.brand}>SNAPOMAT</Text>
       <View style={styles.headerTitleRow}>
         <Text style={styles.screenTitle}>Import</Text>
-        <Text style={styles.headerCredits}>{t('import.creditsShort', { count: credits })}</Text>
+        <Text style={styles.headerCredits}>{t(credits === 1 ? 'import.creditsShortSingular' : 'import.creditsShort', { count: credits })}</Text>
       </View>
     </View>
   );

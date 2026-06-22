@@ -1,5 +1,15 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { getT, getLocale } from '../i18n';
 import { CATEGORIES } from '../constants/categories';
+import { getActiveCurrency, formatCurrencyWithCode } from './currency';
+
+let cachedCurrency = 'EUR';
+
+export async function initCurrency() {
+  const storedCode = (await AsyncStorage.getItem('app_currency')) ?? 'AUTO';
+  cachedCurrency = getActiveCurrency(storedCode, getLocale());
+  return cachedCurrency;
+}
 
 export function parseExpenseDate(dateStr) {
   if (!dateStr) return new Date();
@@ -31,10 +41,7 @@ export function getMonthExpenses(expenses, year, month) {
 }
 
 export function formatCurrency(amount) {
-  return new Intl.NumberFormat('de-DE', {
-    style: 'currency',
-    currency: 'EUR',
-  }).format(amount ?? 0);
+  return formatCurrencyWithCode(amount ?? 0, cachedCurrency);
 }
 
 export function formatAmountNumber(amount) {

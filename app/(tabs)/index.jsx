@@ -20,6 +20,7 @@ import {
   parseExpenseDate,
   toRowExpense,
   calcMonthStats,
+  initCurrency,
 } from '../../utils/expenseHelpers';
 
 function StatsRow({ stats, budget, savingsGoal, colors, styles }) {
@@ -242,6 +243,7 @@ export default function HomeScreen() {
   });
 
   const loadData = useCallback(async () => {
+    await initCurrency();
     const [storedExpenses, storedBudget, storedSavings] = await Promise.all([
       getExpenses(),
       getBudget(),

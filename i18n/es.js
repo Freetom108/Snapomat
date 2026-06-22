@@ -69,6 +69,7 @@ export default {
       'Consejo: Buena iluminación y un ticket bien plano mejoran el reconocimiento. Los comercios conocidos se completan automáticamente. Los campos inciertos se marcan con ⚠️ – toca para corregir gratis.',
     merchantNotRecognized: 'Comercio no reconocido – introdúcelo manualmente',
     creditsShort: '⚡ {{count}} Créditos',
+    creditsShortSingular: '⚡ {{count}} Crédito',
     noCreditsMessage: 'No quedan créditos. Suscríbete o compra más créditos.',
     or: 'o',
     manualEntry: 'Introducir manualmente',
@@ -106,6 +107,7 @@ export default {
       shareReportSubtitle: 'Elige el mes en History y comparte por WhatsApp, correo y más',
       backupRestoreSubtitle: 'Guardar y restaurar datos',
       languageTitle: 'Idioma',
+      currencyTitle: 'Moneda',
       colorSchemeTitle: 'Esquema de color',
       aboutAppTitle: 'Sobre la app',
       aboutAppSubtitle: 'Versión 1.0.0 · Free',
@@ -133,6 +135,8 @@ export default {
     languageModalTitle: '🌍 Idioma',
     languageModalHint:
       'Automático detecta el idioma de tu dispositivo. Puedes cambiarlo manualmente aquí.',
+    currencyAuto: 'Automático',
+    currencyModalTitle: 'Elegir moneda',
     locales: {
       auto: 'Automático',
       de: 'Deutsch',
@@ -189,6 +193,11 @@ export default {
         question: '¿Qué significa el anillo rojo?',
         answer:
           'Si has activado el aviso de presupuesto y tus gastos superan el umbral definido, el anillo de gastos se vuelve rojo oscuro.',
+      },
+      currency: {
+        question: '¿Qué moneda usa la aplicación?',
+        answer:
+          'De forma predeterminada, la aplicación detecta automáticamente la moneda adecuada según el idioma de tu dispositivo. Puedes cambiar la moneda manualmente en los ajustes en cualquier momento.',
       },
       backup: {
         question: '¿Qué es Backup & Restore?',

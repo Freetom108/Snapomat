@@ -69,6 +69,7 @@ export default {
       'Conseil : Un bon éclairage et un ticket bien à plat améliorent la reconnaissance. Les commerçants connus sont complétés automatiquement. Les champs incertains sont marqués ⚠️ – appuyez pour corriger gratuitement.',
     merchantNotRecognized: 'Commerçant non reconnu – veuillez saisir manuellement',
     creditsShort: '⚡ {{count}} Crédits',
+    creditsShortSingular: '⚡ {{count}} Crédit',
     noCreditsMessage: 'Plus de crédits disponibles. Veuillez souscrire un abonnement ou acheter des crédits.',
     or: 'ou',
     manualEntry: 'Saisir manuellement',
@@ -106,6 +107,7 @@ export default {
       shareReportSubtitle: 'Choisir le mois dans History et partager via WhatsApp, e-mail & plus',
       backupRestoreSubtitle: 'Sauvegarder et restaurer les données',
       languageTitle: 'Langue',
+      currencyTitle: 'Devise',
       colorSchemeTitle: 'Schéma de couleurs',
       aboutAppTitle: 'À propos de l\'app',
       aboutAppSubtitle: 'Version 1.0.0 · Free',
@@ -133,6 +135,8 @@ export default {
     languageModalTitle: '🌍 Langue',
     languageModalHint:
       'Automatique détecte la langue de votre appareil. Vous pouvez la modifier manuellement ici.',
+    currencyAuto: 'Automatique',
+    currencyModalTitle: 'Choisir la devise',
     locales: {
       auto: 'Automatique',
       de: 'Deutsch',
@@ -189,6 +193,11 @@ export default {
         question: 'Que signifie l\'anneau rouge ?',
         answer:
           'Si tu as activé l\'alerte budget et que tes dépenses dépassent le seuil défini, l\'anneau de dépenses devient rouge foncé.',
+      },
+      currency: {
+        question: 'Quelle devise l\'application utilise-t-elle ?',
+        answer:
+          'Par défaut, l\'application détecte automatiquement la devise appropriée selon la langue de ton appareil. Tu peux modifier la devise manuellement dans les paramètres à tout moment.',
       },
       backup: {
         question: 'Qu\'est-ce que Backup & Restore ?',

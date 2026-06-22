@@ -69,6 +69,7 @@ export default {
       'Dica: Boa iluminação e um recibo bem plano melhoram o reconhecimento. Comerciantes conhecidos são preenchidos automaticamente. Campos incertos são marcados com ⚠️ – toque para corrigir gratuitamente.',
     merchantNotRecognized: 'Comerciante não reconhecido – introduz manualmente',
     creditsShort: '⚡ {{count}} Créditos',
+    creditsShortSingular: '⚡ {{count}} Crédito',
     noCreditsMessage: 'Sem créditos disponíveis. Subscreve um plano ou compra mais créditos.',
     or: 'ou',
     manualEntry: 'Introduzir manualmente',
@@ -106,6 +107,7 @@ export default {
       shareReportSubtitle: 'Escolhe o mês em History e partilha via WhatsApp, email e mais',
       backupRestoreSubtitle: 'Guardar e restaurar dados',
       languageTitle: 'Idioma',
+      currencyTitle: 'Moeda',
       colorSchemeTitle: 'Esquema de cores',
       aboutAppTitle: 'Sobre a app',
       aboutAppSubtitle: 'Versão 1.0.0 · Free',
@@ -133,6 +135,8 @@ export default {
     languageModalTitle: '🌍 Idioma',
     languageModalHint:
       'Automático deteta o idioma do teu dispositivo. Podes alterá-lo manualmente aqui.',
+    currencyAuto: 'Automático',
+    currencyModalTitle: 'Escolher moeda',
     locales: {
       auto: 'Automático',
       de: 'Deutsch',
@@ -189,6 +193,11 @@ export default {
         question: 'O que significa o anel vermelho?',
         answer:
           'Se ativaste o aviso de orçamento e as tuas despesas ultrapassam o limite definido, o anel de despesas fica vermelho escuro.',
+      },
+      currency: {
+        question: 'Que moeda é que a aplicação usa?',
+        answer:
+          'Por padrão, a aplicação deteta automaticamente a moeda adequada com base no idioma do teu dispositivo. Podes alterar a moeda manualmente nas definições a qualquer momento.',
       },
       backup: {
         question: 'O que é Backup & Restore?',

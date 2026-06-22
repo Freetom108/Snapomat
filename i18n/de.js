@@ -69,6 +69,7 @@ export default {
       'Tipp: Gutes Licht und ein flach fotografierter Beleg verbessern die Erkennung. Bekannte Händler werden automatisch ergänzt. Unsichere Felder werden mit ⚠️ markiert – einfach antippen und kostenlos korrigieren.',
     merchantNotRecognized: 'Händler nicht erkannt – bitte manuell ergänzen',
     creditsShort: '⚡ {{count}} Credits',
+    creditsShortSingular: '⚡ {{count}} Credit',
     noCreditsMessage: 'Keine Credits mehr verfügbar. Bitte Abo abschließen oder Credits nachkaufen.',
     or: 'oder',
     manualEntry: 'Manuell eingeben',
@@ -106,6 +107,7 @@ export default {
       shareReportSubtitle: 'Monat in History wählen und per WhatsApp, Mail & mehr teilen',
       backupRestoreSubtitle: 'Daten sichern & wiederherstellen',
       languageTitle: 'Sprache',
+      currencyTitle: 'Währung',
       colorSchemeTitle: 'Farbschema',
       aboutAppTitle: 'Über die App',
       aboutAppSubtitle: 'Version 1.0.0 · Free',
@@ -133,6 +135,8 @@ export default {
     languageModalTitle: '🌍 Sprache',
     languageModalHint:
       'Automatisch erkennt die Sprache deines Geräts. Du kannst sie hier manuell überschreiben.',
+    currencyAuto: 'Automatisch',
+    currencyModalTitle: 'Währung wählen',
     locales: {
       auto: 'Automatisch',
       de: 'Deutsch',
@@ -189,6 +193,11 @@ export default {
         question: 'Was bedeutet der rote Ring?',
         answer:
           'Wenn du die Budgetwarnung aktiviert hast und deine Ausgaben den eingestellten Warnwert überschreiten, färbt sich der Ausgabenring dunkelrot.',
+      },
+      currency: {
+        question: 'Welche Währung verwendet die App?',
+        answer:
+          'Standardmäßig erkennt die App automatisch die passende Währung anhand deiner Gerätesprache. Du kannst die Währung jederzeit manuell in den Einstellungen ändern.',
       },
       backup: {
         question: 'Was ist Backup & Restore?',

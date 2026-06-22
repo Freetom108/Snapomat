@@ -58,9 +58,9 @@ function parseExpenses(text) {
     amount: Number(item.amount) || 0,
     date: String(item.date ?? '').trim(),
     category: String(item.category ?? 'food').trim(),
-    merchantConfidence: Number(item.merchantConfidence) ?? 0.9,
-    dateConfidence: Number(item.dateConfidence) ?? 0.9,
-    amountConfidence: Number(item.amountConfidence) ?? 0.9,
+    merchantConfidence: Number.isFinite(Number(item.merchantConfidence)) ? Number(item.merchantConfidence) : 0.9,
+    dateConfidence: Number.isFinite(Number(item.dateConfidence)) ? Number(item.dateConfidence) : 0.9,
+    amountConfidence: Number.isFinite(Number(item.amountConfidence)) ? Number(item.amountConfidence) : 0.9,
     warning: item.warning ?? null,
   }));
 }

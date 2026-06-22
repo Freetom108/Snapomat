@@ -69,6 +69,7 @@ export default {
       'Suggerimento: Buona illuminazione e uno scontrino ben piatto migliorano il riconoscimento. I negozi noti vengono completati automaticamente. I campi incerti sono contrassegnati con ⚠️ – tocca per correggere gratuitamente.',
     merchantNotRecognized: 'Esercente non riconosciuto – inserisci manualmente',
     creditsShort: '⚡ {{count}} Crediti',
+    creditsShortSingular: '⚡ {{count}} Credito',
     noCreditsMessage: 'Crediti esauriti. Sottoscrivi un abbonamento o acquista altri crediti.',
     or: 'oppure',
     manualEntry: 'Inserisci manualmente',
@@ -106,6 +107,7 @@ export default {
       shareReportSubtitle: 'Scegli il mese in History e condividi via WhatsApp, email e altro',
       backupRestoreSubtitle: 'Salva e ripristina dati',
       languageTitle: 'Lingua',
+      currencyTitle: 'Valuta',
       colorSchemeTitle: 'Schema colori',
       aboutAppTitle: 'Info app',
       aboutAppSubtitle: 'Versione 1.0.0 · Free',
@@ -133,6 +135,8 @@ export default {
     languageModalTitle: '🌍 Lingua',
     languageModalHint:
       'Automatico rileva la lingua del dispositivo. Puoi cambiarla manualmente qui.',
+    currencyAuto: 'Automatico',
+    currencyModalTitle: 'Scegli valuta',
     locales: {
       auto: 'Automatico',
       de: 'Deutsch',
@@ -189,6 +193,11 @@ export default {
         question: 'Cosa significa l\'anello rosso?',
         answer:
           'Se hai attivato l\'avviso budget e le tue spese superano la soglia impostata, l\'anello delle spese diventa rosso scuro.',
+      },
+      currency: {
+        question: 'Quale valuta usa l\'app?',
+        answer:
+          'Per impostazione predefinita l\'app rileva automaticamente la valuta appropriata in base alla lingua del dispositivo. Puoi modificare la valuta manualmente nelle impostazioni in qualsiasi momento.',
       },
       backup: {
         question: 'Cos\'è Backup & Restore?',

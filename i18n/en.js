@@ -69,6 +69,7 @@ export default {
       'Tip: Good lighting and a flat receipt improve recognition. Known merchants are filled in automatically. Uncertain fields are marked with ⚠️ – just tap to correct for free.',
     merchantNotRecognized: 'Merchant not recognized – please enter manually',
     creditsShort: '⚡ {{count}} Credits',
+    creditsShortSingular: '⚡ {{count}} Credit',
     noCreditsMessage: 'No credits left. Please subscribe or buy more credits.',
     or: 'or',
     manualEntry: 'Enter manually',
@@ -106,6 +107,7 @@ export default {
       shareReportSubtitle: 'Choose month in History and share via WhatsApp, email & more',
       backupRestoreSubtitle: 'Back up & restore data',
       languageTitle: 'Language',
+      currencyTitle: 'Currency',
       colorSchemeTitle: 'Color scheme',
       aboutAppTitle: 'About the app',
       aboutAppSubtitle: 'Version 1.0.0 · Free',
@@ -133,6 +135,8 @@ export default {
     languageModalTitle: '🌍 Language',
     languageModalHint:
       'Automatic detects your device language. You can override it here manually.',
+    currencyAuto: 'Automatic',
+    currencyModalTitle: 'Choose Currency',
     locales: {
       auto: 'Automatic',
       de: 'Deutsch',
@@ -189,6 +193,11 @@ export default {
         question: 'What does the red ring mean?',
         answer:
           'If you have enabled the budget warning and your expenses exceed the set threshold, the expense ring turns dark red.',
+      },
+      currency: {
+        question: 'Which currency does the app use?',
+        answer:
+          'By default the app automatically detects the appropriate currency based on your device language. You can change the currency manually in Settings at any time.',
       },
       backup: {
         question: 'What is Backup & Restore?',

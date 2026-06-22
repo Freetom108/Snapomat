@@ -7,6 +7,7 @@ import {
   Pressable,
   StyleSheet,
   ActivityIndicator,
+  Keyboard,
 } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
@@ -349,6 +350,19 @@ export default function HistoryScreen() {
               placeholderTextColor={colors.muted}
               style={styles.searchInput}
             />
+            {search.length > 0 ? (
+              <Pressable
+                onPress={() => {
+                  setSearch('');
+                  Keyboard.dismiss();
+                }}
+                hitSlop={10}
+                style={({ pressed }) => [pressed && { opacity: 0.6 }]}
+                accessibilityRole="button"
+              >
+                <Text style={{ color: colors.muted, fontSize: 16 }}>✕</Text>
+              </Pressable>
+            ) : null}
           </View>
 
           <ScrollView
