@@ -265,7 +265,7 @@ export default {
     pricingMonthlyCredits: '⚡ Ayda 250 Kredi',
     pricingMonthlyCreditsNote: 'Bu, günde 8\'den fazla fotoğraf demek',
     pricingMonthlyManual: '✏️ Sınırsız manuel giriş',
-    pricingYearlyPrice: '19,99 € / yıl',
+    pricingYearlyPrice: '29,99 € / yıl',
     shareReportMessage:
       'Snapomat aylık rapor – {{month}}\nHarcamalar: {{total}} | Kayıtlar: {{count}}',
     alerts: {

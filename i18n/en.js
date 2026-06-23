@@ -265,7 +265,7 @@ export default {
     pricingMonthlyCredits: '⚡ 250 Credits per month',
     pricingMonthlyCreditsNote: 'That\'s over 8 photos per day',
     pricingMonthlyManual: '✏️ Unlimited manual entries',
-    pricingYearlyPrice: '€19.99 / year',
+    pricingYearlyPrice: '€29.99 / year',
     shareReportMessage:
       'Snapomat monthly report – {{month}}\nExpenses: {{total}} | Entries: {{count}}',
     alerts: {

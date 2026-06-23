@@ -13,6 +13,7 @@ import ExpenseRing, { RING_SIZE } from '../../components/ExpenseRing';
 import ExpenseRow from '../../components/ExpenseRow';
 import { useTheme } from '../../hooks/useTheme';
 import { useTranslation } from '../../hooks/useTranslation';
+import { getLocale } from '../../i18n';
 import { getExpenses, getBudget, getSavingsGoal } from '../../store/storage';
 import {
   formatAmountNumber,
@@ -249,6 +250,7 @@ export default function HomeScreen() {
   const [savingsGoal, setSavingsGoal] = useState({ active: false, amount: 0, show: false });
   const [loading, setLoading] = useState(true);
   const [selectedExpense, setSelectedExpense] = useState(null);
+  const [dateLabel, setDateLabel] = useState('');
 
   const [fontsLoaded] = useFonts({
     DMSans_400Regular,
@@ -278,17 +280,34 @@ export default function HomeScreen() {
   useFocusEffect(
     useCallback(() => {
       loadData();
+      const localeToBCP47 = {
+        de: 'de-DE',
+        en: 'en-GB',
+        fr: 'fr-FR',
+        es: 'es-ES',
+        it: 'it-IT',
+        pt: 'pt-PT',
+        nl: 'nl-NL',
+        pl: 'pl-PL',
+        tr: 'tr-TR',
+        ja: 'ja-JP',
+      };
+      const rawLocale = getLocale();
+      const bcp47 = localeToBCP47[rawLocale] ?? 'de-DE';
+      setDateLabel(
+        new Date().toLocaleDateString(bcp47, {
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric',
+        }),
+      );
     }, [loadData]),
   );
 
   const now = new Date();
   const monthExpenses = getMonthExpenses(expenses, now.getFullYear(), now.getMonth());
   const stats = calcMonthStats(expenses, budget, now);
-  stats.monthLabel = now.toLocaleDateString(locale, {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
+  stats.monthLabel = dateLabel;
   const sortedMonthExpenses = useMemo(
     () =>
       [...monthExpenses].sort(

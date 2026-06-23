@@ -265,7 +265,7 @@ export default {
     pricingMonthlyCredits: '⚡ 250 credits per maand',
     pricingMonthlyCreditsNote: 'Dat zijn meer dan 8 foto\'s per dag',
     pricingMonthlyManual: '✏️ Onbeperkte handmatige boekingen',
-    pricingYearlyPrice: '19,99 € / jaar',
+    pricingYearlyPrice: '29,99 € / jaar',
     shareReportMessage:
       'Snapomat maandrapport – {{month}}\nUitgaven: {{total}} | Boekingen: {{count}}',
     alerts: {

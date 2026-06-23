@@ -265,7 +265,7 @@ export default {
     pricingMonthlyCredits: '⚡ 250 Créditos por mês',
     pricingMonthlyCreditsNote: 'São mais de 8 fotos por dia',
     pricingMonthlyManual: '✏️ Entradas manuais ilimitadas',
-    pricingYearlyPrice: '19,99 € / ano',
+    pricingYearlyPrice: '29,99 € / ano',
     shareReportMessage:
       'Relatório mensal Snapomat – {{month}}\nDespesas: {{total}} | Movimentos: {{count}}',
     alerts: {

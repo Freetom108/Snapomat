@@ -265,7 +265,7 @@ export default {
     pricingMonthlyCredits: '⚡ 月250クレジット',
     pricingMonthlyCreditsNote: '1日あたり8枚以上の写真に相当',
     pricingMonthlyManual: '✏️ 手動入力 無制限',
-    pricingYearlyPrice: '19,99 € / 年',
+    pricingYearlyPrice: '29,99 € / 年',
     shareReportMessage:
       'Snapomat 月次レポート － {{month}}\n支出：{{total}} | 件数：{{count}}',
     alerts: {

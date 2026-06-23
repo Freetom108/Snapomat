@@ -265,7 +265,7 @@ export default {
     pricingMonthlyCredits: '⚡ 250 Kredytów miesięcznie',
     pricingMonthlyCreditsNote: 'To ponad 8 zdjęć dziennie',
     pricingMonthlyManual: '✏️ Nielimitowane wpisy ręczne',
-    pricingYearlyPrice: '19,99 € / rok',
+    pricingYearlyPrice: '29,99 € / rok',
     shareReportMessage:
       'Miesięczny raport Snapomat – {{month}}\nWydatki: {{total}} | Wpisy: {{count}}',
     alerts: {
