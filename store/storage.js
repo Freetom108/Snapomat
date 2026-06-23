@@ -511,6 +511,66 @@ export async function getAllMonthlyNotes() {
   }
 }
 
+const KAKEIBO_PREFIX = 'snapomat_kakeibo_';
+
+function kakeiboKey(year, month) {
+  const mm = String(Number(month) + 1).padStart(2, '0');
+  return `${KAKEIBO_PREFIX}${year}_${mm}`;
+}
+
+export async function saveKakeiboEntry(year, month, entry) {
+  const key = kakeiboKey(year, month);
+  try {
+    if (!entry.joy && !entry.improvement && !entry.toomuch && !entry.resolution) {
+      await AsyncStorage.removeItem(key);
+    } else {
+      await AsyncStorage.setItem(key, JSON.stringify(entry));
+    }
+  } catch {
+    // ignore write errors
+  }
+}
+
+export async function getKakeiboEntry(year, month) {
+  try {
+    const value = await AsyncStorage.getItem(kakeiboKey(year, month));
+    const defaults = { joy: '', toomuch: '', improvement: '', resolution: '' };
+    return value ? { ...defaults, ...JSON.parse(value) } : defaults;
+  } catch {
+    return { joy: '', toomuch: '', improvement: '', resolution: '' };
+  }
+}
+
+export async function getAllKakeiboEntries() {
+  try {
+    const keys = await AsyncStorage.getAllKeys();
+    const kakeiboKeys = keys.filter((k) => k.startsWith(KAKEIBO_PREFIX));
+    if (kakeiboKeys.length === 0) return [];
+    const pairs = await AsyncStorage.multiGet(kakeiboKeys);
+    const entries = pairs
+      .map(([key, value]) => {
+        const match = key.slice(KAKEIBO_PREFIX.length).match(/^(\d{4})_(\d{2})$/);
+        if (!match) return null;
+        const parsed = value ? JSON.parse(value) : null;
+        if (!parsed) return null;
+        return {
+          year: Number(match[1]),
+          month: Number(match[2]) - 1,
+          joy: '',
+          toomuch: '',
+          improvement: '',
+          resolution: '',
+          ...parsed,
+        };
+      })
+      .filter(Boolean);
+    entries.sort((a, b) => b.year - a.year || b.month - a.month);
+    return entries;
+  } catch {
+    return [];
+  }
+}
+
 async function getMonthlyNotesMap() {
   try {
     const keys = await AsyncStorage.getAllKeys();
@@ -531,12 +591,14 @@ export async function exportData() {
   const raw = await AsyncStorage.getItem(STORAGE_KEY);
   const merchantLibrary = await getMerchantLibrary();
   const monthlyNotes = await getMonthlyNotesMap();
+  const kakeiboEntries = await getAllKakeiboEntries();
   const base = raw ? normalizeStoredData(JSON.parse(raw)) : normalizeStoredData({ expenses: [] });
   return JSON.stringify(
     {
       ...base,
       snapomat_merchant_library: merchantLibrary,
       snapomat_monthly_notes: monthlyNotes,
+      kakeiboEntries,
     },
     null,
     2,
@@ -564,9 +626,23 @@ export async function importData(jsonString) {
       }
     }
 
+    const kakeiboEntries = parsed.kakeiboEntries ?? payload.kakeiboEntries;
+    if (Array.isArray(kakeiboEntries)) {
+      for (const entry of kakeiboEntries) {
+        if (!entry || typeof entry !== 'object') continue;
+        await saveKakeiboEntry(entry.year, entry.month, {
+          joy: entry.joy,
+          toomuch: entry.toomuch,
+          improvement: entry.improvement,
+          resolution: entry.resolution,
+        });
+      }
+    }
+
     const {
       snapomat_merchant_library: _library,
       snapomat_monthly_notes: _notes,
+      kakeiboEntries: _kakeiboEntries,
       ...dataPayload
     } = payload;
     await saveData(normalizeStoredData(dataPayload));

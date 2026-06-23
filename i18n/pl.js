@@ -99,6 +99,8 @@ export default {
       dangerZone: 'STREFA NIEBEZPIECZEŃSTWA',
     },
     rows: {
+      kakeiboTitle: 'Refleksja Kakeibo',
+      kakeiboSubtitle: 'Kontemplacja miesięcznych wydatków zgodnie z tradycyjną japońską metodą',
       reserveTitle: 'Ustaw rezerwę',
       reserveSubtitleInactive: 'Nieaktywna',
       monthlyBudgetTitle: 'Ustaw budżet miesięczny',
@@ -146,6 +148,12 @@ export default {
     reserveModalTitle: 'Rezerwa',
     reserveModalSubtitle:
       'Opcjonalnie: rezerwa jest niezależna od budżetu — oddzielna kwota, którą chcesz świadomie odłożyć. Jest wyświetlana pod pierścieniem wydatków i zmniejsza się po przekroczeniu budżetu.',
+    kakeibo: {
+      q1: 'Na co chętnie wydawałeś pieniądze w tym miesiącu?',
+      q2: 'Gdzie wydałeś za dużo?',
+      q3: 'Co mogłeś poprawić w tym miesiącu?',
+      q4: 'Co zamierzasz zrobić inaczej w przyszłym miesiącu?',
+    },
     locales: {
       auto: 'Automatyczny',
       de: 'Deutsch',
@@ -277,6 +285,9 @@ export default {
       deleteAllSuccessMessage: 'Wszystkie dane aplikacji zostały usunięte.',
       userIdCopied: 'Skopiowano!',
     },
+  },
+  share: {
+    kakeiboHeader: '🪷 Refleksja Kakeibo',
   },
   paywall: {
     message:

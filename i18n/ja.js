@@ -99,6 +99,8 @@ export default {
       dangerZone: '危険な操作',
     },
     rows: {
+      kakeiboTitle: '家計簿の振り返り',
+      kakeiboSubtitle: '伝統的な日本の方法で毎月の支出を振り返る',
       reserveTitle: 'リザーブを設定',
       reserveSubtitleInactive: '未設定',
       monthlyBudgetTitle: '月の予算を設定',
@@ -146,6 +148,12 @@ export default {
     reserveModalTitle: 'リザーブ',
     reserveModalSubtitle:
       '任意：リザーブは予算とは独立しています — 意識的に取り置きたい別の金額です。支出リングの下に表示され、予算を超えると減少します。',
+    kakeibo: {
+      q1: '今月、何にお金を使って良かったと思いましたか？',
+      q2: '今月、使いすぎたと感じた出費はありますか？',
+      q3: '今月、改善できたことは何ですか？',
+      q4: '来月はどうしたいですか？',
+    },
     locales: {
       auto: '自動',
       de: 'Deutsch',
@@ -277,6 +285,9 @@ export default {
       deleteAllSuccessMessage: 'すべてのアプリデータを削除しました。',
       userIdCopied: 'コピーしました！',
     },
+  },
+  share: {
+    kakeiboHeader: '🪷 家計簿の振り返り',
   },
   paywall: {
     message:

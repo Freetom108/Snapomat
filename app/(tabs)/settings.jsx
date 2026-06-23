@@ -41,6 +41,9 @@ import {
   saveMonthlyNote,
   getMonthlyNote,
   getAllMonthlyNotes,
+  saveKakeiboEntry,
+  getKakeiboEntry,
+  getAllKakeiboEntries,
   getCredits,
   getExpenses,
   getLocale,
@@ -304,6 +307,127 @@ function MonthlyNoteModal({
                       {formatMonthLabel(note.year, note.month)}
                     </Text>
                     <Text style={[styles.notePastText, { color: colors.muted }]}>{note.text}</Text>
+                  </View>
+                ))}
+              </View>
+            ) : null}
+          </ScrollView>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+function KakeiboModal({
+  visible,
+  monthLabel,
+  entry,
+  setEntry,
+  pastEntries,
+  onSave,
+  onClose,
+  colors,
+  styles,
+  themeId,
+}) {
+  const { t } = useTranslation();
+
+  const fields = [
+    { key: 'joy', question: t('settings.kakeibo.q1') },
+    { key: 'toomuch', question: t('settings.kakeibo.q2') },
+    { key: 'improvement', question: t('settings.kakeibo.q3') },
+    { key: 'resolution', question: t('settings.kakeibo.q4') },
+  ];
+
+  return (
+    <Modal visible={visible} animationType="slide" transparent onRequestClose={() => {}}>
+      <View style={styles.pricingOverlay}>
+        <View style={[styles.bottomSheet, { backgroundColor: colors.card }]}>
+          <View style={styles.pricingSheetHeader}>
+            <View style={styles.pricingHeaderText}>
+              <Text style={[styles.pricingHeaderTitle, { color: colors.text }]}>
+                🪷 {t('settings.rows.kakeiboTitle')}
+              </Text>
+              <Text style={[styles.budgetModalSubtitle, { color: colors.muted }]}>{monthLabel}</Text>
+            </View>
+            <Pressable
+              onPress={onClose}
+              hitSlop={12}
+              style={({ pressed }) => [styles.pricingCloseButton, pressed && { opacity: 0.7 }]}
+              accessibilityRole="button"
+              accessibilityLabel={t('common.close')}
+            >
+              <Text style={[styles.pricingCloseText, { color: colors.muted }]}>✕</Text>
+            </Pressable>
+          </View>
+
+          <ScrollView
+            style={styles.bottomSheetScroll}
+            showsVerticalScrollIndicator
+            contentContainerStyle={styles.budgetModalScroll}
+            keyboardShouldPersistTaps="handled"
+            bounces
+          >
+            {fields.map((field) => (
+              <View key={field.key} style={styles.kakeiboFieldWrap}>
+                <Text style={[styles.kakeiboQuestionLabel, { color: colors.accent }]}>
+                  {field.question}
+                </Text>
+                <TextInput
+                  value={entry[field.key]}
+                  onChangeText={(value) => setEntry((prev) => ({ ...prev, [field.key]: value }))}
+                  multiline
+                  textAlignVertical="top"
+                  placeholderTextColor={colors.muted}
+                  style={[
+                    styles.noteInput,
+                    {
+                      color: colors.text,
+                      borderColor: colors.border,
+                      backgroundColor: colors.background,
+                    },
+                  ]}
+                />
+              </View>
+            ))}
+
+            <Pressable
+              onPress={onSave}
+              style={({ pressed }) => [
+                styles.budgetSaveButton,
+                { backgroundColor: colors.accent, opacity: pressed ? 0.85 : 1 },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.modalButtonText,
+                  { color: themeId === 'light' ? colors.text : colors.background },
+                ]}
+              >
+                {t('common.save')}
+              </Text>
+            </Pressable>
+
+            {pastEntries.length > 0 ? (
+              <View style={styles.notePastWrap}>
+                {pastEntries.map((past) => (
+                  <View
+                    key={`${past.year}-${past.month}`}
+                    style={[styles.notePastItem, { borderTopColor: colors.border }]}
+                  >
+                    <Text style={[styles.notePastHeader, { color: colors.accent }]}>
+                      {formatMonthLabel(past.year, past.month)}
+                    </Text>
+                    {fields.map((field) =>
+                      past[field.key] ? (
+                        <Text
+                          key={field.key}
+                          style={[styles.notePastText, { color: colors.muted }]}
+                        >
+                          {field.question} {past[field.key]}
+                        </Text>
+                      ) : null,
+                    )}
                   </View>
                 ))}
               </View>
@@ -1389,6 +1513,16 @@ function createStyles(colors) {
       fontSize: 14,
       lineHeight: 21,
     },
+    kakeiboQuestionLabel: {
+      fontFamily: 'DMSans_700Bold',
+      fontSize: 13,
+      letterSpacing: 0.3,
+      marginBottom: 6,
+      marginTop: 16,
+    },
+    kakeiboFieldWrap: {
+      marginBottom: 4,
+    },
     savingsToggleRow: {
       flexDirection: 'row',
       alignItems: 'center',
@@ -1775,6 +1909,9 @@ export default function SettingsScreen() {
   const [showNote, setShowNote] = useState(false);
   const [noteText, setNoteText] = useState('');
   const [pastNotes, setPastNotes] = useState([]);
+  const [showKakeibo, setShowKakeibo] = useState(false);
+  const [kakeiboEntry, setKakeiboEntry] = useState({ joy: '', toomuch: '', improvement: '', resolution: '' });
+  const [kakeiboLastEntries, setKakeiboLastEntries] = useState([]);
 
   const [fontsLoaded] = useFonts({
     DMSans_400Regular,
@@ -1888,6 +2025,29 @@ export default function SettingsScreen() {
     setShowNote(false);
   }
 
+  async function openKakeiboModal() {
+    const now = new Date();
+    const [current, all] = await Promise.all([
+      getKakeiboEntry(now.getFullYear(), now.getMonth()),
+      getAllKakeiboEntries(),
+    ]);
+    setKakeiboEntry(current);
+    setKakeiboLastEntries(
+      all.filter((e) => !(e.year === now.getFullYear() && e.month === now.getMonth())),
+    );
+    setShowKakeibo(true);
+  }
+
+  async function handleSaveKakeibo() {
+    const now = new Date();
+    await saveKakeiboEntry(now.getFullYear(), now.getMonth(), kakeiboEntry);
+    const all = await getAllKakeiboEntries();
+    setKakeiboLastEntries(
+      all.filter((e) => !(e.year === now.getFullYear() && e.month === now.getMonth())),
+    );
+    setShowKakeibo(false);
+  }
+
   function openBudgetModal() {
     setBudgetInput(formatQuickBudget(budget));
     setBudgetWarningDraft(budgetWarning);
@@ -1915,8 +2075,9 @@ export default function SettingsScreen() {
     const year = selected?.year ?? now.getFullYear();
     const month = selected?.month ?? now.getMonth();
     const monthExpenses = getMonthExpenses(expenses, year, month);
+    const kakeiboEntry = await getKakeiboEntry(year, month);
 
-    let message = buildMonthlyShareReport(monthExpenses, year, month, t);
+    let message = buildMonthlyShareReport(monthExpenses, year, month, t, kakeiboEntry);
     const note = await getMonthlyNote(year, month);
     if (note.trim()) {
       message += `\n\n📝 ${t('settings.rows.monthlyNoteTitle')}\n${note.trim()}`;
@@ -2107,6 +2268,14 @@ export default function SettingsScreen() {
             title={t('settings.rows.monthlyNoteTitle')}
             subtitle={t('settings.rows.monthlyNoteSubtitle')}
             onPress={openNoteModal}
+            colors={colors}
+            styles={styles}
+          />
+          <SettingsRow
+            emoji="🪷"
+            title={t('settings.rows.kakeiboTitle')}
+            subtitle={t('settings.rows.kakeiboSubtitle')}
+            onPress={openKakeiboModal}
             colors={colors}
             styles={styles}
           />
@@ -2318,6 +2487,19 @@ export default function SettingsScreen() {
         pastNotes={pastNotes}
         onSave={handleSaveNote}
         onClose={() => setShowNote(false)}
+        colors={colors}
+        styles={styles}
+        themeId={themeId}
+      />
+
+      <KakeiboModal
+        visible={showKakeibo}
+        monthLabel={formatMonthLabel(new Date().getFullYear(), new Date().getMonth())}
+        entry={kakeiboEntry}
+        setEntry={setKakeiboEntry}
+        pastEntries={kakeiboLastEntries}
+        onSave={handleSaveKakeibo}
+        onClose={() => setShowKakeibo(false)}
         colors={colors}
         styles={styles}
         themeId={themeId}

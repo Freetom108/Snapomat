@@ -99,6 +99,8 @@ export default {
       dangerZone: 'DANGER ZONE',
     },
     rows: {
+      kakeiboTitle: 'Kakeibo Reflection',
+      kakeiboSubtitle: 'Contemplation of your monthly expenses in the traditional Japanese way',
       reserveTitle: 'Set Reserve',
       reserveSubtitleInactive: 'Not active',
       monthlyBudgetTitle: 'Set monthly budget',
@@ -146,6 +148,12 @@ export default {
     reserveModalTitle: 'Reserve',
     reserveModalSubtitle:
       'Optional: The reserve is independent of your budget — a separate amount you want to consciously put aside. It is shown below the expense ring and decreases when you exceed your budget.',
+    kakeibo: {
+      q1: 'What did you enjoy spending money on this month?',
+      q2: 'Where did you overspend?',
+      q3: 'What could you improve this month?',
+      q4: 'What do you intend to do differently next month?',
+    },
     locales: {
       auto: 'Automatic',
       de: 'Deutsch',
@@ -277,6 +285,9 @@ export default {
       deleteAllSuccessMessage: 'All app data was removed.',
       userIdCopied: 'Copied!',
     },
+  },
+  share: {
+    kakeiboHeader: '🪷 Kakeibo Reflection',
   },
   paywall: {
     message:

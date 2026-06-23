@@ -99,6 +99,8 @@ export default {
       dangerZone: 'TEHLİKELİ BÖLGE',
     },
     rows: {
+      kakeiboTitle: 'Kakeibo Yansıması',
+      kakeiboSubtitle: 'Geleneksel Japon yöntemine göre aylık harcamalarının tefekkürü',
       reserveTitle: 'Rezerv belirle',
       reserveSubtitleInactive: 'Etkin değil',
       monthlyBudgetTitle: 'Aylık bütçe belirle',
@@ -146,6 +148,12 @@ export default {
     reserveModalTitle: 'Rezerv',
     reserveModalSubtitle:
       'İsteğe bağlı: rezerv bütçenden bağımsızdır — bilinçli olarak bir kenara koymak istediğin ayrı bir miktar. Harcama halkasının altında gösterilir ve bütçeni aştığında azalır.',
+    kakeibo: {
+      q1: 'Bu ay hangi harcamalardan keyif aldın?',
+      q2: 'Nerede fazla harcadın?',
+      q3: 'Bu ay neyi iyileştirebilirdin?',
+      q4: 'Gelecek ay ne yapmayı planlıyorsun?',
+    },
     locales: {
       auto: 'Otomatik',
       de: 'Deutsch',
@@ -277,6 +285,9 @@ export default {
       deleteAllSuccessMessage: 'Tüm uygulama verileri kaldırıldı.',
       userIdCopied: 'Kopyalandı!',
     },
+  },
+  share: {
+    kakeiboHeader: '🪷 Kakeibo Yansıması',
   },
   paywall: {
     message:

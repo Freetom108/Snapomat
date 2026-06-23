@@ -136,7 +136,7 @@ function getCategoryEmoji(categoryId) {
   return CATEGORIES[id]?.emoji ?? CATEGORIES.food.emoji;
 }
 
-export function buildMonthlyShareReport(monthExpenses, year, month, t) {
+export function buildMonthlyShareReport(monthExpenses, year, month, t, kakeiboEntry = null) {
   const sorted = [...monthExpenses].sort(
     (a, b) => parseExpenseDate(a.date) - parseExpenseDate(b.date),
   );
@@ -154,8 +154,24 @@ export function buildMonthlyShareReport(monthExpenses, year, month, t) {
     return `${emoji} ${expense.merchant ?? ''} – ${amount}`;
   });
 
-  if (entryLines.length === 0) return header;
-  return `${header}\n\n${entryLines.join('\n')}`;
+  let report = entryLines.length === 0 ? header : `${header}\n\n${entryLines.join('\n')}`;
+
+  if (kakeiboEntry) {
+    const kakeiboFields = [
+      { value: kakeiboEntry.joy, question: t('settings.kakeibo.q1') },
+      { value: kakeiboEntry.toomuch, question: t('settings.kakeibo.q2') },
+      { value: kakeiboEntry.improvement, question: t('settings.kakeibo.q3') },
+      { value: kakeiboEntry.resolution, question: t('settings.kakeibo.q4') },
+    ];
+    const kakeiboLines = kakeiboFields
+      .filter((field) => field.value && String(field.value).trim())
+      .map((field) => `${field.question}\n${field.value}`);
+    if (kakeiboLines.length > 0) {
+      report += `\n\n${t('share.kakeiboHeader')}\n${kakeiboLines.join('\n')}`;
+    }
+  }
+
+  return report;
 }
 
 export function calcMonthStats(expenses, budget, now = new Date()) {
