@@ -52,7 +52,7 @@ export default {
     dayToday: 'HEUTE',
     dayYesterday: 'GESTERN',
     emptyMonth: 'Noch keine Ausgaben in diesem Monat',
-    savingsGoal: 'Sparziel: {{amount}} €',
+    savingsGoal: 'Reserve: {{amount}}',
   },
   history: {
     searchPlaceholder: 'Händler suchen...',
@@ -99,6 +99,8 @@ export default {
       dangerZone: 'GEFAHRENZONE',
     },
     rows: {
+      reserveTitle: 'Reserve festlegen',
+      reserveSubtitleInactive: 'Nicht aktiv',
       monthlyBudgetTitle: 'Monatsbudget festlegen',
       monthlyBudgetSubtitle: 'Ausgabenlimit einstellen',
       monthlyNoteTitle: 'Monatsnotiz',
@@ -127,16 +129,23 @@ export default {
     budgetWarningToggle: 'Budgetwarnung aktivieren',
     budgetModalSubtitleWarning:
       'Aktiviere die Budgetwarnung – der Ring färbt sich dunkelrot wenn du den Warnwert erreichst.',
+    budgetModalSubtitle1:
+      'Lege fest, wie viel Geld dir im Monat zur Verfügung steht. Der Ausgabenring zeigt dir, wie viel davon noch übrig ist, und färbt sich rot, wenn deine Ausgaben das festgelegte Warnlimit überschreiten.',
+    budgetModalSubtitle2:
+      'Optional kannst du eine Reserve festlegen — einen Betrag, den du bewusst zur Seite legen möchtest. Die Reserve wird unter dem Ring angezeigt und reduziert sich, wenn du dein Budget überschreitest.',
     budgetPlaceholder: '1.000',
-    savingsGoalToggle: 'Sparziel festlegen',
-    savingsGoalLabel: 'Sparziel',
-    savingsGoalShowToggle: 'Sparziel auf Today anzeigen',
+    savingsGoalToggle: 'Reserve festlegen',
+    savingsGoalLabel: 'Reserve',
+    savingsGoalShowToggle: 'Reserve auf Today anzeigen',
     notePlaceholder: 'Wie war dein Monat? Notiere Gedanken, Erfolge und Ziele …',
     languageModalTitle: '🌍 Sprache',
     languageModalHint:
       'Automatisch erkennt die Sprache deines Geräts. Du kannst sie hier manuell überschreiben.',
     currencyAuto: 'Automatisch',
     currencyModalTitle: 'Währung wählen',
+    reserveModalTitle: 'Reserve',
+    reserveModalSubtitle:
+      'Optional: Die Reserve ist unabhängig von deinem Budget — ein separater Betrag, den du bewusst zur Seite legen möchtest. Sie wird unter dem Ausgabenring angezeigt und reduziert sich, wenn du dein Budget überschreitest.',
     locales: {
       auto: 'Automatisch',
       de: 'Deutsch',
@@ -189,6 +198,11 @@ export default {
         answer:
           'Unter Settings → Budget & Berichte → Ausgabenlimit einstellen kannst du deinen gewünschten Betrag eingeben. Der Ring auf der Today-Seite zeigt dir dann immer wie viel du bereits verbraucht hast und wie viel du noch pro Tag ausgeben kannst. Du kannst außerdem festlegen bei welchem Prozentsatz du gewarnt werden möchtest – von 50% bis 90%.',
       },
+      savingsReserve: {
+        question: 'Was ist die Reserve?',
+        answer:
+          'Die Reserve ist kein Teil deines Budgets, sondern ein separater Betrag, den du bewusst zur Seite legen möchtest. Sie wird unter dem Ausgabenring angezeigt und reduziert sich, wenn du dein Budget überschreitest. Liegt sie im Minus, hast du mehr ausgegeben als geplant.',
+      },
       warningRing: {
         question: 'Was bedeutet der rote Ring?',
         answer:
@@ -208,11 +222,6 @@ export default {
         question: 'Was sind Fixkosten in Snapomat?',
         answer:
           'Fixkosten sind regelmäßige monatliche Ausgaben wie Miete, Strom, Internet oder Streaming-Abos. Du erfasst sie einmalig in der App und sie werden automatisch jeden Monat in deine Ausgaben eingerechnet. Du kannst sie jederzeit anpassen oder löschen.',
-      },
-      entryLimit: {
-        question: 'Wie funktioniert das Eintragslimit?',
-        answer:
-          'Im ersten Monat hast du 20 Credits und 20 manuelle Einträge gratis. Ab dem zweiten Monat stehen dir als Free User 10 Credits und 10 manuelle Einträge pro Monat zur Verfügung. Mit einem Abo hast du unbegrenzte manuelle Einträge und 100 Credits pro Monat.',
       },
     },
     aboutModalTitle: 'Über Snapomat',

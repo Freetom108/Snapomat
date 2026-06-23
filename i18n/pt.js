@@ -52,7 +52,7 @@ export default {
     dayToday: 'HOJE',
     dayYesterday: 'ONTEM',
     emptyMonth: 'Sem despesas este mês',
-    savingsGoal: 'Meta de poupança: {{amount}} €',
+    savingsGoal: 'Reserva: {{amount}}',
   },
   history: {
     searchPlaceholder: 'Procurar comerciante...',
@@ -99,6 +99,8 @@ export default {
       dangerZone: 'ZONA PERIGOSA',
     },
     rows: {
+      reserveTitle: 'Definir reserva',
+      reserveSubtitleInactive: 'Não ativa',
       monthlyBudgetTitle: 'Definir orçamento mensal',
       monthlyBudgetSubtitle: 'Definir limite de gastos',
       monthlyNoteTitle: 'Nota mensal',
@@ -127,16 +129,23 @@ export default {
     budgetWarningToggle: 'Ativar aviso de orçamento',
     budgetModalSubtitleWarning:
       'Ativa o aviso de orçamento – o anel fica vermelho escuro ao atingir o limite.',
+    budgetModalSubtitle1:
+      'Define quanto dinheiro tens disponível por mês. O anel de despesas mostra quanto resta e fica vermelho quando as tuas despesas ultrapassam o limite de aviso definido.',
+    budgetModalSubtitle2:
+      'Opcionalmente podes definir uma reserva — um valor que queres guardar. A reserva é mostrada abaixo do anel e diminui se ultrapassares o orçamento.',
     budgetPlaceholder: '1.000',
-    savingsGoalToggle: 'Definir meta de poupança',
-    savingsGoalLabel: 'Meta de poupança',
-    savingsGoalShowToggle: 'Mostrar meta de poupança no ecrã Today',
+    savingsGoalToggle: 'Definir reserva',
+    savingsGoalLabel: 'Reserva',
+    savingsGoalShowToggle: 'Mostrar reserva no ecrã Today',
     notePlaceholder: 'Como foi o teu mês? Anota pensamentos, conquistas e objetivos …',
     languageModalTitle: '🌍 Idioma',
     languageModalHint:
       'Automático deteta o idioma do teu dispositivo. Podes alterá-lo manualmente aqui.',
     currencyAuto: 'Automático',
     currencyModalTitle: 'Escolher moeda',
+    reserveModalTitle: 'Reserva',
+    reserveModalSubtitle:
+      'Opcional: a reserva é independente do teu orçamento — um valor separado que queres guardar conscientemente. É mostrada abaixo do anel de despesas e diminui se ultrapassares o orçamento.',
     locales: {
       auto: 'Automático',
       de: 'Deutsch',
@@ -189,6 +198,11 @@ export default {
         answer:
           'Em Settings → Budget & Reports → Definir limite de gastos introduces o valor desejado. O anel na página Today mostra quanto gastaste e quanto te resta por dia. Também podes escolher a percentagem de aviso – de 50 % a 90 %.',
       },
+      savingsReserve: {
+        question: 'O que é a reserva?',
+        answer:
+          'A reserva não faz parte do teu orçamento, mas é um valor separado que queres guardar conscientemente. É mostrada abaixo do anel de despesas e diminui se ultrapassares o orçamento. Se for negativa, gastaste mais do que planeado.',
+      },
       warningRing: {
         question: 'O que significa o anel vermelho?',
         answer:
@@ -208,11 +222,6 @@ export default {
         question: 'O que são custos fixos no Snapomat?',
         answer:
           'Custos fixos são despesas mensais regulares como renda, eletricidade, internet ou subscrições de streaming. Registas-as uma vez na app e são contabilizadas automaticamente todos os meses. Podes editá-las ou eliminá-las a qualquer momento.',
-      },
-      entryLimit: {
-        question: 'Como funciona o limite de entradas?',
-        answer:
-          'No primeiro mês tens 20 Créditos e 20 entradas manuais grátis. A partir do segundo mês, como utilizador Free, tens 10 Créditos e 10 entradas manuais por mês. Com uma subscrição tens entradas manuais ilimitadas e 100 Créditos por mês.',
       },
     },
     aboutModalTitle: 'Sobre o Snapomat',

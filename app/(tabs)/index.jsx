@@ -16,6 +16,7 @@ import { useTranslation } from '../../hooks/useTranslation';
 import { getExpenses, getBudget, getSavingsGoal } from '../../store/storage';
 import {
   formatAmountNumber,
+  formatCurrency,
   getMonthExpenses,
   parseExpenseDate,
   toRowExpense,
@@ -26,7 +27,8 @@ import {
 function StatsRow({ stats, budget, savingsGoal, colors, styles }) {
   const { t } = useTranslation();
   const remainingDisplay = formatAmountNumber(Math.max(stats.remaining, 0));
-  const showSavings = savingsGoal?.active && savingsGoal?.show;
+  const showSavings = savingsGoal?.active;
+  const reserveDisplay = (savingsGoal?.amount ?? 0) - Math.max(0, stats.spent - budget);
 
   return (
     <View style={styles.statsRow}>
@@ -55,8 +57,8 @@ function StatsRow({ stats, budget, savingsGoal, colors, styles }) {
         <Text style={styles.statLabel}>{t('home.statsAvailable')}</Text>
         <Text style={styles.statLabel}>{t('home.statsBudget')}</Text>
         {showSavings ? (
-          <Text style={styles.statSavings}>
-            {t('home.savingsGoal', { amount: formatAmountNumber(savingsGoal.amount) })}
+          <Text style={[styles.statSavings, reserveDisplay < 0 && { color: '#E53535' }]}>
+            {t('home.savingsGoal', { amount: formatCurrency(reserveDisplay) })}
           </Text>
         ) : null}
       </View>

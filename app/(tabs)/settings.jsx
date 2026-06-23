@@ -57,6 +57,7 @@ import {
   buildMonthlyShareReport,
   getMonthExpenses,
   formatMonthLabel,
+  formatAmountNumber,
   initCurrency,
 } from '../../utils/expenseHelpers';
 import { SUPPORTED_CURRENCIES } from '../../utils/currency';
@@ -81,8 +82,6 @@ function getLocaleLabel(code, t) {
 }
 
 const WARNING_STEPS = [50, 60, 70, 80, 90];
-const BUDGET_QUICK_ROW = [500, 1000, 1500, 2000];
-const BUDGET_QUICK_CENTER = 3000;
 const PRICING_SHEET_MAX_HEIGHT = Dimensions.get('window').height * 0.9;
 const SHEET_MIN_HEIGHT = Dimensions.get('window').height * 0.35;
 
@@ -324,12 +323,6 @@ function BudgetModal({
   onWarningChange,
   warningActive,
   onToggleWarningActive,
-  savingsActive,
-  onToggleSavingsActive,
-  savingsAmount,
-  setSavingsAmount,
-  savingsShow,
-  onToggleSavingsShow,
   onSave,
   onClose,
   colors,
@@ -349,7 +342,7 @@ function BudgetModal({
                 {t('settings.budgetModalTitle')}
               </Text>
               <Text style={[styles.budgetModalSubtitle, { color: colors.muted }]}>
-                {t('settings.budgetModalSubtitleWarning')}
+                {t('settings.budgetModalSubtitle1')}
               </Text>
             </View>
             <Pressable
@@ -390,46 +383,6 @@ function BudgetModal({
               />
             </View>
 
-            <View style={styles.quickBudgetRow}>
-              {BUDGET_QUICK_ROW.map((amount) => (
-                <Pressable
-                  key={amount}
-                  onPress={() => setBudgetInput(formatQuickBudget(amount))}
-                  style={({ pressed }) => [
-                    styles.quickBudgetButton,
-                    {
-                      backgroundColor: colors.background,
-                      borderColor: colors.border,
-                      opacity: pressed ? 0.8 : 1,
-                    },
-                  ]}
-                >
-                  <Text style={[styles.quickBudgetText, { color: colors.text }]}>
-                    {formatQuickBudget(amount)}
-                  </Text>
-                </Pressable>
-              ))}
-            </View>
-
-            <View style={styles.quickBudgetCenterRow}>
-              <Pressable
-                onPress={() => setBudgetInput(formatQuickBudget(BUDGET_QUICK_CENTER))}
-                style={({ pressed }) => [
-                  styles.quickBudgetButton,
-                  styles.quickBudgetButtonCenter,
-                  {
-                    backgroundColor: colors.background,
-                    borderColor: colors.border,
-                    opacity: pressed ? 0.8 : 1,
-                  },
-                ]}
-              >
-                <Text style={[styles.quickBudgetText, { color: colors.text }]}>
-                  {formatQuickBudget(BUDGET_QUICK_CENTER)}
-                </Text>
-              </Pressable>
-            </View>
-
             <Pressable
               onPress={onToggleWarningActive}
               style={({ pressed }) => [styles.savingsToggleRow, pressed && { opacity: 0.7 }]}
@@ -464,21 +417,93 @@ function BudgetModal({
             ) : null}
 
             <Pressable
-              onPress={onToggleSavingsActive}
+              onPress={onSave}
+              style={({ pressed }) => [
+                styles.budgetSaveButton,
+                { backgroundColor: colors.accent, opacity: pressed ? 0.85 : 1 },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.modalButtonText,
+                  { color: themeId === 'light' ? colors.text : colors.background },
+                ]}
+              >
+                {t('common.save')}
+              </Text>
+            </Pressable>
+          </ScrollView>
+        </View>
+      </View>
+    </Modal>
+  );
+}
+
+function ReserveModal({
+  visible,
+  reserveActive,
+  onToggleReserveActive,
+  reserveAmount,
+  setReserveAmount,
+  onSave,
+  onClose,
+  colors,
+  styles,
+  themeId,
+}) {
+  const { t } = useTranslation();
+  const checkMarkColor = themeId === 'light' ? colors.text : colors.background;
+
+  return (
+    <Modal visible={visible} animationType="slide" transparent onRequestClose={() => {}}>
+      <View style={styles.pricingOverlay}>
+        <View style={[styles.bottomSheet, { backgroundColor: colors.card }]}>
+          <View style={styles.pricingSheetHeader}>
+            <View style={styles.pricingHeaderText}>
+              <Text style={[styles.pricingHeaderTitle, { color: colors.text }]}>
+                {t('settings.reserveModalTitle')}
+              </Text>
+              <Text style={[styles.budgetModalSubtitle, { color: colors.muted }]}>
+                {t('settings.reserveModalSubtitle')}
+              </Text>
+            </View>
+            <Pressable
+              onPress={onClose}
+              hitSlop={12}
+              style={({ pressed }) => [
+                styles.pricingCloseButton,
+                pressed && { opacity: 0.7 },
+              ]}
+              accessibilityRole="button"
+              accessibilityLabel={t('common.close')}
+            >
+              <Text style={[styles.pricingCloseText, { color: colors.muted }]}>✕</Text>
+            </Pressable>
+          </View>
+
+          <ScrollView
+            style={styles.bottomSheetScroll}
+            showsVerticalScrollIndicator
+            contentContainerStyle={styles.budgetModalScroll}
+            keyboardShouldPersistTaps="handled"
+            bounces
+          >
+            <Pressable
+              onPress={onToggleReserveActive}
               style={({ pressed }) => [styles.savingsToggleRow, pressed && { opacity: 0.7 }]}
               accessibilityRole="checkbox"
-              accessibilityState={{ checked: savingsActive }}
+              accessibilityState={{ checked: reserveActive }}
             >
               <View
                 style={[
                   styles.savingsCheckbox,
                   {
                     borderColor: colors.accent,
-                    backgroundColor: savingsActive ? colors.accent : 'transparent',
+                    backgroundColor: reserveActive ? colors.accent : 'transparent',
                   },
                 ]}
               >
-                {savingsActive ? (
+                {reserveActive ? (
                   <Text style={[styles.savingsCheckboxMark, { color: checkMarkColor }]}>✓</Text>
                 ) : null}
               </View>
@@ -487,50 +512,24 @@ function BudgetModal({
               </Text>
             </Pressable>
 
-            {savingsActive ? (
-              <>
-                <View
-                  style={[
-                    styles.budgetInputWrap,
-                    styles.savingsInputWrap,
-                    { borderColor: colors.accent, backgroundColor: colors.background },
-                  ]}
-                >
-                  <Text style={[styles.budgetEuro, { color: colors.muted }]}>€</Text>
-                  <TextInput
-                    value={savingsAmount}
-                    onChangeText={setSavingsAmount}
-                    keyboardType="decimal-pad"
-                    placeholder={t('settings.savingsGoalLabel')}
-                    placeholderTextColor={colors.muted}
-                    style={[styles.budgetAmountInput, { color: colors.text }]}
-                  />
-                </View>
-
-                <Pressable
-                  onPress={onToggleSavingsShow}
-                  style={({ pressed }) => [styles.savingsToggleRow, pressed && { opacity: 0.7 }]}
-                  accessibilityRole="checkbox"
-                  accessibilityState={{ checked: savingsShow }}
-                >
-                  <View
-                    style={[
-                      styles.savingsCheckbox,
-                      {
-                        borderColor: colors.accent,
-                        backgroundColor: savingsShow ? colors.accent : 'transparent',
-                      },
-                    ]}
-                  >
-                    {savingsShow ? (
-                      <Text style={[styles.savingsCheckboxMark, { color: checkMarkColor }]}>✓</Text>
-                    ) : null}
-                  </View>
-                  <Text style={[styles.savingsToggleLabel, { color: colors.text }]}>
-                    {t('settings.savingsGoalShowToggle')}
-                  </Text>
-                </Pressable>
-              </>
+            {reserveActive ? (
+              <View
+                style={[
+                  styles.budgetInputWrap,
+                  styles.savingsInputWrap,
+                  { borderColor: colors.accent, backgroundColor: colors.background },
+                ]}
+              >
+                <Text style={[styles.budgetEuro, { color: colors.muted }]}>€</Text>
+                <TextInput
+                  value={reserveAmount}
+                  onChangeText={setReserveAmount}
+                  keyboardType="decimal-pad"
+                  placeholder={t('settings.savingsGoalLabel')}
+                  placeholderTextColor={colors.muted}
+                  style={[styles.budgetAmountInput, { color: colors.text }]}
+                />
+              </View>
             ) : null}
 
             <Pressable
@@ -594,11 +593,11 @@ const FAQ_ITEM_META = [
   { id: 'scanCost' },
   { id: 'creditsBuy' },
   { id: 'budget' },
+  { id: 'savingsReserve' },
   { id: 'warningRing' },
   { id: 'currency' },
   { id: 'backup' },
   { id: 'fixedCosts' },
-  { id: 'entryLimit' },
 ];
 
 function formatError(error, t) {
@@ -1763,6 +1762,8 @@ export default function SettingsScreen() {
   const [showSupport, setShowSupport] = useState(false);
   const [showLegal, setShowLegal] = useState(false);
   const [showBudget, setShowBudget] = useState(false);
+  const [showReserve, setShowReserve] = useState(false);
+  const [reserveAmountDraft, setReserveAmountDraft] = useState('');
   const [budgetWarningDraft, setBudgetWarningDraft] = useState(80);
   const [warningActive, setWarningActive] = useState(true);
   const [showBackup, setShowBackup] = useState(false);
@@ -1810,6 +1811,7 @@ export default function SettingsScreen() {
     setBudgetInput(String(storedBudget));
     setSavingsActive(storedSavings.active);
     setSavingsAmount(storedSavings.amount ? String(storedSavings.amount) : '');
+    setReserveAmountDraft(storedSavings.amount ? String(storedSavings.amount) : '');
     setSavingsShow(storedSavings.show);
     setWarningActive(storedWarningActive === null ? true : storedWarningActive === 'true');
     setCurrencyCode(storedCurrency ?? 'AUTO');
@@ -1841,6 +1843,19 @@ export default function SettingsScreen() {
     setBudgetState(amount);
     setBudgetWarningState(warning);
     setShowBudget(false);
+  }
+
+  async function handleSaveReserve() {
+    const amount = savingsActive ? parseBudgetInput(reserveAmountDraft) || 0 : 0;
+    await saveSavingsGoal({
+      active: savingsActive,
+      amount,
+      show: savingsActive ? savingsShow : false,
+    });
+    setSavingsActive(savingsActive);
+    setSavingsAmount(amount ? String(amount) : '');
+    setReserveAmountDraft(amount ? String(amount) : '');
+    setShowReserve(false);
   }
 
   function handleToggleSavingsActive() {
@@ -2076,6 +2091,18 @@ export default function SettingsScreen() {
             styles={styles}
           />
           <SettingsRow
+            emoji="🏦"
+            title={t('settings.rows.reserveTitle')}
+            subtitle={
+              savingsActive
+                ? `${formatAmountNumber(savingsAmount)} €`
+                : t('settings.rows.reserveSubtitleInactive')
+            }
+            onPress={() => setShowReserve(true)}
+            colors={colors}
+            styles={styles}
+          />
+          <SettingsRow
             emoji="📝"
             title={t('settings.rows.monthlyNoteTitle')}
             subtitle={t('settings.rows.monthlyNoteSubtitle')}
@@ -2263,14 +2290,21 @@ export default function SettingsScreen() {
         onWarningChange={handleBudgetWarningDraftChange}
         warningActive={warningActive}
         onToggleWarningActive={() => setWarningActive((prev) => !prev)}
-        savingsActive={savingsActive}
-        onToggleSavingsActive={handleToggleSavingsActive}
-        savingsAmount={savingsAmount}
-        setSavingsAmount={setSavingsAmount}
-        savingsShow={savingsShow}
-        onToggleSavingsShow={() => setSavingsShow((prev) => !prev)}
         onSave={handleSaveBudget}
         onClose={() => setShowBudget(false)}
+        colors={colors}
+        styles={styles}
+        themeId={themeId}
+      />
+
+      <ReserveModal
+        visible={showReserve}
+        reserveActive={savingsActive}
+        onToggleReserveActive={() => setSavingsActive((prev) => !prev)}
+        reserveAmount={reserveAmountDraft}
+        setReserveAmount={setReserveAmountDraft}
+        onSave={handleSaveReserve}
+        onClose={() => setShowReserve(false)}
         colors={colors}
         styles={styles}
         themeId={themeId}

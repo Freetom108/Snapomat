@@ -52,7 +52,7 @@ export default {
     dayToday: 'OGGI',
     dayYesterday: 'IERI',
     emptyMonth: 'Nessuna spesa questo mese',
-    savingsGoal: 'Obiettivo di risparmio: {{amount}} €',
+    savingsGoal: 'Riserva: {{amount}}',
   },
   history: {
     searchPlaceholder: 'Cerca esercente...',
@@ -99,6 +99,8 @@ export default {
       dangerZone: 'ZONA PERICOLOSA',
     },
     rows: {
+      reserveTitle: 'Imposta riserva',
+      reserveSubtitleInactive: 'Non attiva',
       monthlyBudgetTitle: 'Imposta budget mensile',
       monthlyBudgetSubtitle: 'Definisci limite di spesa',
       monthlyNoteTitle: 'Nota mensile',
@@ -127,16 +129,23 @@ export default {
     budgetWarningToggle: 'Attiva avviso budget',
     budgetModalSubtitleWarning:
       'Attiva l\'avviso budget – l\'anello diventa rosso scuro quando raggiungi la soglia.',
+    budgetModalSubtitle1:
+      'Stabilisci quanti soldi hai disponibili ogni mese. L\'anello delle spese mostra quanto ne rimane e diventa rosso quando le tue spese superano il limite di avviso impostato.',
+    budgetModalSubtitle2:
+      'Puoi anche definire una riserva — un importo che vuoi mettere da parte. La riserva viene mostrata sotto l\'anello e si riduce se superi il budget.',
     budgetPlaceholder: '1.000',
-    savingsGoalToggle: 'Imposta obiettivo di risparmio',
-    savingsGoalLabel: 'Obiettivo di risparmio',
-    savingsGoalShowToggle: 'Mostra obiettivo di risparmio nella schermata Today',
+    savingsGoalToggle: 'Imposta riserva',
+    savingsGoalLabel: 'Riserva',
+    savingsGoalShowToggle: 'Mostra riserva nella schermata Today',
     notePlaceholder: 'Com\'è andato il tuo mese? Annota pensieri, traguardi e obiettivi …',
     languageModalTitle: '🌍 Lingua',
     languageModalHint:
       'Automatico rileva la lingua del dispositivo. Puoi cambiarla manualmente qui.',
     currencyAuto: 'Automatico',
     currencyModalTitle: 'Scegli valuta',
+    reserveModalTitle: 'Riserva',
+    reserveModalSubtitle:
+      'Opzionale: la riserva è indipendente dal tuo budget — un importo separato che vuoi mettere da parte consapevolmente. Viene mostrata sotto l\'anello delle spese e si riduce se superi il budget.',
     locales: {
       auto: 'Automatico',
       de: 'Deutsch',
@@ -189,6 +198,11 @@ export default {
         answer:
           'In Settings → Budget & Reports → Definisci limite di spesa inserisci l\'importo desiderato. L\'anello in Today mostra quanto hai speso e quanto ti resta al giorno. Puoi anche scegliere la percentuale di avviso – dal 50 % al 90 %.',
       },
+      savingsReserve: {
+        question: 'Cos\'è la riserva?',
+        answer:
+          'La riserva non fa parte del tuo budget, ma è un importo separato che vuoi mettere da parte consapevolmente. Viene mostrata sotto l\'anello delle spese e si riduce se superi il budget. Se è negativa hai speso più del previsto.',
+      },
       warningRing: {
         question: 'Cosa significa l\'anello rosso?',
         answer:
@@ -208,11 +222,6 @@ export default {
         question: 'Cosa sono i costi fissi in Snapomat?',
         answer:
           'I costi fissi sono spese mensili regolari come affitto, luce, internet o abbonamenti streaming. Le inserisci una volta nell\'app e vengono contabilizzate automaticamente ogni mese. Puoi modificarle o eliminarle in qualsiasi momento.',
-      },
-      entryLimit: {
-        question: 'Come funziona il limite di inserimenti?',
-        answer:
-          'Il primo mese hai 20 Crediti e 20 inserimenti manuali gratis. Dal secondo mese, come utente Free, hai 10 Crediti e 10 inserimenti manuali al mese. Con un abbonamento hai inserimenti manuali illimitati e 100 Crediti al mese.',
       },
     },
     aboutModalTitle: 'Info su Snapomat',

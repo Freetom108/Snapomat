@@ -52,7 +52,7 @@ export default {
     dayToday: 'DZIŚ',
     dayYesterday: 'WCZORAJ',
     emptyMonth: 'Brak wydatków w tym miesiącu',
-    savingsGoal: 'Cel oszczędzania: {{amount}} €',
+    savingsGoal: 'Rezerwa: {{amount}}',
   },
   history: {
     searchPlaceholder: 'Szukaj sklepu...',
@@ -99,6 +99,8 @@ export default {
       dangerZone: 'STREFA NIEBEZPIECZEŃSTWA',
     },
     rows: {
+      reserveTitle: 'Ustaw rezerwę',
+      reserveSubtitleInactive: 'Nieaktywna',
       monthlyBudgetTitle: 'Ustaw budżet miesięczny',
       monthlyBudgetSubtitle: 'Ustaw limit wydatków',
       monthlyNoteTitle: 'Notatka miesięczna',
@@ -127,16 +129,23 @@ export default {
     budgetWarningToggle: 'Włącz ostrzeżenie budżetowe',
     budgetModalSubtitleWarning:
       'Włącz ostrzeżenie budżetowe – pierścień staje się ciemnoczerwony po osiągnięciu progu.',
+    budgetModalSubtitle1:
+      'Określ, ile pieniędzy masz do dyspozycji każdego miesiąca. Pierścień wydatków pokazuje, ile pozostało, i staje się czerwony, gdy wydatki przekroczą ustawiony limit ostrzeżenia.',
+    budgetModalSubtitle2:
+      'Opcjonalnie możesz ustawić rezerwę — kwotę, którą chcesz odłożyć. Rezerwa jest wyświetlana pod pierścieniem i zmniejsza się po przekroczeniu budżetu.',
     budgetPlaceholder: '1 000',
-    savingsGoalToggle: 'Ustaw cel oszczędzania',
-    savingsGoalLabel: 'Cel oszczędzania',
-    savingsGoalShowToggle: 'Pokaż cel oszczędzania na ekranie Today',
+    savingsGoalToggle: 'Ustaw rezerwę',
+    savingsGoalLabel: 'Rezerwa',
+    savingsGoalShowToggle: 'Pokaż rezerwę na ekranie Today',
     notePlaceholder: 'Jak minął twój miesiąc? Zapisz myśli, sukcesy i cele …',
     languageModalTitle: '🌍 Język',
     languageModalHint:
       'Automatyczny wykrywa język urządzenia. Możesz go tu zmienić ręcznie.',
     currencyAuto: 'Automatyczny',
     currencyModalTitle: 'Wybierz walutę',
+    reserveModalTitle: 'Rezerwa',
+    reserveModalSubtitle:
+      'Opcjonalnie: rezerwa jest niezależna od budżetu — oddzielna kwota, którą chcesz świadomie odłożyć. Jest wyświetlana pod pierścieniem wydatków i zmniejsza się po przekroczeniu budżetu.',
     locales: {
       auto: 'Automatyczny',
       de: 'Deutsch',
@@ -189,6 +198,11 @@ export default {
         answer:
           'W Settings → Budget & Reports → Ustaw limit wydatków wpisz kwotę. Pierścień na stronie Today pokazuje, ile wydałeś i ile możesz jeszcze wydać dziennie. Możesz też ustawić procent ostrzeżenia – od 50 % do 90 %.',
       },
+      savingsReserve: {
+        question: 'Co to jest rezerwa?',
+        answer:
+          'Rezerwa nie jest częścią budżetu, lecz oddzielną kwotą, którą chcesz świadomie odłożyć. Jest wyświetlana pod pierścieniem wydatków i zmniejsza się po przekroczeniu budżetu. Jeśli jest ujemna, wydałeś więcej niż zaplanowano.',
+      },
       warningRing: {
         question: 'Co oznacza czerwony pierścień?',
         answer:
@@ -208,11 +222,6 @@ export default {
         question: 'Czym są koszty stałe w Snapomat?',
         answer:
           'Koszty stałe to regularne miesięczne wydatki, takie jak czynsz, prąd, internet lub subskrypcje streamingowe. Wprowadzasz je raz w aplikacji, a co miesiąc są automatycznie doliczane do wydatków. Możesz je w każdej chwili edytować lub usunąć.',
-      },
-      entryLimit: {
-        question: 'Jak działa limit wpisów?',
-        answer:
-          'W pierwszym miesiącu masz 20 Kredytów i 20 wpisów ręcznych gratis. Od drugiego miesiąca jako użytkownik Free masz 10 Kredytów i 10 wpisów ręcznych miesięcznie. Z subskrypcją masz nielimitowane wpisy ręczne i 100 Kredytów miesięcznie.',
       },
     },
     aboutModalTitle: 'O Snapomat',

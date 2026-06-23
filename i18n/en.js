@@ -52,7 +52,7 @@ export default {
     dayToday: 'TODAY',
     dayYesterday: 'YESTERDAY',
     emptyMonth: 'No expenses this month yet',
-    savingsGoal: 'Savings goal: {{amount}} €',
+    savingsGoal: 'Reserve: {{amount}}',
   },
   history: {
     searchPlaceholder: 'Search merchant...',
@@ -99,6 +99,8 @@ export default {
       dangerZone: 'DANGER ZONE',
     },
     rows: {
+      reserveTitle: 'Set Reserve',
+      reserveSubtitleInactive: 'Not active',
       monthlyBudgetTitle: 'Set monthly budget',
       monthlyBudgetSubtitle: 'Set spending limit',
       monthlyNoteTitle: 'Monthly Note',
@@ -127,16 +129,23 @@ export default {
     budgetWarningToggle: 'Enable budget warning',
     budgetModalSubtitleWarning:
       'Enable the budget warning – the ring turns dark red when you reach the threshold.',
+    budgetModalSubtitle1:
+      'Set how much money you have available each month. The expense ring shows how much is left, and turns red when your expenses exceed the set warning limit.',
+    budgetModalSubtitle2:
+      'Optionally you can set a reserve — an amount you want to set aside. The reserve is shown below the ring and decreases when you exceed your budget.',
     budgetPlaceholder: '1,000',
-    savingsGoalToggle: 'Set savings goal',
-    savingsGoalLabel: 'Savings goal',
-    savingsGoalShowToggle: 'Show savings goal on Today screen',
+    savingsGoalToggle: 'Set reserve',
+    savingsGoalLabel: 'Reserve',
+    savingsGoalShowToggle: 'Show reserve on Today screen',
     notePlaceholder: 'How was your month? Jot down thoughts, wins and goals …',
     languageModalTitle: '🌍 Language',
     languageModalHint:
       'Automatic detects your device language. You can override it here manually.',
     currencyAuto: 'Automatic',
     currencyModalTitle: 'Choose Currency',
+    reserveModalTitle: 'Reserve',
+    reserveModalSubtitle:
+      'Optional: The reserve is independent of your budget — a separate amount you want to consciously put aside. It is shown below the expense ring and decreases when you exceed your budget.',
     locales: {
       auto: 'Automatic',
       de: 'Deutsch',
@@ -189,6 +198,11 @@ export default {
         answer:
           'Under Settings → Budget & Reports → Set spending limit you can enter your desired amount. The ring on the Today page always shows how much you have spent and how much you can still spend per day. You can also set at which percentage you want to be warned – from 50% to 90%.',
       },
+      savingsReserve: {
+        question: 'What is the Reserve?',
+        answer:
+          'The reserve is not part of your budget, but a separate amount you want to consciously put aside. It is shown below the expense ring and decreases when you exceed your budget. If it goes negative, you have spent more than planned.',
+      },
       warningRing: {
         question: 'What does the red ring mean?',
         answer:
@@ -208,11 +222,6 @@ export default {
         question: 'What are fixed costs in Snapomat?',
         answer:
           'Fixed costs are regular monthly expenses such as rent, electricity, internet or streaming subscriptions. You enter them once in the app and they are automatically added to your expenses every month. You can edit or delete them at any time.',
-      },
-      entryLimit: {
-        question: 'How does the entry limit work?',
-        answer:
-          'In the first month you get 20 Credits and 20 manual entries for free. From the second month, as a Free user you get 10 Credits and 10 manual entries per month. With a subscription you get unlimited manual entries and 100 Credits per month.',
       },
     },
     aboutModalTitle: 'About Snapomat',

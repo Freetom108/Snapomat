@@ -52,7 +52,7 @@ export default {
     dayToday: 'VANDAAG',
     dayYesterday: 'GISTEREN',
     emptyMonth: 'Nog geen uitgaven deze maand',
-    savingsGoal: 'Spaardoel: {{amount}} €',
+    savingsGoal: 'Reserve: {{amount}}',
   },
   history: {
     searchPlaceholder: 'Winkel zoeken...',
@@ -99,6 +99,8 @@ export default {
       dangerZone: 'GEVARENZONE',
     },
     rows: {
+      reserveTitle: 'Reserve instellen',
+      reserveSubtitleInactive: 'Niet actief',
       monthlyBudgetTitle: 'Maandbudget instellen',
       monthlyBudgetSubtitle: 'Uitgavenlimiet instellen',
       monthlyNoteTitle: 'Maandelijkse notitie',
@@ -127,16 +129,23 @@ export default {
     budgetWarningToggle: 'Budgetwaarschuwing inschakelen',
     budgetModalSubtitleWarning:
       'Schakel de budgetwaarschuwing in – de ring wordt donkerrood als je de drempel bereikt.',
+    budgetModalSubtitle1:
+      'Stel in hoeveel geld je per maand beschikbaar hebt. De uitgavenring toont hoeveel er nog over is en wordt rood als je uitgaven de ingestelde waarschuwingslimiet overschrijden.',
+    budgetModalSubtitle2:
+      'Optioneel kun je een reserve instellen — een bedrag dat je apart wilt houden. De reserve wordt onder de ring getoond en neemt af als je je budget overschrijdt.',
     budgetPlaceholder: '1.000',
-    savingsGoalToggle: 'Spaardoel instellen',
-    savingsGoalLabel: 'Spaardoel',
-    savingsGoalShowToggle: 'Spaardoel tonen op Today-scherm',
+    savingsGoalToggle: 'Reserve instellen',
+    savingsGoalLabel: 'Reserve',
+    savingsGoalShowToggle: 'Reserve tonen op Today-scherm',
     notePlaceholder: 'Hoe was je maand? Noteer gedachten, successen en doelen …',
     languageModalTitle: '🌍 Taal',
     languageModalHint:
       'Automatisch herkent de taal van je toestel. Je kunt deze hier handmatig overschrijven.',
     currencyAuto: 'Automatisch',
     currencyModalTitle: 'Valuta kiezen',
+    reserveModalTitle: 'Reserve',
+    reserveModalSubtitle:
+      'Optioneel: de reserve is onafhankelijk van je budget — een apart bedrag dat je bewust apart wilt houden. Het wordt onder de uitgavenring getoond en neemt af als je je budget overschrijdt.',
     locales: {
       auto: 'Automatisch',
       de: 'Deutsch',
@@ -189,6 +198,11 @@ export default {
         answer:
           'Onder Settings → Budget & Rapporten → Uitgavenlimiet instellen kun je je gewenste bedrag invoeren. De ring op de Today-pagina laat je dan altijd zien hoeveel je al hebt uitgegeven en hoeveel je nog per dag kunt uitgeven. Je kunt ook instellen bij welk percentage je gewaarschuwd wilt worden – van 50% tot 90%.',
       },
+      savingsReserve: {
+        question: 'Wat is de reserve?',
+        answer:
+          'De reserve maakt geen deel uit van je budget, maar is een apart bedrag dat je bewust apart wilt houden. Het wordt onder de uitgavenring getoond en neemt af als je je budget overschrijdt. Als het negatief is, heb je meer uitgegeven dan gepland.',
+      },
       warningRing: {
         question: 'Wat betekent de rode ring?',
         answer:
@@ -208,11 +222,6 @@ export default {
         question: 'Wat zijn vaste lasten in Snapomat?',
         answer:
           'Vaste lasten zijn vaste maandelijkse uitgaven zoals huur, stroom, internet of streamingabonnementen. Je voert ze één keer in en ze worden automatisch elke maand in je uitgaven meegerekend. Je kunt ze altijd aanpassen of verwijderen.',
-      },
-      entryLimit: {
-        question: 'Hoe werkt de boekingslimiet?',
-        answer:
-          'In de eerste maand heb je 20 credits en 20 handmatige boekingen gratis. Vanaf de tweede maand heb je als Free-gebruiker 10 credits en 10 handmatige boekingen per maand. Met een abonnement heb je onbeperkte handmatige boekingen en 100 credits per maand.',
       },
     },
     aboutModalTitle: 'Over Snapomat',

@@ -52,7 +52,7 @@ export default {
     dayToday: "AUJOURD'HUI",
     dayYesterday: 'HIER',
     emptyMonth: 'Aucune dépense ce mois-ci',
-    savingsGoal: 'Objectif d\'épargne : {{amount}} €',
+    savingsGoal: 'Réserve : {{amount}}',
   },
   history: {
     searchPlaceholder: 'Rechercher un commerçant...',
@@ -99,6 +99,8 @@ export default {
       dangerZone: 'ZONE DANGEREUSE',
     },
     rows: {
+      reserveTitle: 'Définir la réserve',
+      reserveSubtitleInactive: 'Non active',
       monthlyBudgetTitle: 'Définir le budget mensuel',
       monthlyBudgetSubtitle: 'Fixer la limite de dépenses',
       monthlyNoteTitle: 'Note mensuelle',
@@ -127,16 +129,23 @@ export default {
     budgetWarningToggle: 'Activer l\'alerte budget',
     budgetModalSubtitleWarning:
       'Active l\'alerte budget – l\'anneau devient rouge foncé quand tu atteins le seuil.',
+    budgetModalSubtitle1:
+      'Définis combien d\'argent tu as disponible chaque mois. L\'anneau de dépenses indique ce qu\'il reste et devient rouge quand tes dépenses dépassent la limite d\'alerte définie.',
+    budgetModalSubtitle2:
+      'Tu peux aussi définir une réserve — un montant que tu souhaites mettre de côté. La réserve s\'affiche sous l\'anneau et diminue si tu dépasses ton budget.',
     budgetPlaceholder: '1 000',
-    savingsGoalToggle: 'Définir un objectif d\'épargne',
-    savingsGoalLabel: 'Objectif d\'épargne',
-    savingsGoalShowToggle: 'Afficher l\'objectif d\'épargne sur l\'écran Today',
+    savingsGoalToggle: 'Définir une réserve',
+    savingsGoalLabel: 'Réserve',
+    savingsGoalShowToggle: 'Afficher la réserve sur l\'écran Today',
     notePlaceholder: 'Comment s\'est passé ton mois ? Note tes pensées, réussites et objectifs …',
     languageModalTitle: '🌍 Langue',
     languageModalHint:
       'Automatique détecte la langue de votre appareil. Vous pouvez la modifier manuellement ici.',
     currencyAuto: 'Automatique',
     currencyModalTitle: 'Choisir la devise',
+    reserveModalTitle: 'Réserve',
+    reserveModalSubtitle:
+      'Facultatif : la réserve est indépendante de ton budget — un montant séparé que tu souhaites mettre de côté. Elle s\'affiche sous l\'anneau de dépenses et diminue si tu dépasses ton budget.',
     locales: {
       auto: 'Automatique',
       de: 'Deutsch',
@@ -189,6 +198,11 @@ export default {
         answer:
           'Dans Settings → Budget & Reports → Fixer la limite de dépenses, saisissez le montant souhaité. L\'anneau sur la page Today indique combien vous avez dépensé et combien il vous reste par jour. Vous pouvez aussi choisir à quel pourcentage être averti – de 50 % à 90 %.',
       },
+      savingsReserve: {
+        question: 'Qu\'est-ce que la réserve ?',
+        answer:
+          'La réserve ne fait pas partie de ton budget, mais est un montant séparé que tu souhaites mettre de côté. Elle s\'affiche sous l\'anneau de dépenses et diminue si tu dépasses ton budget. Si elle est négative, tu as dépensé plus que prévu.',
+      },
       warningRing: {
         question: 'Que signifie l\'anneau rouge ?',
         answer:
@@ -208,11 +222,6 @@ export default {
         question: 'Que sont les charges fixes dans Snapomat ?',
         answer:
           'Les charges fixes sont des dépenses mensuelles régulières comme le loyer, l\'électricité, internet ou les abonnements streaming. Vous les enregistrez une fois dans l\'app et elles sont automatiquement comptabilisées chaque mois. Vous pouvez les modifier ou les supprimer à tout moment.',
-      },
-      entryLimit: {
-        question: 'Comment fonctionne la limite d\'entrées ?',
-        answer:
-          'Le premier mois, vous disposez de 20 Crédits et 20 saisies manuelles gratuites. À partir du deuxième mois, en tant qu\'utilisateur Free, vous avez 10 Crédits et 10 saisies manuelles par mois. Avec un abonnement, vous avez des saisies manuelles illimitées et 100 Crédits par mois.',
       },
     },
     aboutModalTitle: 'À propos de Snapomat',

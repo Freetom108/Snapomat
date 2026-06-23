@@ -41,7 +41,8 @@ export default function ExpenseRing({ stats, colors, styles, showMonthLabel = tr
   const strokeDashoffset = circumference * (1 - stats.progress);
   const isNippon = colors.id === 'nippon';
   const nipponTextStyle = isNippon ? { color: '#FFFFFF' } : null;
-  const isWarning = warningActive && stats.percent >= budgetWarning;
+  const isWarning =
+    stats.percent >= 100 || (warningActive && stats.percent >= budgetWarning);
   const arcColor = isWarning ? '#8B0000' : colors.accent;
 
   return (

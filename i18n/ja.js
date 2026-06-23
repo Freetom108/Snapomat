@@ -52,7 +52,7 @@ export default {
     dayToday: '今日',
     dayYesterday: '昨日',
     emptyMonth: '今月はまだ支出がありません',
-    savingsGoal: '貯金目標：{{amount}} €',
+    savingsGoal: 'リザーブ：{{amount}}',
   },
   history: {
     searchPlaceholder: '店舗を検索...',
@@ -99,6 +99,8 @@ export default {
       dangerZone: '危険な操作',
     },
     rows: {
+      reserveTitle: 'リザーブを設定',
+      reserveSubtitleInactive: '未設定',
       monthlyBudgetTitle: '月の予算を設定',
       monthlyBudgetSubtitle: '支出の上限を設定',
       monthlyNoteTitle: '振り返り',
@@ -127,16 +129,23 @@ export default {
     budgetWarningToggle: '予算警告を有効にする',
     budgetModalSubtitleWarning:
       '予算警告を有効にする – しきい値に達するとリングが暗赤色に変わります。',
+    budgetModalSubtitle1:
+      '毎月使えるお金を設定します。支出リングは残りを表示し、支出が設定した警告しきい値を超えると赤くなります。',
+    budgetModalSubtitle2:
+      'オプションでリザーブを設定できます — 取り置きたい金額です。リザーブはリングの下に表示され、予算を超えると減少します。',
     budgetPlaceholder: '1,000',
-    savingsGoalToggle: '貯金目標を設定',
-    savingsGoalLabel: '貯金目標',
-    savingsGoalShowToggle: 'Today画面に貯金目標を表示',
+    savingsGoalToggle: 'リザーブを設定',
+    savingsGoalLabel: 'リザーブ',
+    savingsGoalShowToggle: 'Today画面にリザーブを表示',
     notePlaceholder: '今月はどうだった？気づきや達成、目標をメモしよう …',
     languageModalTitle: '🌍 言語',
     languageModalHint:
       '「自動」では端末の言語を検出します。ここで手動で変更することもできます。',
     currencyAuto: '自動',
     currencyModalTitle: '通貨を選択',
+    reserveModalTitle: 'リザーブ',
+    reserveModalSubtitle:
+      '任意：リザーブは予算とは独立しています — 意識的に取り置きたい別の金額です。支出リングの下に表示され、予算を超えると減少します。',
     locales: {
       auto: '自動',
       de: 'Deutsch',
@@ -189,6 +198,11 @@ export default {
         answer:
           '「設定 → 予算とレポート → 支出の上限を設定」から希望の金額を入力できます。Todayページのリングが、すでに使った金額と1日あたりあといくら使えるかを常に表示します。さらに、50%から90%の範囲で、どの割合で通知を受け取るかも設定できます。',
       },
+      savingsReserve: {
+        question: 'リザーブとは何ですか？',
+        answer:
+          'リザーブは予算の一部ではなく、意識的に取り置きたい別の金額です。支出リングの下に表示され、予算を超えると減少します。マイナスになった場合、計画より多く支出したことを意味します。',
+      },
       warningRing: {
         question: '赤いリングは何を意味しますか？',
         answer:
@@ -208,11 +222,6 @@ export default {
         question: 'Snapomatの固定費とは何ですか？',
         answer:
           '固定費とは、家賃・電気代・インターネット・サブスクなど、毎月決まって発生する支出のことです。一度登録すれば、毎月自動で支出に組み込まれます。いつでも変更や削除ができます。',
-      },
-      entryLimit: {
-        question: '入力の上限はどうなっていますか？',
-        answer:
-          '最初の月は20クレジットと20回の手動入力が無料です。2か月目からは、無料ユーザーは月に10クレジットと10回の手動入力が使えます。プランに加入すると、手動入力は無制限になり、毎月100クレジットが付与されます。',
       },
     },
     aboutModalTitle: 'Snapomatについて',

@@ -52,7 +52,7 @@ export default {
     dayToday: 'BUGÜN',
     dayYesterday: 'DÜN',
     emptyMonth: 'Bu ay henüz harcama yok',
-    savingsGoal: 'Tasarruf hedefi: {{amount}} €',
+    savingsGoal: 'Rezerv: {{amount}}',
   },
   history: {
     searchPlaceholder: 'İş yeri ara...',
@@ -99,6 +99,8 @@ export default {
       dangerZone: 'TEHLİKELİ BÖLGE',
     },
     rows: {
+      reserveTitle: 'Rezerv belirle',
+      reserveSubtitleInactive: 'Etkin değil',
       monthlyBudgetTitle: 'Aylık bütçe belirle',
       monthlyBudgetSubtitle: 'Harcama limiti ayarla',
       monthlyNoteTitle: 'Aylık Not',
@@ -127,16 +129,23 @@ export default {
     budgetWarningToggle: 'Bütçe uyarısını etkinleştir',
     budgetModalSubtitleWarning:
       'Bütçe uyarısını etkinleştir – eşiğe ulaşınca halka koyu kırmızıya döner.',
+    budgetModalSubtitle1:
+      'Her ay ne kadar paranın olduğunu belirle. Harcama halkası ne kadar kaldığını gösterir ve harcamaların belirlenen uyarı limitini aştığında kırmızıya döner.',
+    budgetModalSubtitle2:
+      'İsteğe bağlı olarak bir rezerv belirleyebilirsin — bir kenara koymak istediğin bir miktar. Rezerv halkanın altında gösterilir ve bütçeni aştığında azalır.',
     budgetPlaceholder: '1.000',
-    savingsGoalToggle: 'Tasarruf hedefi belirle',
-    savingsGoalLabel: 'Tasarruf hedefi',
-    savingsGoalShowToggle: 'Tasarruf hedefini Today ekranında göster',
+    savingsGoalToggle: 'Rezerv belirle',
+    savingsGoalLabel: 'Rezerv',
+    savingsGoalShowToggle: 'Rezervi Today ekranında göster',
     notePlaceholder: 'Ayın nasıldı? Düşüncelerini, başarılarını ve hedeflerini not et …',
     languageModalTitle: '🌍 Dil',
     languageModalHint:
       'Otomatik cihaz dilini algılar. Buradan manuel olarak değiştirebilirsin.',
     currencyAuto: 'Otomatik',
     currencyModalTitle: 'Para birimi seç',
+    reserveModalTitle: 'Rezerv',
+    reserveModalSubtitle:
+      'İsteğe bağlı: rezerv bütçenden bağımsızdır — bilinçli olarak bir kenara koymak istediğin ayrı bir miktar. Harcama halkasının altında gösterilir ve bütçeni aştığında azalır.',
     locales: {
       auto: 'Otomatik',
       de: 'Deutsch',
@@ -189,6 +198,11 @@ export default {
         answer:
           'Settings → Budget & Reports → Harcama limiti ayarla bölümünden istediğin tutarı girebilirsin. Today sayfasındaki halka ne kadar harcadığını ve günlük ne kadarın kaldığını gösterir. Ayrıca %50 ile %90 arasında uyarı yüzdesi belirleyebilirsin.',
       },
+      savingsReserve: {
+        question: 'Rezerv nedir?',
+        answer:
+          'Rezerv bütçenin bir parçası değil, bilinçli olarak bir kenara koymak istediğin ayrı bir miktardır. Harcama halkasının altında gösterilir ve bütçeni aştığında azalır. Eksi değere düşerse planladığından fazla harcadın demektir.',
+      },
       warningRing: {
         question: 'Kırmızı halka ne anlama geliyor?',
         answer:
@@ -208,11 +222,6 @@ export default {
         question: 'Snapomat\'ta sabit giderler nedir?',
         answer:
           'Sabit giderler kira, elektrik, internet veya streaming abonelikleri gibi düzenli aylık harcamalardır. Uygulamaya bir kez girersin ve her ay otomatik olarak harcamalarına eklenir. İstediğin zaman düzenleyebilir veya silebilirsin.',
-      },
-      entryLimit: {
-        question: 'Giriş limiti nasıl çalışır?',
-        answer:
-          'İlk ay 20 Kredi ve 20 manuel giriş ücretsiz. İkinci aydan itibaren Free kullanıcı olarak ayda 10 Kredi ve 10 manuel giriş hakkın var. Abonelikle sınırsız manuel giriş ve ayda 100 Kredi alırsın.',
       },
     },
     aboutModalTitle: 'Snapomat hakkında',

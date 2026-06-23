@@ -52,7 +52,7 @@ export default {
     dayToday: 'HOY',
     dayYesterday: 'AYER',
     emptyMonth: 'Sin gastos este mes',
-    savingsGoal: 'Objetivo de ahorro: {{amount}} €',
+    savingsGoal: 'Reserva: {{amount}}',
   },
   history: {
     searchPlaceholder: 'Buscar comercio...',
@@ -99,6 +99,8 @@ export default {
       dangerZone: 'ZONA PELIGROSA',
     },
     rows: {
+      reserveTitle: 'Establecer reserva',
+      reserveSubtitleInactive: 'No activa',
       monthlyBudgetTitle: 'Fijar presupuesto mensual',
       monthlyBudgetSubtitle: 'Establecer límite de gasto',
       monthlyNoteTitle: 'Nota mensual',
@@ -127,16 +129,23 @@ export default {
     budgetWarningToggle: 'Activar aviso de presupuesto',
     budgetModalSubtitleWarning:
       'Activa el aviso de presupuesto – el anillo se vuelve rojo oscuro al alcanzar el umbral.',
+    budgetModalSubtitle1:
+      'Define cuánto dinero tienes disponible cada mes. El anillo de gastos muestra cuánto queda y se vuelve rojo cuando tus gastos superan el límite de aviso definido.',
+    budgetModalSubtitle2:
+      'Opcionalmente puedes definir una reserva — un importe que deseas apartar. La reserva se muestra bajo el anillo y disminuye si superas tu presupuesto.',
     budgetPlaceholder: '1.000',
-    savingsGoalToggle: 'Definir objetivo de ahorro',
-    savingsGoalLabel: 'Objetivo de ahorro',
-    savingsGoalShowToggle: 'Mostrar objetivo de ahorro en la pantalla Today',
+    savingsGoalToggle: 'Definir reserva',
+    savingsGoalLabel: 'Reserva',
+    savingsGoalShowToggle: 'Mostrar reserva en la pantalla Today',
     notePlaceholder: '¿Cómo fue tu mes? Anota pensamientos, logros y objetivos …',
     languageModalTitle: '🌍 Idioma',
     languageModalHint:
       'Automático detecta el idioma de tu dispositivo. Puedes cambiarlo manualmente aquí.',
     currencyAuto: 'Automático',
     currencyModalTitle: 'Elegir moneda',
+    reserveModalTitle: 'Reserva',
+    reserveModalSubtitle:
+      'Opcional: la reserva es independiente de tu presupuesto — un importe separado que deseas apartar conscientemente. Se muestra bajo el anillo de gastos y disminuye si superas tu presupuesto.',
     locales: {
       auto: 'Automático',
       de: 'Deutsch',
@@ -189,6 +198,11 @@ export default {
         answer:
           'En Settings → Budget & Reports → Establecer límite de gasto introduces la cantidad deseada. El anillo en Today muestra cuánto has gastado y cuánto te queda al día. También puedes elegir el porcentaje de aviso – del 50 % al 90 %.',
       },
+      savingsReserve: {
+        question: '¿Qué es la reserva?',
+        answer:
+          'La reserva no es parte de tu presupuesto, sino un importe separado que deseas apartar conscientemente. Se muestra bajo el anillo de gastos y disminuye si superas tu presupuesto. Si es negativa, has gastado más de lo previsto.',
+      },
       warningRing: {
         question: '¿Qué significa el anillo rojo?',
         answer:
@@ -208,11 +222,6 @@ export default {
         question: '¿Qué son los costes fijos en Snapomat?',
         answer:
           'Los costes fijos son gastos mensuales regulares como alquiler, luz, internet o suscripciones de streaming. Los registras una vez en la app y se añaden automáticamente a tus gastos cada mes. Puedes editarlos o eliminarlos en cualquier momento.',
-      },
-      entryLimit: {
-        question: '¿Cómo funciona el límite de entradas?',
-        answer:
-          'El primer mes tienes 20 Créditos y 20 entradas manuales gratis. Desde el segundo mes, como usuario Free, tienes 10 Créditos y 10 entradas manuales al mes. Con una suscripción tienes entradas manuales ilimitadas y 100 Créditos al mes.',
       },
     },
     aboutModalTitle: 'Sobre Snapomat',
