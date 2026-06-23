@@ -178,10 +178,10 @@ function createStyles(colors) {
       lineHeight: 26,
     },
     monthLabel: {
-      fontFamily: 'DMSans_700Bold',
-      fontSize: 13,
+      fontFamily: 'DMSans_900Black',
+      fontSize: 14,
       color: colors.text,
-      letterSpacing: 1,
+      letterSpacing: 1.2,
       textTransform: 'uppercase',
       textAlign: 'center',
       minWidth: 130,

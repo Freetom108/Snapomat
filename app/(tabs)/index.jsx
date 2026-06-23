@@ -16,7 +16,6 @@ import { useTranslation } from '../../hooks/useTranslation';
 import { getExpenses, getBudget, getSavingsGoal } from '../../store/storage';
 import {
   formatAmountNumber,
-  formatCurrency,
   getMonthExpenses,
   parseExpenseDate,
   toRowExpense,
@@ -27,55 +26,65 @@ import {
 function StatsRow({ stats, budget, savingsGoal, colors, styles }) {
   const { t } = useTranslation();
   const remainingDisplay = formatAmountNumber(Math.max(stats.remaining, 0));
-  const showSavings = savingsGoal?.active;
-  const reserveDisplay = (savingsGoal?.amount ?? 0) - Math.max(0, stats.spent - budget);
+  const reserveDisplay = Math.round((savingsGoal?.amount ?? 0) - Math.max(0, stats.spent - budget));
 
   return (
-    <View style={styles.statsRow}>
-      <View style={styles.statCell}>
-        <Text
-          style={styles.statValueGold}
-          numberOfLines={1}
-          adjustsFontSizeToFit
-          minimumFontScale={0.7}
-        >
-          {stats.avgPerDay}
-        </Text>
-        <Text style={styles.statLabel}>{t('home.statsAvgSpent')}</Text>
-        <Text style={styles.statLabel}>{t('common.perDay')}</Text>
-      </View>
-      <View style={styles.statDivider} />
-      <View style={styles.statCell}>
-        <Text
-          style={styles.statValueWhite}
-          numberOfLines={1}
-          adjustsFontSizeToFit
-          minimumFontScale={0.7}
-        >
-          {remainingDisplay} / {formatAmountNumber(budget)}
-        </Text>
-        <Text style={styles.statLabel}>{t('home.statsAvailable')}</Text>
-        <Text style={styles.statLabel}>{t('home.statsBudget')}</Text>
-        {showSavings ? (
-          <Text style={[styles.statSavings, reserveDisplay < 0 && { color: '#E53535' }]}>
-            {t('home.savingsGoal', { amount: formatCurrency(reserveDisplay) })}
+    <>
+      <View style={styles.statsRow}>
+        <View style={styles.statCell}>
+          <Text
+            style={styles.statValueGold}
+            numberOfLines={1}
+            adjustsFontSizeToFit
+            minimumFontScale={0.7}
+          >
+            {stats.avgPerDay}
           </Text>
-        ) : null}
+          <Text style={styles.statLabel}>{t('home.statsAvgSpent')}</Text>
+          <Text style={styles.statLabel}>{t('common.perDay')}</Text>
+        </View>
+        <View style={styles.statDivider} />
+        <View style={styles.statCell}>
+          <Text
+            style={styles.statValueWhite}
+            numberOfLines={1}
+            adjustsFontSizeToFit
+            minimumFontScale={0.7}
+          >
+            {remainingDisplay} / {formatAmountNumber(budget)}
+          </Text>
+          <Text style={styles.statLabel}>{t('home.statsAvailable')}</Text>
+          <Text style={styles.statLabel}>{t('home.statsBudget')}</Text>
+        </View>
+        <View style={styles.statDivider} />
+        <View style={styles.statCell}>
+          <Text
+            style={styles.statValueWhite}
+            numberOfLines={1}
+            adjustsFontSizeToFit
+            minimumFontScale={0.7}
+          >
+            {stats.perDayLeft}
+          </Text>
+          <Text style={styles.statLabel}>{t('home.statsAvgAvailable')}</Text>
+          <Text style={styles.statLabel}>{t('common.perDay')}</Text>
+        </View>
       </View>
-      <View style={styles.statDivider} />
-      <View style={styles.statCell}>
-        <Text
-          style={styles.statValueWhite}
-          numberOfLines={1}
-          adjustsFontSizeToFit
-          minimumFontScale={0.7}
-        >
-          {stats.perDayLeft}
-        </Text>
-        <Text style={styles.statLabel}>{t('home.statsAvgAvailable')}</Text>
-        <Text style={styles.statLabel}>{t('common.perDay')}</Text>
-      </View>
-    </View>
+      {savingsGoal?.active ? (
+        <View style={{ marginTop: 0, marginBottom: 16 }}>
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 13,
+              fontFamily: 'DMSans_700Bold',
+              color: reserveDisplay < 0 ? '#E53535' : colors.accent,
+            }}
+          >
+            {t('home.savingsGoal', { amount: formatAmountNumber(reserveDisplay) })}
+          </Text>
+        </View>
+      ) : null}
+    </>
   );
 }
 
@@ -124,11 +133,10 @@ function createStyles(colors) {
       marginTop: 16,
     },
     monthLabel: {
-      fontFamily: 'DMSans_700Bold',
-      fontSize: 12,
-      color: colors.muted,
-      letterSpacing: 1.5,
-      textTransform: 'uppercase',
+      fontFamily: 'DMSans_900Black',
+      fontSize: 14,
+      color: colors.text,
+      letterSpacing: 1.2,
       marginBottom: 16,
     },
     ringWrap: {
@@ -170,13 +178,14 @@ function createStyles(colors) {
       borderTopWidth: 1,
       borderBottomWidth: 1,
       borderColor: colors.border,
-      paddingVertical: 16,
+      paddingVertical: 10,
       marginTop: 24,
-      marginBottom: 24,
+      marginBottom: 8,
     },
     statCell: {
       flex: 1,
       alignItems: 'center',
+      justifyContent: 'flex-start',
       gap: 2,
     },
     statDivider: {
@@ -190,6 +199,8 @@ function createStyles(colors) {
       color: colors.accent,
       width: '100%',
       textAlign: 'center',
+      height: 28,
+      lineHeight: 22,
     },
     statValueWhite: {
       fontFamily: 'DMSans_800ExtraBold',
@@ -197,6 +208,8 @@ function createStyles(colors) {
       color: colors.text,
       width: '100%',
       textAlign: 'center',
+      height: 28,
+      lineHeight: 22,
     },
     statLabel: {
       fontFamily: 'DMSans_400Regular',
@@ -271,6 +284,11 @@ export default function HomeScreen() {
   const now = new Date();
   const monthExpenses = getMonthExpenses(expenses, now.getFullYear(), now.getMonth());
   const stats = calcMonthStats(expenses, budget, now);
+  stats.monthLabel = now.toLocaleDateString(locale, {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
   const sortedMonthExpenses = useMemo(
     () =>
       [...monthExpenses].sort(
