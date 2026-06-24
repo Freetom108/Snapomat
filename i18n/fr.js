@@ -73,6 +73,7 @@ export default {
     noCreditsMessage: 'Plus de crédits disponibles. Veuillez souscrire un abonnement ou acheter des crédits.',
     or: 'ou',
     manualEntry: 'Saisir manuellement',
+    manualHint: "Idéal pour les charges fixes, les dépenses récurrentes ou les postes de relevés bancaires pour lesquels tu n'as pas de reçu.",
     cameraPermission: 'Accès à la caméra requis',
     cameraGrant: 'Autoriser',
     scanTitle: 'Analyse en cours...',
@@ -292,6 +293,8 @@ export default {
   paywall: {
     message:
       'Votre mois d\'essai est terminé. Vos données sont en sécurité – choisissez un abonnement et continuez tout simplement.',
+    trialExpiredMessage:
+      'Ta période d\'essai gratuite est terminée. Abonne-toi pour continuer à suivre tes dépenses.',
   },
   themes: {
     gold: 'Or de minuit',

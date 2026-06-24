@@ -73,6 +73,7 @@ export default {
     noCreditsMessage: 'No credits left. Please subscribe or buy more credits.',
     or: 'or',
     manualEntry: 'Enter manually',
+    manualHint: 'Ideal for fixed costs, recurring expenses or individual items from bank statements for which you have no receipt.',
     cameraPermission: 'Camera access required',
     cameraGrant: 'Grant permission',
     scanTitle: 'Analyzing...',
@@ -292,6 +293,8 @@ export default {
   paywall: {
     message:
       'Your trial month has expired. Your data is safely stored – choose a subscription and continue right away.',
+    trialExpiredMessage:
+      'Your free trial has expired. Subscribe to continue tracking your expenses.',
   },
   themes: {
     gold: 'Midnight Gold',

@@ -73,6 +73,7 @@ export default {
     noCreditsMessage: 'Crediti esauriti. Sottoscrivi un abbonamento o acquista altri crediti.',
     or: 'oppure',
     manualEntry: 'Inserisci manualmente',
+    manualHint: 'Ideale per costi fissi, spese ricorrenti o singole voci di estratti conto per cui non hai una ricevuta.',
     cameraPermission: 'Accesso alla fotocamera necessario',
     cameraGrant: 'Consenti',
     scanTitle: 'Analisi in corso...',
@@ -292,6 +293,8 @@ export default {
   paywall: {
     message:
       'Il tuo mese di prova è scaduto. I tuoi dati sono al sicuro – scegli un abbonamento e continua senza problemi.',
+    trialExpiredMessage:
+      'Il tuo periodo di prova gratuito è scaduto. Abbonati per continuare a registrare le tue spese.',
   },
   themes: {
     gold: 'Oro notturno',

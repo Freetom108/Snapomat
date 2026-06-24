@@ -11,7 +11,6 @@ import {
   seedMayJune2026TestExpenses,
 } from '../store/seedTestExpenses';
 import { hasAccess } from '../store/storage';
-import PaywallOverlay from '../components/PaywallOverlay';
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
@@ -39,7 +38,7 @@ function RootLayoutInner() {
   }, []);
 
   useEffect(() => {
-    if (!hasAppAccess) return;
+    if (hasAppAccess === null) return;
 
     async function init() {
       try {
@@ -58,15 +57,6 @@ function RootLayoutInner() {
 
   if (hasAppAccess === null) {
     return null;
-  }
-
-  if (!hasAppAccess) {
-    return (
-      <>
-        <StatusBar style={theme.id === 'light' ? 'dark' : 'light'} />
-        <PaywallOverlay onSubscribed={() => setHasAppAccess(true)} />
-      </>
-    );
   }
 
   return (

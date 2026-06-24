@@ -73,6 +73,7 @@ export default {
     noCreditsMessage: 'Geen credits meer beschikbaar. Sluit een abonnement af of koop credits bij.',
     or: 'of',
     manualEntry: 'Handmatig invoeren',
+    manualHint: 'Ideaal voor vaste kosten, terugkerende uitgaven of afzonderlijke posten van bankafschriften waarvoor je geen bon hebt.',
     cameraPermission: 'Cameratoegang vereist',
     cameraGrant: 'Toestemming geven',
     scanTitle: 'Bezig met analyseren...',
@@ -292,6 +293,8 @@ export default {
   paywall: {
     message:
       'Je proefmaand is afgelopen. Je gegevens zijn veilig opgeslagen – kies een abonnement en ga gewoon verder.',
+    trialExpiredMessage:
+      'Je gratis proefperiode is verlopen. Abonneer je om je uitgaven te blijven bijhouden.',
   },
   themes: {
     gold: 'Midnight Gold',

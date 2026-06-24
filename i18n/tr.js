@@ -73,6 +73,7 @@ export default {
     noCreditsMessage: 'Kredi kalmadı. Lütfen abone ol veya kredi satın al.',
     or: 'veya',
     manualEntry: 'Elle gir',
+    manualHint: 'Sabit giderler, tekrarlayan harcamalar veya fişi olmadığın banka ekstresi kalemleri için idealdir.',
     cameraPermission: 'Kamera erişimi gerekli',
     cameraGrant: 'İzin ver',
     scanTitle: 'Analiz ediliyor...',
@@ -292,6 +293,8 @@ export default {
   paywall: {
     message:
       'Deneme ayın sona erdi. Verilerin güvenle saklandı – bir abonelik seç ve kaldığın yerden devam et.',
+    trialExpiredMessage:
+      'Ücretsiz deneme süren sona erdi. Harcamalarını takip etmeye devam etmek için abone ol.',
   },
   themes: {
     gold: 'Gece altını',

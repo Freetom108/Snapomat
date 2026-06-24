@@ -62,7 +62,7 @@ export default {
     noMonthExpenses: 'Keine Buchungen in diesem Monat',
   },
   import: {
-    receiptTitle: 'Kassenzettel',
+    receiptTitle: 'Kassenbeleg',
     receiptSubtitle: 'Foto aufnehmen',
     receiptCreditCost: '1 Foto = 1 Credit',
     receiptHint:
@@ -73,6 +73,7 @@ export default {
     noCreditsMessage: 'Keine Credits mehr verfügbar. Bitte Abo abschließen oder Credits nachkaufen.',
     or: 'oder',
     manualEntry: 'Manuell eingeben',
+    manualHint: 'Ideal für Fixkosten, wiederkehrende Ausgaben oder einzelne Posten von Kontoauszügen für die du keinen Kassenbeleg hast.',
     cameraPermission: 'Kamerazugriff erforderlich',
     cameraGrant: 'Berechtigung erteilen',
     scanTitle: 'Analyse läuft...',
@@ -189,12 +190,12 @@ export default {
       ai: {
         question: 'Wie funktioniert die KI-Analyse?',
         answer:
-          'Du fotografierst einen Kassenzettel. Snapomat sendet das Bild an eine KI die Händler, Betrag, Datum und Kategorie automatisch erkennt. Du überprüfst alle Daten vor dem Speichern – du hast immer das letzte Wort. Jede Analyse kostet 1 Credit.',
+          'Du fotografierst einen Kassenbeleg. Snapomat sendet das Bild an eine KI die Händler, Betrag, Datum und Kategorie automatisch erkennt. Du überprüfst alle Daten vor dem Speichern – du hast immer das letzte Wort. Jede Analyse kostet 1 Credit.',
       },
       scanCost: {
         question: 'Was sind Credits?',
         answer:
-          'Credits sind die Währung für KI-Analysen in Snapomat. Jedes Foto eines Kassenzettels kostet 1 Credit. Manuelle Einträge kosten keine Credits. Als Abonnent bekommst du jeden Monat automatisch 100 frische Credits.',
+          'Credits sind die Währung für KI-Analysen in Snapomat. Jedes Foto eines Kassenbelegs kostet 1 Credit. Manuelle Einträge kosten keine Credits. Als Abonnent bekommst du jeden Monat automatisch 100 frische Credits.',
       },
       creditsBuy: {
         question: 'Kann ich Credits nachkaufen?',
@@ -292,6 +293,8 @@ export default {
   paywall: {
     message:
       'Dein Probemonat ist abgelaufen. Deine Daten sind sicher gespeichert – wähle ein Abo und mach einfach weiter.',
+    trialExpiredMessage:
+      'Dein kostenloser Testzeitraum ist abgelaufen. Schließe ein Abo ab, um weiterhin Ausgaben erfassen zu können.',
   },
   themes: {
     gold: 'Midnight Gold',
@@ -304,7 +307,7 @@ export default {
   onboarding: {
     title1: 'Beleg fotografieren –',
     title1gold: 'die KI erledigt den Rest',
-    sub1: 'Fotografiere einen Kassenzettel. Snapomat erkennt Betrag und Händler automatisch, schlägt eine passende Kategorie vor und erstellt den Eintrag. Du bestätigst nur noch.',
+    sub1: 'Fotografiere einen Kassenbeleg. Snapomat erkennt Betrag und Händler automatisch, schlägt eine passende Kategorie vor und erstellt den Eintrag. Du bestätigst nur noch.',
     sub1small: 'Die Belegerfassung kann auch jederzeit manuell erfolgen.',
     title2: 'Behalte den Überblick',
     title2gold: 'über dein Budget',

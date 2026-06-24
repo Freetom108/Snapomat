@@ -73,6 +73,7 @@ export default {
     noCreditsMessage: 'No quedan créditos. Suscríbete o compra más créditos.',
     or: 'o',
     manualEntry: 'Introducir manualmente',
+    manualHint: 'Ideal para gastos fijos, gastos recurrentes o partidas de extractos bancarios para las que no tienes recibo.',
     cameraPermission: 'Se necesita acceso a la cámara',
     cameraGrant: 'Permitir',
     scanTitle: 'Analizando...',
@@ -292,6 +293,8 @@ export default {
   paywall: {
     message:
       'Tu mes de prueba ha terminado. Tus datos están guardados de forma segura – elige un plan y continúa sin problemas.',
+    trialExpiredMessage:
+      'Tu período de prueba gratuito ha expirado. Suscríbete para seguir registrando tus gastos.',
   },
   themes: {
     gold: 'Oro medianoche',

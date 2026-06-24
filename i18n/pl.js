@@ -73,6 +73,7 @@ export default {
     noCreditsMessage: 'Brak dostępnych kredytów. Wykup subskrypcję lub dokup kredyty.',
     or: 'lub',
     manualEntry: 'Wpisz ręcznie',
+    manualHint: 'Idealne dla stałych kosztów, powtarzających się wydatków lub pojedynczych pozycji z wyciągów bankowych, dla których nie masz paragonu.',
     cameraPermission: 'Wymagany dostęp do aparatu',
     cameraGrant: 'Zezwól',
     scanTitle: 'Analizowanie...',
@@ -292,6 +293,8 @@ export default {
   paywall: {
     message:
       'Twój miesiąc próbny dobiegł końca. Twoje dane są bezpiecznie zapisane – wybierz subskrypcję i po prostu kontynuuj.',
+    trialExpiredMessage:
+      'Twój bezpłatny okres próbny wygasł. Zasubskrybuj, aby nadal śledzić swoje wydatki.',
   },
   themes: {
     gold: 'Złoto północy',

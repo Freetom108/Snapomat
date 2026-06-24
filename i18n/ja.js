@@ -73,6 +73,7 @@ export default {
     noCreditsMessage: 'クレジットがありません。プランに登録するか、クレジットを購入してください。',
     or: 'または',
     manualEntry: '手動で入力',
+    manualHint: '固定費、定期的な支出、または領収書のない口座明細の個別項目に最適です。',
     cameraPermission: 'カメラへのアクセスが必要です',
     cameraGrant: 'アクセスを許可',
     scanTitle: '解析中...',
@@ -292,6 +293,8 @@ export default {
   paywall: {
     message:
       'お試し期間が終了しました。データは安全に保存されています － プランを選んでそのまま続けましょう。',
+    trialExpiredMessage:
+      '無料トライアル期間が終了しました。支出の記録を続けるにはサブスクリプションに登録してください。',
   },
   themes: {
     gold: 'Midnight Gold',

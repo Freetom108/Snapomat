@@ -73,6 +73,7 @@ export default {
     noCreditsMessage: 'Sem créditos disponíveis. Subscreve um plano ou compra mais créditos.',
     or: 'ou',
     manualEntry: 'Introduzir manualmente',
+    manualHint: 'Ideal para custos fixos, despesas recorrentes ou itens individuais de extratos bancários para os quais não tens recibo.',
     cameraPermission: 'Acesso à câmara necessário',
     cameraGrant: 'Permitir',
     scanTitle: 'A analisar...',
@@ -292,6 +293,8 @@ export default {
   paywall: {
     message:
       'O teu mês de teste terminou. Os teus dados estão guardados em segurança – escolhe um plano e continua sem complicações.',
+    trialExpiredMessage:
+      'O teu período de teste gratuito expirou. Subscreve para continuar a registar as tuas despesas.',
   },
   themes: {
     gold: 'Ouro da meia-noite',

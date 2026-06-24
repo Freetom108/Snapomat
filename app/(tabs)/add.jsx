@@ -26,7 +26,7 @@ import { CATEGORY_LIST, CATEGORIES, getCategory, getCategoryList } from '../../c
 import { useTheme } from '../../hooks/useTheme';
 import { useTranslation } from '../../hooks/useTranslation';
 import { analyzeImage } from '../../services/apiGatekeeper';
-import { getExpenses, saveExpense, findMerchantMatch, saveMerchantToLibrary, getCredits, deductCredit } from '../../store/storage';
+import { getExpenses, saveExpense, findMerchantMatch, saveMerchantToLibrary, getCredits, deductCredit, hasAccess } from '../../store/storage';
 import CreditsPricingSheet from '../../components/CreditsPricingSheet';
 
 function withAlpha(hex, alpha) {
@@ -250,6 +250,8 @@ function SelectionStep({ colors, styles, onReceipt, onManual }) {
       >
         <Text style={[styles.manualButtonText, { color: colors.accent }]}>{t('import.manualEntry')}</Text>
       </Pressable>
+
+      <Text style={[styles.manualHint, { color: colors.muted }]}>{t('import.manualHint')}</Text>
     </View>
   );
 }
@@ -657,6 +659,12 @@ function createStyles(colors) {
       fontFamily: 'DMSans_700Bold',
       fontSize: 17,
     },
+    manualHint: {
+      fontFamily: 'DMSans_400Regular',
+      fontSize: 12,
+      textAlign: 'center',
+      paddingTop: 8,
+    },
     pressed: {
       opacity: 0.85,
     },
@@ -927,6 +935,12 @@ export default function AddScreen() {
   });
 
   async function openCamera() {
+    const access = await hasAccess();
+    if (!access) {
+      Alert.alert(t('paywall.trialExpiredMessage'));
+      setShowPricing(true);
+      return;
+    }
     const current = await getCredits();
     setCredits(current);
     if (current <= 0) {
@@ -973,7 +987,13 @@ export default function AddScreen() {
     }
   }
 
-  function handleManual() {
+  async function handleManual() {
+    const access = await hasAccess();
+    if (!access) {
+      Alert.alert(t('paywall.trialExpiredMessage'));
+      setShowPricing(true);
+      return;
+    }
     setPhotoBase64(null);
     setForm({ ...EMPTY_MANUAL });
     setSelectedCategory(EMPTY_MANUAL.categoryId);
