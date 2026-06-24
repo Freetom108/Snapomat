@@ -71,6 +71,8 @@ export default {
     creditsShort: '⚡ {{count}} Credits',
     creditsShortSingular: '⚡ {{count}} Credit',
     noCreditsMessage: 'Keine Credits mehr verfügbar. Bitte Abo abschließen oder Credits nachkaufen.',
+    noCreditsTitle: 'Keine Credits mehr verfügbar',
+    noCreditsBody: 'Deine Credits für diesen Monat sind aufgebraucht. Mit einem Monats- oder Jahresabo werden sie zu Beginn des nächsten Monats automatisch erneuert.',
     or: 'oder',
     manualEntry: 'Manuell eingeben',
     manualHint: 'Ideal für Fixkosten, wiederkehrende Ausgaben oder einzelne Posten von Kontoauszügen für die du keinen Kassenbeleg hast.',

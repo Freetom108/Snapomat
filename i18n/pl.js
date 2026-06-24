@@ -71,6 +71,8 @@ export default {
     creditsShort: '⚡ {{count}} Kredytów',
     creditsShortSingular: '⚡ {{count}} Kredyt',
     noCreditsMessage: 'Brak dostępnych kredytów. Wykup subskrypcję lub dokup kredyty.',
+    noCreditsTitle: 'Brak dostępnych kredytów',
+    noCreditsBody: 'Twoje kredyty na ten miesiąc są wyczerpane. Z subskrypcją miesięczną lub roczną zostaną automatycznie odnowione na początku następnego miesiąca.',
     or: 'lub',
     manualEntry: 'Wpisz ręcznie',
     manualHint: 'Idealne dla stałych kosztów, powtarzających się wydatków lub pojedynczych pozycji z wyciągów bankowych, dla których nie masz paragonu.',

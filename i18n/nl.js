@@ -71,6 +71,8 @@ export default {
     creditsShort: '⚡ {{count}} credits',
     creditsShortSingular: '⚡ {{count}} credit',
     noCreditsMessage: 'Geen credits meer beschikbaar. Sluit een abonnement af of koop credits bij.',
+    noCreditsTitle: 'Geen credits meer beschikbaar',
+    noCreditsBody: 'Je credits voor deze maand zijn op. Met een maandelijks of jaarlijks abonnement worden ze automatisch vernieuwd aan het begin van de volgende maand.',
     or: 'of',
     manualEntry: 'Handmatig invoeren',
     manualHint: 'Ideaal voor vaste kosten, terugkerende uitgaven of afzonderlijke posten van bankafschriften waarvoor je geen bon hebt.',

@@ -896,6 +896,39 @@ function createStyles(colors) {
       fontSize: 15,
       color: colors.muted,
     },
+    noCreditsOverlay: {
+      flex: 1,
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      justifyContent: 'flex-end',
+    },
+    noCreditsSheet: {
+      borderTopLeftRadius: 24,
+      borderTopRightRadius: 24,
+      paddingHorizontal: 24,
+      paddingTop: 28,
+      paddingBottom: 40,
+    },
+    noCreditsTitle: {
+      fontFamily: 'DMSans_700Bold',
+      fontSize: 20,
+      marginBottom: 12,
+    },
+    noCreditsBody: {
+      fontFamily: 'DMSans_400Regular',
+      fontSize: 15,
+      lineHeight: 22,
+      marginBottom: 24,
+    },
+    noCreditsButton: {
+      borderRadius: 16,
+      borderWidth: 1,
+      padding: 17,
+      alignItems: 'center',
+    },
+    noCreditsButtonText: {
+      fontFamily: 'DMSans_700Bold',
+      fontSize: 17,
+    },
   });
 }
 
@@ -914,6 +947,7 @@ export default function AddScreen() {
   const [saving, setSaving] = useState(false);
   const [credits, setCredits] = useState(0);
   const [showPricing, setShowPricing] = useState(false);
+  const [showNoCredits, setShowNoCredits] = useState(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -944,8 +978,7 @@ export default function AddScreen() {
     const current = await getCredits();
     setCredits(current);
     if (current <= 0) {
-      Alert.alert(t('import.noCreditsMessage'));
-      setShowPricing(true);
+      setShowNoCredits(true);
       return;
     }
     setShowCamera(true);
@@ -1088,6 +1121,36 @@ export default function AddScreen() {
         visible={showPricing}
         onClose={() => setShowPricing(false)}
       />
+
+      <Modal
+        visible={showNoCredits}
+        animationType="slide"
+        transparent
+        onRequestClose={() => setShowNoCredits(false)}
+      >
+        <View style={styles.noCreditsOverlay}>
+          <View style={[styles.noCreditsSheet, { backgroundColor: colors.card }]}>
+            <Text style={[styles.noCreditsTitle, { color: colors.text }]}>
+              {`⚡ ${t('import.noCreditsTitle')}`}
+            </Text>
+            <Text style={[styles.noCreditsBody, { color: colors.muted }]}>
+              {t('import.noCreditsBody')}
+            </Text>
+            <Pressable
+              onPress={() => setShowNoCredits(false)}
+              style={({ pressed }) => [
+                styles.noCreditsButton,
+                { backgroundColor: colors.accentFaint, borderColor: colors.accentDim },
+                pressed && { opacity: 0.8 },
+              ]}
+            >
+              <Text style={[styles.noCreditsButtonText, { color: colors.accent }]}>
+                {t('common.close')}
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }

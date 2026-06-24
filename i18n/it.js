@@ -71,6 +71,8 @@ export default {
     creditsShort: '⚡ {{count}} Crediti',
     creditsShortSingular: '⚡ {{count}} Credito',
     noCreditsMessage: 'Crediti esauriti. Sottoscrivi un abbonamento o acquista altri crediti.',
+    noCreditsTitle: 'Nessun credito disponibile',
+    noCreditsBody: 'I tuoi crediti per questo mese sono esauriti. Con un abbonamento mensile o annuale verranno rinnovati automaticamente all\'inizio del mese prossimo.',
     or: 'oppure',
     manualEntry: 'Inserisci manualmente',
     manualHint: 'Ideale per costi fissi, spese ricorrenti o singole voci di estratti conto per cui non hai una ricevuta.',

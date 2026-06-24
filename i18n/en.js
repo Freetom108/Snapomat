@@ -71,6 +71,8 @@ export default {
     creditsShort: '⚡ {{count}} Credits',
     creditsShortSingular: '⚡ {{count}} Credit',
     noCreditsMessage: 'No credits left. Please subscribe or buy more credits.',
+    noCreditsTitle: 'No credits remaining',
+    noCreditsBody: 'Your credits for this month are used up. With a monthly or yearly subscription they will be automatically renewed at the beginning of next month.',
     or: 'or',
     manualEntry: 'Enter manually',
     manualHint: 'Ideal for fixed costs, recurring expenses or individual items from bank statements for which you have no receipt.',

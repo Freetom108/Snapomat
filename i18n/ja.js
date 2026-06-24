@@ -71,6 +71,8 @@ export default {
     creditsShort: '⚡ {{count}} クレジット',
     creditsShortSingular: '⚡ {{count}} クレジット',
     noCreditsMessage: 'クレジットがありません。プランに登録するか、クレジットを購入してください。',
+    noCreditsTitle: 'クレジットがありません',
+    noCreditsBody: '今月のクレジットを使い切りました。月額または年額プランに登録すると、来月初めに自動的に更新されます。',
     or: 'または',
     manualEntry: '手動で入力',
     manualHint: '固定費、定期的な支出、または領収書のない口座明細の個別項目に最適です。',

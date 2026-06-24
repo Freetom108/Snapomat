@@ -71,6 +71,8 @@ export default {
     creditsShort: '⚡ {{count}} Crédits',
     creditsShortSingular: '⚡ {{count}} Crédit',
     noCreditsMessage: 'Plus de crédits disponibles. Veuillez souscrire un abonnement ou acheter des crédits.',
+    noCreditsTitle: 'Plus de crédits disponibles',
+    noCreditsBody: 'Tes crédits pour ce mois sont épuisés. Avec un abonnement mensuel ou annuel, ils seront automatiquement renouvelés au début du mois prochain.',
     or: 'ou',
     manualEntry: 'Saisir manuellement',
     manualHint: "Idéal pour les charges fixes, les dépenses récurrentes ou les postes de relevés bancaires pour lesquels tu n'as pas de reçu.",

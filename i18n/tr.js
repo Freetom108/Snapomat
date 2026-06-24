@@ -71,6 +71,8 @@ export default {
     creditsShort: '⚡ {{count}} Kredi',
     creditsShortSingular: '⚡ {{count}} Kredi',
     noCreditsMessage: 'Kredi kalmadı. Lütfen abone ol veya kredi satın al.',
+    noCreditsTitle: 'Kredi kalmadı',
+    noCreditsBody: 'Bu ayki kredilerin tükendi. Aylık veya yıllık abonelikle bir sonraki ayın başında otomatik olarak yenilenecekler.',
     or: 'veya',
     manualEntry: 'Elle gir',
     manualHint: 'Sabit giderler, tekrarlayan harcamalar veya fişi olmadığın banka ekstresi kalemleri için idealdir.',

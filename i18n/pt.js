@@ -71,6 +71,8 @@ export default {
     creditsShort: '⚡ {{count}} Créditos',
     creditsShortSingular: '⚡ {{count}} Crédito',
     noCreditsMessage: 'Sem créditos disponíveis. Subscreve um plano ou compra mais créditos.',
+    noCreditsTitle: 'Sem créditos disponíveis',
+    noCreditsBody: 'Os teus créditos deste mês estão esgotados. Com uma subscrição mensal ou anual serão renovados automaticamente no início do próximo mês.',
     or: 'ou',
     manualEntry: 'Introduzir manualmente',
     manualHint: 'Ideal para custos fixos, despesas recorrentes ou itens individuais de extratos bancários para os quais não tens recibo.',

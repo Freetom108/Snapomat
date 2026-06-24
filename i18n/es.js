@@ -71,6 +71,8 @@ export default {
     creditsShort: '⚡ {{count}} Créditos',
     creditsShortSingular: '⚡ {{count}} Crédito',
     noCreditsMessage: 'No quedan créditos. Suscríbete o compra más créditos.',
+    noCreditsTitle: 'Sin créditos disponibles',
+    noCreditsBody: 'Tus créditos de este mes se han agotado. Con una suscripción mensual o anual se renovarán automáticamente al comienzo del próximo mes.',
     or: 'o',
     manualEntry: 'Introducir manualmente',
     manualHint: 'Ideal para gastos fijos, gastos recurrentes o partidas de extractos bancarios para las que no tienes recibo.',
