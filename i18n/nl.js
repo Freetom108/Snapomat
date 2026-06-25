@@ -175,9 +175,9 @@ export default {
       intro: { question: 'App-intro opnieuw bekijken' },
       upgrade: { question: 'Upgrade-opties tonen' },
       monthlyYearly: {
-        question: 'Kan ik van maandelijks naar jaarlijks overstappen?',
+        question: 'Hoe kan ik een abonnement afsluiten of upgraden?',
         answer:
-          'Ja. Het exacte proces hangt af van de regels van de betreffende app store — in de meeste gevallen kun je je abonnement rechtstreeks in de store-instellingen beheren en upgraden naar het jaarplan. Je gegevens blijven volledig behouden. Met Backup & Restore kun je je gegevens bovendien veiligstellen.',
+          'Tik op Abonnement & Credits in de instellingen om je abonnement te kiezen of te wijzigen. Je kunt op elk moment upgraden van Gratis naar Maandelijks of Jaarlijks — of overstappen van Maandelijks naar Jaarlijks. Het exacte proces hangt af van de regels van de betreffende app store. Je gegevens blijven volledig behouden. Met Backup & Restore in de instellingen kun je je gegevens bovendien veiligstellen.',
       },
       data: {
         question: 'Wat gebeurt er met mijn gegevens?',
@@ -187,7 +187,7 @@ export default {
       trialAfterData: {
         question: 'Wat gebeurt er met de app na de proefmaand?',
         answer:
-          'Na de proefmaand kun je je opgeslagen gegevens nog steeds bekijken — de app blijft open in leesmodus. Om nieuwe uitgaven toe te voegen of bonnen te scannen heb je een maandelijks of jaarlijks abonnement nodig.',
+          'Na de proefmaand kun je de app blijven gebruiken in leesmodus en je opgeslagen gegevens bekijken. Om nieuwe uitgaven toe te voegen of bonnen te scannen heb je een maandelijks of jaarlijks abonnement nodig.',
       },
       ai: {
         question: 'Hoe werkt de AI-analyse?',

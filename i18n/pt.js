@@ -175,9 +175,9 @@ export default {
       intro: { question: 'Repetir intro da app' },
       upgrade: { question: 'Ver opções de subscrição' },
       monthlyYearly: {
-        question: 'Posso mudar de Monthly para Yearly?',
+        question: 'Como posso subscrever ou fazer upgrade?',
         answer:
-          'Sim. O processo exato depende das regras da loja de aplicações em questão — na maioria dos casos podes gerir a tua subscrição diretamente nas definições da loja e fazer upgrade para o plano anual. Os teus dados ficam totalmente preservados. Com o Backup & Restore podes ainda fazer uma cópia de segurança dos teus dados.',
+          'Toca em Subscrição & Créditos nas definições para escolher ou mudar o teu plano. Podes fazer upgrade de Gratuito para Mensal ou Anual a qualquer momento — ou mudar de Mensal para Anual. O processo exato depende das regras da loja de aplicações em questão. Os teus dados ficam totalmente preservados. Com o Backup & Restore nas definições podes ainda fazer uma cópia de segurança.',
       },
       data: {
         question: 'O que acontece aos meus dados?',
@@ -187,7 +187,7 @@ export default {
       trialAfterData: {
         question: 'O que acontece com a app depois do mês de teste?',
         answer:
-          'Após o mês de teste podes continuar a ver os teus dados guardados — a app fica aberta em modo de leitura. Para adicionar novas despesas ou digitalizar recibos precisas de uma subscrição mensal ou anual.',
+          'Após o mês de teste podes continuar a usar a app em modo de leitura e ver os teus dados guardados. Para adicionar novas despesas ou digitalizar recibos precisas de uma subscrição mensal ou anual.',
       },
       ai: {
         question: 'Como funciona a análise IA?',

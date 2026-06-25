@@ -175,9 +175,9 @@ export default {
       intro: { question: 'Revoir l\'intro de l\'app' },
       upgrade: { question: 'Voir les options d\'abonnement' },
       monthlyYearly: {
-        question: 'Puis-je passer de Monthly à Yearly ?',
+        question: 'Comment puis-je souscrire ou passer à un abonnement supérieur ?',
         answer:
-          'Oui. Le processus exact dépend des règles de l\'app store concerné — dans la plupart des cas tu peux gérer ton abonnement directement dans les paramètres du store et passer au plan annuel. Tes données sont entièrement conservées. Avec Backup & Restore tu peux sauvegarder tes données en plus.',
+          'Appuie sur Abonnement & Crédits dans les paramètres pour choisir ou changer ton abonnement. Tu peux passer de Gratuit à Mensuel ou Annuel à tout moment — ou passer de Mensuel à Annuel. Le processus exact dépend des règles de l\'app store concerné. Tes données sont entièrement conservées. Avec Backup & Restore dans les paramètres tu peux en plus sauvegarder tes données.',
       },
       data: {
         question: 'Que deviennent mes données ?',
@@ -187,7 +187,7 @@ export default {
       trialAfterData: {
         question: 'Que se passe-t-il avec l\'application après le mois d\'essai ?',
         answer:
-          'Après le mois d\'essai, tu peux toujours consulter tes données enregistrées — l\'application reste ouverte en mode lecture. Pour ajouter de nouvelles dépenses ou scanner des reçus, tu as besoin d\'un abonnement mensuel ou annuel.',
+          'Après le mois d\'essai tu peux continuer à utiliser l\'application en mode lecture et consulter tes données enregistrées. Pour ajouter de nouvelles dépenses ou scanner des reçus tu as besoin d\'un abonnement mensuel ou annuel.',
       },
       ai: {
         question: 'Comment fonctionne l\'analyse IA ?',

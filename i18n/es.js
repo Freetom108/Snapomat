@@ -175,9 +175,9 @@ export default {
       intro: { question: 'Repetir intro de la app' },
       upgrade: { question: 'Ver opciones de suscripción' },
       monthlyYearly: {
-        question: '¿Puedo cambiar de Monthly a Yearly?',
+        question: '¿Cómo puedo suscribirme o hacer un upgrade?',
         answer:
-          'Sí. El proceso exacto depende de las normas de la tienda de aplicaciones correspondiente — en la mayoría de los casos puedes gestionar tu suscripción directamente en los ajustes de la tienda y cambiar al plan anual. Tus datos se conservan íntegramente. Con Backup & Restore puedes hacer una copia de seguridad adicional de tus datos.',
+          'Toca Suscripción & Créditos en los ajustes para elegir o cambiar tu plan. Puedes pasar de Free a Mensual o Anual en cualquier momento — o cambiar de Mensual a Anual. El proceso exacto depende de las normas de la tienda de aplicaciones correspondiente. Tus datos se conservan íntegramente. Con Backup & Restore en los ajustes puedes hacer además una copia de seguridad.',
       },
       data: {
         question: '¿Qué pasa con mis datos?',
@@ -187,7 +187,7 @@ export default {
       trialAfterData: {
         question: '¿Qué pasa con la app después del mes de prueba?',
         answer:
-          'Después del mes de prueba puedes seguir viendo tus datos guardados — la app permanece abierta en modo lectura. Para añadir nuevos gastos o escanear recibos necesitas una suscripción mensual o anual.',
+          'Después del mes de prueba puedes seguir usando la app en modo lectura y ver tus datos guardados. Para añadir nuevos gastos o escanear recibos necesitas una suscripción mensual o anual.',
       },
       ai: {
         question: '¿Cómo funciona el análisis IA?',

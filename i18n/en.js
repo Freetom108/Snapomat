@@ -175,9 +175,9 @@ export default {
       intro: { question: 'Repeat app intro' },
       upgrade: { question: 'Show upgrade options' },
       monthlyYearly: {
-        question: 'Can I switch from Monthly to Yearly?',
+        question: 'How can I subscribe or upgrade?',
         answer:
-          'Yes. The exact process depends on the rules of the respective app store — in most cases you can manage your subscription directly in the store settings and upgrade to the yearly plan. Your data will be fully retained. With Backup & Restore you can additionally back up your data.',
+          'Tap Subscription & Credits in Settings to choose or change your plan. You can upgrade from Free to Monthly or Yearly at any time — or switch from Monthly to Yearly. The exact process depends on the rules of the respective app store. Your data will be fully retained. With Backup & Restore in Settings you can additionally back up your data.',
       },
       data: {
         question: 'What happens to my data?',
@@ -187,7 +187,7 @@ export default {
       trialAfterData: {
         question: 'What happens to the app after the trial month?',
         answer:
-          'After the trial month you can still view your saved data — the app stays open in read-only mode. To add new expenses or scan receipts, you need a monthly or yearly subscription.',
+          'After the trial month you can continue to use the app in read-only mode and view your saved data. To add new expenses or scan receipts you need a monthly or yearly subscription.',
       },
       ai: {
         question: 'How does AI analysis work?',

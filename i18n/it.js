@@ -175,9 +175,9 @@ export default {
       intro: { question: 'Ripeti intro app' },
       upgrade: { question: 'Mostra opzioni abbonamento' },
       monthlyYearly: {
-        question: 'Posso passare da Monthly a Yearly?',
+        question: 'Come posso abbonarmi o fare un upgrade?',
         answer:
-          'Sì. Il processo esatto dipende dalle regole del rispettivo app store — nella maggior parte dei casi puoi gestire il tuo abbonamento direttamente nelle impostazioni dello store e passare al piano annuale. I tuoi dati vengono conservati integralmente. Con Backup & Restore puoi inoltre eseguire un backup dei tuoi dati.',
+          'Tocca Abbonamento & Crediti nelle impostazioni per scegliere o cambiare il tuo piano. Puoi passare da Gratuito a Mensile o Annuale in qualsiasi momento — o passare da Mensile ad Annuale. Il processo esatto dipende dalle regole del rispettivo app store. I tuoi dati vengono conservati integralmente. Con Backup & Restore nelle impostazioni puoi inoltre eseguire un backup.',
       },
       data: {
         question: 'Cosa succede ai miei dati?',
@@ -187,7 +187,7 @@ export default {
       trialAfterData: {
         question: 'Cosa succede all\'app dopo il mese di prova?',
         answer:
-          'Dopo il mese di prova puoi ancora visualizzare i dati salvati — l\'app rimane aperta in modalità lettura. Per aggiungere nuove spese o scansionare ricevute hai bisogno di un abbonamento mensile o annuale.',
+          'Dopo il mese di prova puoi continuare a usare l\'app in modalità lettura e visualizzare i dati salvati. Per aggiungere nuove spese o scansionare ricevute hai bisogno di un abbonamento mensile o annuale.',
       },
       ai: {
         question: 'Come funziona l\'analisi IA?',

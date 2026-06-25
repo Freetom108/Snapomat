@@ -175,9 +175,9 @@ export default {
       intro: { question: 'App Intro wiederholen' },
       upgrade: { question: 'Upgrade-Optionen anzeigen' },
       monthlyYearly: {
-        question: 'Kann ich von Monatlich auf Jährlich wechseln?',
+        question: 'Wie kann ich ein Abo abschließen oder upgraden?',
         answer:
-          'Ja. Der genaue Ablauf hängt von den Regeln des jeweiligen App Stores ab — in den meisten Fällen kannst du dein Abo direkt in den Store-Einstellungen verwalten und auf das Jahresabo upgraden. Deine Daten bleiben dabei vollständig erhalten. Mit Backup & Restore kannst du deine Daten zusätzlich sichern.',
+          'Tippe in den Einstellungen auf Abo & Credits um dein Abo zu wählen oder zu wechseln. Du kannst jederzeit von Free auf Monatlich oder Jährlich upgraden — oder von Monatlich auf Jährlich wechseln. Der genaue Ablauf hängt von den Regeln des jeweiligen App Stores ab. Deine Daten bleiben dabei vollständig erhalten. Mit Backup & Restore in den Einstellungen kannst du deine Daten zusätzlich sichern.',
       },
       data: {
         question: 'Was passiert mit meinen Daten?',
@@ -187,7 +187,7 @@ export default {
       trialAfterData: {
         question: 'Was passiert mit der App nach dem Probemonat?',
         answer:
-          'Nach dem Probemonat kannst du deine gespeicherten Daten weiterhin einsehen — die App bleibt im Lesemodus geöffnet. Um neue Ausgaben zu erfassen oder Kassenbelegs zu scannen, benötigst du ein Monats- oder Jahresabo.',
+          'Nach dem Probemonat kannst du die App weiterhin im Lesemodus verwenden und deine gespeicherten Daten einsehen. Um neue Ausgaben zu erfassen oder Kassenbelege zu scannen, benötigst du ein Monats- oder Jahresabo.',
       },
       ai: {
         question: 'Wie funktioniert die KI-Analyse?',

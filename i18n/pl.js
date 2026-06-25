@@ -175,9 +175,9 @@ export default {
       intro: { question: 'Powtórz intro aplikacji' },
       upgrade: { question: 'Pokaż opcje subskrypcji' },
       monthlyYearly: {
-        question: 'Czy mogę przejść z Monthly na Yearly?',
+        question: 'Jak mogę wykupić subskrypcję lub ją ulepszyć?',
         answer:
-          'Tak. Dokładny przebieg zależy od zasad danego sklepu z aplikacjami — w większości przypadków możesz zarządzać subskrypcją bezpośrednio w ustawieniach sklepu i przejść na plan roczny. Twoje dane pozostają w pełni zachowane. Dzięki Backup & Restore możesz dodatkowo zabezpieczyć swoje dane.',
+          'Kliknij Subskrypcja & Kredyty w ustawieniach, aby wybrać lub zmienić swój plan. Możesz w dowolnym momencie przejść z Free na Miesięczny lub Roczny — lub z Miesięcznego na Roczny. Dokładny przebieg zależy od zasad danego sklepu z aplikacjami. Twoje dane pozostają w pełni zachowane. Dzięki Backup & Restore w ustawieniach możesz dodatkowo zabezpieczyć swoje dane.',
       },
       data: {
         question: 'Co dzieje się z moimi danymi?',
@@ -187,7 +187,7 @@ export default {
       trialAfterData: {
         question: 'Co dzieje się z aplikacją po miesiącu próbnym?',
         answer:
-          'Po miesiącu próbnym możesz nadal przeglądać zapisane dane — aplikacja pozostaje otwarta w trybie tylko do odczytu. Aby dodawać nowe wydatki lub skanować paragony potrzebujesz subskrypcji miesięcznej lub rocznej.',
+          'Po miesiącu próbnym możesz nadal używać aplikacji w trybie tylko do odczytu i przeglądać zapisane dane. Aby dodawać nowe wydatki lub skanować paragony potrzebujesz subskrypcji miesięcznej lub rocznej.',
       },
       ai: {
         question: 'Jak działa analiza AI?',

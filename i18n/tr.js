@@ -175,9 +175,9 @@ export default {
       intro: { question: 'Uygulama tanıtımını tekrarla' },
       upgrade: { question: 'Abonelik seçeneklerini göster' },
       monthlyYearly: {
-        question: 'Monthly\'den Yearly\'ye geçebilir miyim?',
+        question: 'Nasıl abone olabilir veya yükseltme yapabilirim?',
         answer:
-          'Evet. Tam süreç ilgili uygulama mağazasının kurallarına bağlıdır — çoğu durumda aboneliğini doğrudan mağaza ayarlarından yönetebilir ve yıllık plana geçiş yapabilirsin. Verilerin tamamen korunur. Backup & Restore ile verilerini ek olarak yedekleyebilirsin.',
+          'Planını seçmek veya değiştirmek için Ayarlar\'da Abonelik & Krediler\'e dokun. İstediğin zaman Ücretsiz\'den Aylık veya Yıllık\'a geçiş yapabilirsin — ya da Aylık\'tan Yıllık\'a geçebilirsin. Tam süreç ilgili uygulama mağazasının kurallarına bağlıdır. Verilerin tamamen korunur. Ayarlardaki Backup & Restore ile verilerini ek olarak yedekleyebilirsin.',
       },
       data: {
         question: 'Verilerime ne olur?',
@@ -187,7 +187,7 @@ export default {
       trialAfterData: {
         question: 'Deneme ayından sonra uygulama ne olur?',
         answer:
-          'Deneme ayından sonra kayıtlı verilerini görüntülemeye devam edebilirsin — uygulama salt okunur modda açık kalır. Yeni harcamalar eklemek veya fiş taramak için aylık veya yıllık abonelik gereklidir.',
+          'Deneme ayından sonra uygulamayı salt okunur modda kullanmaya devam edebilir ve kayıtlı verilerini görüntüleyebilirsin. Yeni harcamalar eklemek veya fiş taramak için aylık veya yıllık abonelik gereklidir.',
       },
       ai: {
         question: 'YZ analizi nasıl çalışır?',
