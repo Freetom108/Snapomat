@@ -177,7 +177,7 @@ export default {
       monthlyYearly: {
         question: 'Kann ich von Monatlich auf Jährlich wechseln?',
         answer:
-          'Ja. Wie der Wechsel genau erfolgt hängt von den Regeln des jeweiligen App Stores ab. In den meisten Fällen kannst du dein aktuelles Abo verwalten und direkt auf das Jahresabo upgraden. Deine Daten und Credits bleiben dabei vollständig erhalten.',
+          'Ja. Der genaue Ablauf hängt von den Regeln des jeweiligen App Stores ab — in den meisten Fällen kannst du dein Abo direkt in den Store-Einstellungen verwalten und auf das Jahresabo upgraden. Deine Daten bleiben dabei vollständig erhalten. Mit Backup & Restore kannst du deine Daten zusätzlich sichern.',
       },
       data: {
         question: 'Was passiert mit meinen Daten?',

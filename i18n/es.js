@@ -177,7 +177,7 @@ export default {
       monthlyYearly: {
         question: '¿Puedo cambiar de Monthly a Yearly?',
         answer:
-          'Sí. El cambio depende de las reglas de la tienda de apps. En la mayoría de casos puedes gestionar tu suscripción y pasar directamente al plan Yearly. Tus datos y Créditos se mantienen intactos.',
+          'Sí. El proceso exacto depende de las normas de la tienda de aplicaciones correspondiente — en la mayoría de los casos puedes gestionar tu suscripción directamente en los ajustes de la tienda y cambiar al plan anual. Tus datos se conservan íntegramente. Con Backup & Restore puedes hacer una copia de seguridad adicional de tus datos.',
       },
       data: {
         question: '¿Qué pasa con mis datos?',

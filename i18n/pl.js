@@ -177,7 +177,7 @@ export default {
       monthlyYearly: {
         question: 'Czy mogę przejść z Monthly na Yearly?',
         answer:
-          'Tak. Zasady zmiany zależą od sklepu z aplikacjami. Zwykle możesz zarządzać subskrypcją i od razu przejść na plan Yearly. Twoje dane i Kredyty pozostają nienaruszone.',
+          'Tak. Dokładny przebieg zależy od zasad danego sklepu z aplikacjami — w większości przypadków możesz zarządzać subskrypcją bezpośrednio w ustawieniach sklepu i przejść na plan roczny. Twoje dane pozostają w pełni zachowane. Dzięki Backup & Restore możesz dodatkowo zabezpieczyć swoje dane.',
       },
       data: {
         question: 'Co dzieje się z moimi danymi?',

@@ -177,7 +177,7 @@ export default {
       monthlyYearly: {
         question: 'Can I switch from Monthly to Yearly?',
         answer:
-          'Yes. How the switch works depends on the rules of the respective app store. In most cases you can manage your current subscription and upgrade directly to the yearly plan. Your data and Credits remain fully intact.',
+          'Yes. The exact process depends on the rules of the respective app store — in most cases you can manage your subscription directly in the store settings and upgrade to the yearly plan. Your data will be fully retained. With Backup & Restore you can additionally back up your data.',
       },
       data: {
         question: 'What happens to my data?',

@@ -177,7 +177,7 @@ export default {
       monthlyYearly: {
         question: 'Monthly\'den Yearly\'ye geçebilir miyim?',
         answer:
-          'Evet. Geçiş ilgili uygulama mağazasının kurallarına bağlıdır. Çoğu durumda mevcut aboneliğini yönetip doğrudan Yearly plana geçebilirsin. Verilerin ve Kredilerin korunur.',
+          'Evet. Tam süreç ilgili uygulama mağazasının kurallarına bağlıdır — çoğu durumda aboneliğini doğrudan mağaza ayarlarından yönetebilir ve yıllık plana geçiş yapabilirsin. Verilerin tamamen korunur. Backup & Restore ile verilerini ek olarak yedekleyebilirsin.',
       },
       data: {
         question: 'Verilerime ne olur?',

@@ -177,7 +177,7 @@ export default {
       monthlyYearly: {
         question: 'Kan ik van maandelijks naar jaarlijks overstappen?',
         answer:
-          'Ja. Hoe de overstap precies werkt hangt af van de regels van de betreffende app store. Meestal kun je je huidige abonnement beheren en meteen upgraden naar het jaarabonnement. Je gegevens en credits blijven daarbij volledig behouden.',
+          'Ja. Het exacte proces hangt af van de regels van de betreffende app store — in de meeste gevallen kun je je abonnement rechtstreeks in de store-instellingen beheren en upgraden naar het jaarplan. Je gegevens blijven volledig behouden. Met Backup & Restore kun je je gegevens bovendien veiligstellen.',
       },
       data: {
         question: 'Wat gebeurt er met mijn gegevens?',

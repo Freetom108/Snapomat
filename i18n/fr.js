@@ -177,7 +177,7 @@ export default {
       monthlyYearly: {
         question: 'Puis-je passer de Monthly à Yearly ?',
         answer:
-          'Oui. Le changement dépend des règles de l\'App Store concerné. Dans la plupart des cas, vous pouvez gérer votre abonnement actuel et passer directement au forfait Yearly. Vos données et vos Crédits restent intacts.',
+          'Oui. Le processus exact dépend des règles de l\'app store concerné — dans la plupart des cas tu peux gérer ton abonnement directement dans les paramètres du store et passer au plan annuel. Tes données sont entièrement conservées. Avec Backup & Restore tu peux sauvegarder tes données en plus.',
       },
       data: {
         question: 'Que deviennent mes données ?',
