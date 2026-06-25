@@ -185,9 +185,9 @@ export default {
           'Je gegevens worden uitsluitend lokaal op je toestel opgeslagen. Voor de AI-analyse wordt de foto kort naar onze server gestuurd en daarna meteen verwijderd. Niets wordt zonder jouw toestemming gedeeld of permanent opgeslagen.',
       },
       trialAfterData: {
-        question: 'Wat gebeurt er met mijn gegevens na de proefmaand?',
+        question: 'Wat gebeurt er met de app na de proefmaand?',
         answer:
-          'Je gegevens blijven veilig op je toestel opgeslagen. Zodra je een abonnement afsluit, heb je meteen weer volledige toegang tot al je boekingen – er gaat niets verloren.',
+          'Na de proefmaand kun je je opgeslagen gegevens nog steeds bekijken — de app blijft open in leesmodus. Om nieuwe uitgaven toe te voegen of bonnen te scannen heb je een maandelijks of jaarlijks abonnement nodig.',
       },
       ai: {
         question: 'Hoe werkt de AI-analyse?',
@@ -197,12 +197,7 @@ export default {
       scanCost: {
         question: 'Wat zijn credits?',
         answer:
-          'Credits zijn de valuta voor AI-analyses in Snapomat. Elke foto van een kassabon kost 1 credit. Handmatige boekingen kosten geen credits. Als abonnee krijg je elke maand automatisch 100 verse credits.',
-      },
-      creditsBuy: {
-        question: 'Kan ik credits bijkopen?',
-        answer:
-          'Ja. Als maand- of jaarabonnee kun je op elk moment onder Instellingen → Abonnement & Credits extra creditpakketten kopen. Die verlopen nooit.',
+          'Credits zijn de valuta voor AI-analyses in Snapomat. Elke foto van een bon kost 1 credit. Handmatige invoeren zijn gratis. Als abonnee ontvang je elke maand automatisch 250 nieuwe credits.',
       },
       budget: {
         question: 'Hoe stel ik mijn maandbudget in?',

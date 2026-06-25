@@ -185,9 +185,9 @@ export default {
           'Your data is stored exclusively on your device. For AI analysis the photo is briefly sent to our server and deleted immediately afterwards. Nothing is shared or stored permanently without your permission.',
       },
       trialAfterData: {
-        question: 'What happens to my data after the trial month?',
+        question: 'What happens to the app after the trial month?',
         answer:
-          'Your data remains safely stored on your device. As soon as you subscribe, you immediately regain full access to all your entries – nothing is lost.',
+          'After the trial month you can still view your saved data — the app stays open in read-only mode. To add new expenses or scan receipts, you need a monthly or yearly subscription.',
       },
       ai: {
         question: 'How does AI analysis work?',
@@ -197,12 +197,7 @@ export default {
       scanCost: {
         question: 'What are Credits?',
         answer:
-          'Credits are the currency for AI analyses in Snapomat. Every photo of a receipt costs 1 Credit. Manual entries are free. As a subscriber you automatically receive 100 fresh Credits every month.',
-      },
-      creditsBuy: {
-        question: 'Can I buy more Credits?',
-        answer:
-          'Yes. As a monthly or yearly subscriber you can buy additional Credit packs anytime under Settings → Subscription & Credits. These never expire.',
+          'Credits are the currency for AI analyses in Snapomat. Each photo of a receipt costs 1 credit. Manual entries are free. As a subscriber you automatically receive 250 fresh credits every month.',
       },
       budget: {
         question: 'How do I set my monthly budget?',

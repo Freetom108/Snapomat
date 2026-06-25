@@ -185,9 +185,9 @@ export default {
           'Tus datos se guardan solo en tu dispositivo. Para el análisis IA, la foto se envía brevemente a nuestro servidor y se elimina al instante. Nada se comparte ni se guarda sin tu permiso.',
       },
       trialAfterData: {
-        question: '¿Qué pasa con mis datos después del mes de prueba?',
+        question: '¿Qué pasa con la app después del mes de prueba?',
         answer:
-          'Tus datos permanecen guardados de forma segura en tu dispositivo. En cuanto contrates una suscripción, recuperarás al instante el acceso completo a todas tus entradas – no se pierde nada.',
+          'Después del mes de prueba puedes seguir viendo tus datos guardados — la app permanece abierta en modo lectura. Para añadir nuevos gastos o escanear recibos necesitas una suscripción mensual o anual.',
       },
       ai: {
         question: '¿Cómo funciona el análisis IA?',
@@ -197,12 +197,7 @@ export default {
       scanCost: {
         question: '¿Qué son los Créditos?',
         answer:
-          'Los Créditos son la moneda para los análisis de IA en Snapomat. Cada foto de un recibo cuesta 1 Crédito. Las entradas manuales son gratuitas. Como suscriptor recibes automáticamente 100 Créditos frescos cada mes.',
-      },
-      creditsBuy: {
-        question: '¿Puedo comprar más Créditos?',
-        answer:
-          'Sí. Como suscriptor Monthly o Yearly puedes comprar packs adicionales de Créditos en cualquier momento en Ajustes → Suscripción & Créditos. No caducan nunca.',
+          'Los créditos son la moneda para los análisis de IA en Snapomat. Cada foto de un recibo cuesta 1 crédito. Las entradas manuales son gratuitas. Como suscriptor recibes automáticamente 250 créditos nuevos cada mes.',
       },
       budget: {
         question: '¿Cómo fijo mi presupuesto mensual?',

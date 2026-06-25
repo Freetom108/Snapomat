@@ -185,9 +185,9 @@ export default {
           'Vos données sont stockées uniquement sur votre appareil. Pour l\'analyse IA, la photo est brièvement envoyée à notre serveur puis supprimée immédiatement. Rien n\'est partagé ni conservé sans votre accord.',
       },
       trialAfterData: {
-        question: 'Que deviennent mes données après le mois d\'essai ?',
+        question: 'Que se passe-t-il avec l\'application après le mois d\'essai ?',
         answer:
-          'Vos données restent en sécurité sur votre appareil. Dès que vous souscrivez un abonnement, vous retrouvez immédiatement l\'accès complet à toutes vos entrées – rien n\'est perdu.',
+          'Après le mois d\'essai, tu peux toujours consulter tes données enregistrées — l\'application reste ouverte en mode lecture. Pour ajouter de nouvelles dépenses ou scanner des reçus, tu as besoin d\'un abonnement mensuel ou annuel.',
       },
       ai: {
         question: 'Comment fonctionne l\'analyse IA ?',
@@ -197,12 +197,7 @@ export default {
       scanCost: {
         question: 'Que sont les Crédits ?',
         answer:
-          'Les Crédits sont la monnaie des analyses IA dans Snapomat. Chaque photo d\'un reçu coûte 1 Crédit. Les saisies manuelles sont gratuites. En tant qu\'abonné, vous recevez automatiquement 100 Crédits frais chaque mois.',
-      },
-      creditsBuy: {
-        question: 'Puis-je acheter des Crédits ?',
-        answer:
-          'Oui. En tant qu\'abonné Monthly ou Yearly, vous pouvez acheter des packs de Crédits supplémentaires à tout moment dans Réglages → Abonnement & Crédits. Ils n\'expirent jamais.',
+          'Les crédits sont la monnaie des analyses IA dans Snapomat. Chaque photo d\'un reçu coûte 1 crédit. Les entrées manuelles sont gratuites. En tant qu\'abonné tu reçois automatiquement 250 crédits frais chaque mois.',
       },
       budget: {
         question: 'Comment définir mon budget mensuel ?',

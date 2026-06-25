@@ -185,9 +185,9 @@ export default {
           'Verilerin yalnızca cihazında saklanır. YZ analizi için fotoğraf kısa süre sunucumuza gönderilir ve hemen ardından silinir. İznin olmadan hiçbir şey paylaşılmaz veya kalıcı olarak saklanmaz.',
       },
       trialAfterData: {
-        question: 'Deneme ayından sonra verilerime ne olur?',
+        question: 'Deneme ayından sonra uygulama ne olur?',
         answer:
-          'Verilerin cihazında güvenle saklanmaya devam eder. Abonelik başlattığında tüm kayıtlarına anında tekrar tam erişim kazanırsın – hiçbir şey kaybolmaz.',
+          'Deneme ayından sonra kayıtlı verilerini görüntülemeye devam edebilirsin — uygulama salt okunur modda açık kalır. Yeni harcamalar eklemek veya fiş taramak için aylık veya yıllık abonelik gereklidir.',
       },
       ai: {
         question: 'YZ analizi nasıl çalışır?',
@@ -197,12 +197,7 @@ export default {
       scanCost: {
         question: 'Krediler nedir?',
         answer:
-          'Krediler, Snapomat\'taki YZ analizlerinin birimidir. Her fiş fotoğrafı 1 Kredi harcar. Manuel girişler ücretsizdir. Abone olarak her ay otomatik olarak 100 yeni Kredi alırsın.',
-      },
-      creditsBuy: {
-        question: 'Daha fazla Kredi alabilir miyim?',
-        answer:
-          'Evet. Monthly veya Yearly abone olarak Ayarlar → Abonelik & Krediler bölümünden istediğin zaman ek Kredi paketleri satın alabilirsin. Bunlar asla sona ermez.',
+          'Krediler, Snapomat\'taki yapay zeka analizlerinin para birimidir. Her fiş fotoğrafı 1 kredi harcar. Manuel girişler ücretsizdir. Abone olarak her ay otomatik olarak 250 yeni kredi alırsın.',
       },
       budget: {
         question: 'Aylık bütçemi nasıl ayarlarım?',

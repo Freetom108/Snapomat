@@ -185,9 +185,9 @@ export default {
           'Deine Daten werden ausschließlich lokal auf deinem Gerät gespeichert. Für die KI-Analyse wird das Foto kurz an unseren Server gesendet und danach sofort gelöscht. Nichts wird ohne deine Erlaubnis weitergegeben oder dauerhaft gespeichert.',
       },
       trialAfterData: {
-        question: 'Was passiert mit meinen Daten nach dem Probemonat?',
+        question: 'Was passiert mit der App nach dem Probemonat?',
         answer:
-          'Deine Daten bleiben sicher auf deinem Gerät gespeichert. Sobald du ein Abo abschließt, hast du sofort wieder vollen Zugriff auf alle deine Einträge – nichts geht verloren.',
+          'Nach dem Probemonat kannst du deine gespeicherten Daten weiterhin einsehen — die App bleibt im Lesemodus geöffnet. Um neue Ausgaben zu erfassen oder Kassenbelegs zu scannen, benötigst du ein Monats- oder Jahresabo.',
       },
       ai: {
         question: 'Wie funktioniert die KI-Analyse?',
@@ -197,12 +197,7 @@ export default {
       scanCost: {
         question: 'Was sind Credits?',
         answer:
-          'Credits sind die Währung für KI-Analysen in Snapomat. Jedes Foto eines Kassenbelegs kostet 1 Credit. Manuelle Einträge kosten keine Credits. Als Abonnent bekommst du jeden Monat automatisch 100 frische Credits.',
-      },
-      creditsBuy: {
-        question: 'Kann ich Credits nachkaufen?',
-        answer:
-          'Ja. Als Monats- oder Jahresabonnent kannst du jederzeit unter Einstellungen → Abo & Credits zusätzliche Credit-Pakete kaufen. Diese verfallen nie.',
+          'Credits sind die Währung für KI-Analysen in Snapomat. Jedes Foto eines Kassenbelegs kostet 1 Credit. Manuelle Einträge kosten keine Credits. Als Abonnent bekommst du jeden Monat automatisch 250 frische Credits.',
       },
       budget: {
         question: 'Wie setze ich mein Monatsbudget?',

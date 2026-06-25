@@ -185,9 +185,9 @@ export default {
           'I tuoi dati restano solo sul dispositivo. Per l\'analisi IA la foto viene inviata brevemente al server e subito eliminata. Nulla viene condiviso o salvato senza permesso.',
       },
       trialAfterData: {
-        question: 'Cosa succede ai miei dati dopo il mese di prova?',
+        question: 'Cosa succede all\'app dopo il mese di prova?',
         answer:
-          'I tuoi dati restano al sicuro sul dispositivo. Non appena sottoscrivi un abbonamento, riacquisti subito l\'accesso completo a tutte le voci – non perdi nulla.',
+          'Dopo il mese di prova puoi ancora visualizzare i dati salvati — l\'app rimane aperta in modalità lettura. Per aggiungere nuove spese o scansionare ricevute hai bisogno di un abbonamento mensile o annuale.',
       },
       ai: {
         question: 'Come funziona l\'analisi IA?',
@@ -197,12 +197,7 @@ export default {
       scanCost: {
         question: 'Cosa sono i Crediti?',
         answer:
-          'I Crediti sono la valuta per le analisi IA in Snapomat. Ogni foto di uno scontrino costa 1 Credito. Le voci manuali sono gratuite. Come abbonato ricevi automaticamente 100 Crediti freschi ogni mese.',
-      },
-      creditsBuy: {
-        question: 'Posso comprare altri Crediti?',
-        answer:
-          'Sì. Come abbonato Monthly o Yearly puoi acquistare pacchetti aggiuntivi di Crediti in qualsiasi momento in Impostazioni → Abbonamento & Crediti. Non scadono mai.',
+          'I crediti sono la valuta per le analisi IA in Snapomat. Ogni foto di una ricevuta costa 1 credito. Le voci manuali sono gratuite. Come abbonato ricevi automaticamente 250 crediti freschi ogni mese.',
       },
       budget: {
         question: 'Come imposto il budget mensile?',

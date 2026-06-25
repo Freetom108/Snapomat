@@ -715,7 +715,6 @@ const FAQ_ITEM_META = [
   { id: 'data' },
   { id: 'trialAfterData' },
   { id: 'scanCost' },
-  { id: 'creditsBuy' },
   { id: 'budget' },
   { id: 'savingsReserve' },
   { id: 'warningRing' },

@@ -185,9 +185,9 @@ export default {
           'Twoje dane są przechowywane wyłącznie na urządzeniu. Do analizy AI zdjęcie jest krótko wysyłane na serwer i natychmiast usuwane. Nic nie jest udostępniane ani zapisywane bez Twojej zgody.',
       },
       trialAfterData: {
-        question: 'Co dzieje się z moimi danymi po miesiącu próbnym?',
+        question: 'Co dzieje się z aplikacją po miesiącu próbnym?',
         answer:
-          'Twoje dane pozostają bezpiecznie zapisane na urządzeniu. Gdy wykupisz subskrypcję, natychmiast odzyskasz pełny dostęp do wszystkich wpisów – nic nie ginie.',
+          'Po miesiącu próbnym możesz nadal przeglądać zapisane dane — aplikacja pozostaje otwarta w trybie tylko do odczytu. Aby dodawać nowe wydatki lub skanować paragony potrzebujesz subskrypcji miesięcznej lub rocznej.',
       },
       ai: {
         question: 'Jak działa analiza AI?',
@@ -197,12 +197,7 @@ export default {
       scanCost: {
         question: 'Czym są Kredyty?',
         answer:
-          'Kredyty to waluta analiz AI w Snapomat. Każde zdjęcie paragonu kosztuje 1 Kredyt. Wpisy ręczne są bezpłatne. Jako abonent otrzymujesz automatycznie 100 świeżych Kredytów każdego miesiąca.',
-      },
-      creditsBuy: {
-        question: 'Czy mogę dokupić Kredyty?',
-        answer:
-          'Tak. Jako subskrybent Monthly lub Yearly możesz w każdej chwili dokupić dodatkowe pakiety Kredytów w Ustawienia → Subskrypcja & Kredyty. Nigdy nie wygasają.',
+          'Kredyty to waluta analiz AI w Snapomat. Każde zdjęcie paragonu kosztuje 1 kredyt. Ręczne wpisy są bezpłatne. Jako subskrybent otrzymujesz automatycznie 250 świeżych kredytów każdego miesiąca.',
       },
       budget: {
         question: 'Jak ustawić budżet miesięczny?',
